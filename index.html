@@ -10,7 +10,7 @@
 <style>
 :root {
   --green: #1a7a56; --green-light: #e8f5ef; --green-mid: #2da870; --green-dark: #0f4f38;
-  --gold: #c9972a; --red: #c0392b; --red-light: #fdecea;
+  --gold: #c9972a; --gold-light: #fdf3e0; --red: #c0392b; --red-light: #fdecea;
   --bg: #f7f5f0; --surface: #ffffff; --surface2: #f2f0ea;
   --border: #e2ddd4; --text: #1c1a16; --text-muted: #7a7267; --text-light: #b0a89a;
   --radius: 14px; --shadow: 0 2px 12px rgba(28,26,22,0.08); --shadow-lg: 0 8px 40px rgba(28,26,22,0.18);
@@ -221,7 +221,66 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
   .vocab-table-wrap{display:none}
   .vocab-card-list{display:block}
   .modal-conj-grid{grid-template-columns:1fr}
+  .fc-actions{flex-direction:column;gap:8px}
+  .fc-actions .btn{width:100%;max-width:100%}
+  .fc-source-btns{flex-wrap:wrap}
 }
+
+/* ── FLASHCARD STYLES ── */
+.fc-scene{perspective:1000px;width:100%;max-width:480px;margin:0 auto 1.25rem;height:220px}
+.fc-card{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform .5s cubic-bezier(.4,0,.2,1);cursor:pointer}
+.fc-card.flipped{transform:rotateY(180deg)}
+.fc-face{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:1.5rem;box-shadow:var(--shadow-lg)}
+.fc-front{background:var(--green-dark)}
+.fc-back{background:var(--surface);border:1px solid var(--border);transform:rotateY(180deg)}
+.fc-lang{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:.4rem}
+.fc-front .fc-lang{color:rgba(255,255,255,.5)}
+.fc-back .fc-lang{color:var(--text-light)}
+.fc-word{font-family:'Playfair Display',serif;font-size:32px;font-weight:700;text-align:center;line-height:1.2}
+.fc-front .fc-word{color:#fff}
+.fc-back .fc-word{color:var(--green-dark)}
+.fc-hint{font-size:12px;margin-top:.75rem}
+.fc-front .fc-hint{color:rgba(255,255,255,.4)}
+.fc-back .fc-hint{color:var(--text-light)}
+.fc-cat{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-bottom:.5rem}
+.fc-front .fc-cat{background:rgba(255,255,255,.15);color:rgba(255,255,255,.7)}
+.fc-back .fc-cat{background:var(--green-light);color:var(--green-dark)}
+.fc-back-sub{font-size:13px;color:var(--text-muted);margin-top:.5rem;text-align:center}
+
+.fc-progress-wrap{margin-bottom:1rem}
+.fc-progress-bar-bg{height:5px;background:var(--border);border-radius:3px;overflow:hidden;margin-bottom:.4rem}
+.fc-progress-bar{height:100%;background:var(--green-mid);border-radius:3px;transition:width .3s ease}
+.fc-progress-label{display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted)}
+
+.fc-session-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.fc-sstat{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:.75rem .5rem;text-align:center;box-shadow:var(--shadow)}
+.fc-sstat-num{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;line-height:1}
+.fc-sstat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);font-weight:600;margin-top:2px}
+.fc-known-num{color:var(--green-dark)}
+.fc-unknown-num{color:var(--red)}
+.fc-left-num{color:var(--text-muted)}
+
+.fc-flip-hint{text-align:center;font-size:12px;color:var(--text-light);margin-bottom:.875rem}
+
+.fc-actions{display:flex;gap:10px;justify-content:center;margin-bottom:1rem}
+.fc-actions .btn{flex:1;max-width:180px;font-size:15px;padding:12px}
+.btn-known{background:#e8f5ef;color:var(--green-dark);border-color:rgba(45,168,112,.3)}
+.btn-known:hover{background:var(--green-light)}
+.btn-unknown{background:#fdecea;color:var(--red);border-color:#f5c5c2}
+.btn-unknown:hover{background:#fbd8d6}
+
+.fc-source-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:.875rem}
+.fc-src-btn{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-family:'DM Sans',sans-serif;transition:all .15s;min-height:36px;touch-action:manipulation}
+.fc-src-btn.active{background:var(--green-dark);color:#fff;border-color:var(--green-dark)}
+
+.fc-done{text-align:center;padding:2rem 1rem}
+.fc-done-icon{font-size:52px;margin-bottom:.75rem}
+.fc-done-title{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green-dark);margin-bottom:.5rem}
+.fc-done-sub{font-size:14px;color:var(--text-muted);margin-bottom:1.5rem}
+.fc-done-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:280px;margin:0 auto 1.5rem}
+.fc-done-stat{background:var(--bg);border-radius:10px;padding:.875rem;text-align:center}
+.fc-done-num{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;line-height:1}
+.fc-done-lbl{font-size:11px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-top:3px;font-weight:600}
 </style>
 </head>
 <body>
@@ -241,11 +300,14 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
   <button class="nav-top-tab active" onclick="showTab('stories')">📖 Geschichten</button>
   <button class="nav-top-tab" onclick="showTab('verb')">🗓 Verb des Tages</button>
   <button class="nav-top-tab" onclick="showTab('vocab')">📚 Vokabeln</button>
+  <button class="nav-top-tab" onclick="showTab('learn')">🃏 Lernen</button>
+  <button class="nav-top-tab" onclick="showTab('grammar')">📐 Grammatik</button>
+  <button class="nav-top-tab" onclick="showTab('irregvocab')">⭐ Irr. Vokabeln</button>
 </nav>
 
 <!-- MOBILE BOTTOM NAV -->
 <nav class="nav-bottom">
-  <div class="nav-bottom-inner">
+  <div class="nav-bottom-inner" style="overflow-x:auto;justify-content:flex-start;padding:0 4px">
     <button class="nav-bottom-tab active" id="nbt-stories" onclick="showTab('stories')">
       <span class="nb-icon">📖</span><span>Geschichten</span>
     </button>
@@ -254,6 +316,15 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
     </button>
     <button class="nav-bottom-tab" id="nbt-vocab" onclick="showTab('vocab')">
       <span class="nb-icon">📚</span><span>Vokabeln</span>
+    </button>
+    <button class="nav-bottom-tab" id="nbt-learn" onclick="showTab('learn')">
+      <span class="nb-icon">🃏</span><span>Lernen</span>
+    </button>
+    <button class="nav-bottom-tab" id="nbt-grammar" onclick="showTab('grammar')">
+      <span class="nb-icon">📐</span><span>Grammatik</span>
+    </button>
+    <button class="nav-bottom-tab" id="nbt-irregvocab" onclick="showTab('irregvocab')">
+      <span class="nb-icon">⭐</span><span>Irr. Vokabeln</span>
     </button>
   </div>
 </nav>
@@ -273,6 +344,10 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
       <div class="modal-example" id="modal-ex"></div>
       <div class="modal-tense-tabs" id="modal-tabs"></div>
       <div class="modal-conj-grid" id="modal-grid"></div>
+      <div style="margin-top:1rem;padding-top:.875rem;border-top:1px solid var(--border)">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:6px">Beispielsätze</div>
+        <div id="modal-examples"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -371,18 +446,169 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
     </div>
   </div>
 
+  <!-- PANEL: LERNEN (KARTEIKARTEN) -->
+  <div class="panel" id="panel-learn">
+    <div class="card" id="fc-setup-card">
+      <div class="card-title"><span class="dot"></span>Lernmodus konfigurieren</div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:6px">Quelle</div>
+      <div class="fc-source-row" id="fc-source-row">
+        <button class="fc-src-btn active" onclick="setFcSource('all')" id="fcsrc-all">Alle</button>
+        <button class="fc-src-btn" onclick="setFcSource('words')" id="fcsrc-words">Eigene Wörter</button>
+        <button class="fc-src-btn" onclick="setFcSource('top100')" id="fcsrc-top100">Top 1–100</button>
+        <button class="fc-src-btn" onclick="setFcSource('top101')" id="fcsrc-top101">Top 101–200</button>
+        <button class="fc-src-btn" onclick="setFcSource('top201')" id="fcsrc-top201">Top 201–300</button>
+        <button class="fc-src-btn" onclick="setFcSource('verbs')" id="fcsrc-verbs">Verben</button>
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:6px;margin-top:1rem">Richtung</div>
+      <div class="fc-source-row">
+        <button class="fc-src-btn active" onclick="setFcDir('es2de')" id="fcdir-es2de">🇪🇸 → 🇩🇪 Spanisch→Deutsch</button>
+        <button class="fc-src-btn" onclick="setFcDir('de2es')" id="fcdir-de2es">🇩🇪 → 🇪🇸 Deutsch→Spanisch</button>
+        <button class="fc-src-btn" onclick="setFcDir('mixed')" id="fcdir-mixed">🔀 Gemischt</button>
+      </div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:6px;margin-top:1rem">Schwierigkeit</div>
+      <div class="fc-source-row">
+        <button class="fc-src-btn active" onclick="setFcDiff('all')" id="fcdiff-all">Zufällig</button>
+        <button class="fc-src-btn" onclick="setFcDiff('new')" id="fcdiff-new">🟢 Neu</button>
+        <button class="fc-src-btn" onclick="setFcDiff('learning')" id="fcdiff-learning">🟡 Lernend</button>
+        <button class="fc-src-btn" onclick="setFcDiff('hard')" id="fcdiff-hard">🔴 Schwer</button>
+        <button class="fc-src-btn" onclick="setFcDiff('mastered')" id="fcdiff-mastered">⭐ Gemeistert</button>
+      </div>
+      <div style="display:flex;gap:10px;align-items:center;margin:1rem 0 .75rem">
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:0;flex-shrink:0">Anzahl</label>
+        <input type="number" id="fc-card-count" value="20" min="5" max="300" style="width:80px;flex-shrink:0">
+        <span style="font-size:12px;color:var(--text-light)" id="fc-avail-lbl"></span>
+      </div>
+      <button class="btn btn-primary" onclick="startFlashcards()" style="width:100%;padding:12px;font-size:15px">Lernsitzung starten ▶</button>
+      <div style="margin-top:1rem;padding:.875rem;background:var(--bg);border-radius:10px;font-size:12px">
+        <div style="font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:.4rem">Schwierigkeitsstufen</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px;color:var(--text-muted)">
+          <span>🟢 <b>Neu</b> — noch nie gesehen</span>
+          <span>🟡 <b>Lernend</b> — 1–2× richtig</span>
+          <span>🔴 <b>Schwer</b> — öfter falsch</span>
+          <span>⭐ <b>Gemeistert</b> — 3× in Folge richtig</span>
+        </div>
+      </div>
+    </div>
+    <div id="fc-main" style="display:none">
+      <div class="fc-session-stats">
+        <div class="fc-sstat"><div class="fc-sstat-num fc-known-num" id="fc-known">0</div><div class="fc-sstat-lbl">Richtig ✓</div></div>
+        <div class="fc-sstat"><div class="fc-sstat-num fc-unknown-num" id="fc-unknown">0</div><div class="fc-sstat-lbl">Falsch ✗</div></div>
+        <div class="fc-sstat"><div class="fc-sstat-num fc-left-num" id="fc-left">0</div><div class="fc-sstat-lbl">Verbleibend</div></div>
+      </div>
+      <div class="fc-progress-wrap">
+        <div class="fc-progress-bar-bg"><div class="fc-progress-bar" id="fc-bar" style="width:0%"></div></div>
+        <div class="fc-progress-label"><span id="fc-prog-text">0 / 0</span><span id="fc-prog-pct">0%</span></div>
+      </div>
+      <div class="fc-scene" onclick="flipCard()">
+        <div class="fc-card" id="fc-card">
+          <div class="fc-face fc-front">
+            <div class="fc-cat" id="fc-front-cat"></div>
+            <div class="fc-lang" id="fc-front-lang">Spanisch</div>
+            <div class="fc-word" id="fc-front-word">—</div>
+            <div class="fc-hint">antippen zum Aufdecken</div>
+          </div>
+          <div class="fc-face fc-back">
+            <div class="fc-cat" id="fc-back-cat"></div>
+            <div class="fc-lang" id="fc-back-lang">Deutsch</div>
+            <div class="fc-word" id="fc-back-word">—</div>
+            <div class="fc-back-sub" id="fc-back-sub"></div>
+          </div>
+        </div>
+      </div>
+      <div class="fc-flip-hint" id="fc-flip-hint">⬆ Tippe auf die Karte zum Umdrehen</div>
+      <div class="fc-actions" id="fc-action-btns" style="display:none">
+        <button class="btn btn-unknown" onclick="markCard(false)">✕ Falsch</button>
+        <button class="btn btn-known" onclick="markCard(true)">✓ Richtig</button>
+      </div>
+      <button class="btn btn-sm" onclick="abortSession()" style="width:100%;margin-top:.5rem;color:var(--text-muted)">Sitzung abbrechen</button>
+    </div>
+    <div id="fc-done" style="display:none">
+      <div class="card fc-done">
+        <div class="fc-done-icon">🎉</div>
+        <div class="fc-done-title">Sitzung abgeschlossen!</div>
+        <div class="fc-done-sub" id="fc-done-sub"></div>
+        <div class="fc-done-grid">
+          <div class="fc-done-stat"><div class="fc-done-num" style="color:var(--green-dark)" id="fc-res-known">0</div><div class="fc-done-lbl">Richtig</div></div>
+          <div class="fc-done-stat"><div class="fc-done-num" style="color:var(--red)" id="fc-res-unknown">0</div><div class="fc-done-lbl">Falsch</div></div>
+        </div>
+        <div id="fc-diff-summary" style="margin-bottom:1rem"></div>
+        <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+          <button class="btn btn-primary" onclick="restartHard()" id="fc-retry-btn" style="flex:1;max-width:200px">Schwere nochmal 🔴</button>
+          <button class="btn" onclick="abortSession()" style="flex:1;max-width:200px">Neue Sitzung</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL: GRAMMATIK -->
+  <div class="panel" id="panel-grammar">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Zeitformen im Überblick</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:1rem">Wähle eine Zeitform um Erklärung, Bildungsregeln und eine Übung zu sehen.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px" id="grammar-tense-btns">
+        <button class="tense-btn active" onclick="showGrammar('presente')">Presente</button>
+        <button class="tense-btn" onclick="showGrammar('indefinido')">Indefinido</button>
+        <button class="tense-btn" onclick="showGrammar('imperfecto')">Imperfecto</button>
+        <button class="tense-btn" onclick="showGrammar('futuro')">Futuro</button>
+        <button class="tense-btn" onclick="showGrammar('condicional')">Condicional</button>
+        <button class="tense-btn" onclick="showGrammar('subjuntivo')">Subjuntivo</button>
+      </div>
+    </div>
+    <div id="grammar-content"></div>
+    <div id="grammar-exercise" style="display:none"></div>
+  </div>
+
+  <!-- PANEL: IRREGULÄRE VOKABELN -->
+  <div class="panel" id="panel-irregvocab">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Wichtige unregelmäßige Verben</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:1rem">Die häufigsten unregelmäßigen Verben Spanisch mit ihren wichtigsten Formen.</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.75rem">
+        <button class="tense-btn active" onclick="filterIrregVocab('alle')" id="ivf-alle">Alle</button>
+        <button class="tense-btn" onclick="filterIrregVocab('vokalwechsel')" id="ivf-vokalwechsel">Vokalwechsel</button>
+        <button class="tense-btn" onclick="filterIrregVocab('go-verben')" id="ivf-go-verben">Go-Verben</button>
+        <button class="tense-btn" onclick="filterIrregVocab('reflexiv')" id="ivf-reflexiv">Reflexiv</button>
+        <button class="tense-btn" onclick="filterIrregVocab('modal')" id="ivf-modal">Modal</button>
+      </div>
+      <button class="btn btn-primary" id="iv-quiz-btn" onclick="startIrregQuiz()" style="width:100%">Übung starten ▶</button>
+    </div>
+    <div id="iv-quiz-area" style="display:none"></div>
+    <div id="iv-list-area">
+      <div id="irreg-vocab-list"></div>
+    </div>
+  </div>
+
 </div>
 
 <script>
 // ── STATE ──
-const STORAGE_KEY='espanol_app_v3';
-function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)return JSON.parse(r)}catch(e){}return{words:[],stories:[],learnedVerbs:[],lastVerbDate:null,lastVerb:null}}
+const STORAGE_KEY='espanol_app_v5';
+const KNOWN_WORDS=[{es:'a',de:'zu, nach, an',cat:'Bekannt',usedCount:1,addedAt:0},{es:'abajo',de:'unten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'abierto',de:'offen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'aburrido',de:'langweilig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'académico',de:'akademisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'activo',de:'aktiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'actualmente',de:'derzeit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ahora',de:'jetzt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alegre',de:'fröhlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'algo',de:'etwas',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alguien',de:'jemand',cat:'Bekannt',usedCount:1,addedAt:0},{es:'allá',de:'weiter weg dort',cat:'Bekannt',usedCount:1,addedAt:0},{es:'allí',de:'dort',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alto',de:'hoch/groß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'amable',de:'freundlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'amargo',de:'bitter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ambiental',de:'ökologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ancho',de:'breit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'anterior',de:'vorherige',cat:'Bekannt',usedCount:1,addedAt:0},{es:'antes',de:'vorher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'antiguo',de:'alt (antik)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'antipático',de:'unsympathisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'anual',de:'jährlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'aquí',de:'hier',cat:'Bekannt',usedCount:1,addedAt:0},{es:'arriba',de:'oben',cat:'Bekannt',usedCount:1,addedAt:0},{es:'auditivo',de:'auditiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ayer',de:'gestern',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bajo',de:'niedrig/klein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'barato',de:'billig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bien',de:'gut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bonito',de:'hübsch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bueno/a',de:'gut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cada',de:'jede/r/s',cat:'Bekannt',usedCount:1,addedAt:0},{es:'caliente',de:'heiß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'caro',de:'teuer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'casi',de:'fast',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cerca',de:'nah',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cerrado',de:'geschlossen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'científico',de:'wissenschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cierto',de:'sicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cinco',de:'fünf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ciudadano',de:'bürgerlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'claro',de:'klar',cat:'Bekannt',usedCount:1,addedAt:0},{es:'clásico',de:'klassisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'completo',de:'vollständig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'complicado',de:'kompliziert',cat:'Bekannt',usedCount:1,addedAt:0},{es:'común',de:'gewöhnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'con',de:'mit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cotidiano',de:'alltäglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cuatro',de:'vier',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cultural',de:'kulturell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cuándo',de:'wann',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cuánto/a/os/as',de:'wie viel/e',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cómo',de:'wie',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dar',de:'geben',cat:'Bekannt',usedCount:1,addedAt:0},{es:'de',de:'von',cat:'Bekannt',usedCount:1,addedAt:0},{es:'deber',de:'müssen/sollen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'decir',de:'sagen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'delante',de:'vorne',cat:'Bekannt',usedCount:1,addedAt:0},{es:'delgado',de:'dünn',cat:'Bekannt',usedCount:1,addedAt:0},{es:'derecha',de:'rechts',cat:'Bekannt',usedCount:1,addedAt:0},{es:'desconocido',de:'unbekannt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'desleal',de:'illoyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'después',de:'danach',cat:'Bekannt',usedCount:1,addedAt:0},{es:'detrás',de:'hinten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diario',de:'täglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diez',de:'zehn',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diferente',de:'anders',cat:'Bekannt',usedCount:1,addedAt:0},{es:'difícil',de:'schwierig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'directo',de:'direkt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'distinto',de:'verschieden',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dos',de:'zwei',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dulce',de:'süß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'duro',de:'hart',cat:'Bekannt',usedCount:1,addedAt:0},{es:'débil',de:'schwach',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dónde',de:'wo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'económico',de:'wirtschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'educativo',de:'erzieherisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'efectivamente',de:'tatsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'el/la',de:'der/die',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ella',de:'sie',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ellos/ellas',de:'sie plural',cat:'Bekannt',usedCount:1,addedAt:0},{es:'en',de:'in, auf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'enfermo',de:'krank',cat:'Bekannt',usedCount:1,addedAt:0},{es:'entre',de:'zwischen, unter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'escrito',de:'schriftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ese/a',de:'der/die da',cat:'Bekannt',usedCount:1,addedAt:0},{es:'especial',de:'besonders',cat:'Bekannt',usedCount:1,addedAt:0},{es:'estar',de:'sein (temporär)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'este/a',de:'dieser/diese',cat:'Bekannt',usedCount:1,addedAt:0},{es:'estrecho',de:'eng',cat:'Bekannt',usedCount:1,addedAt:0},{es:'exterior',de:'außen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'extraordinario',de:'außergewöhnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'extraño',de:'fremd',cat:'Bekannt',usedCount:1,addedAt:0},{es:'falso',de:'falsch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'famoso',de:'berühmt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'feliz',de:'glücklich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'feo',de:'hässlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'finalmente',de:'schließlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'formal',de:'formell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuente',de:'häufig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuentemente',de:'oft',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fresco',de:'frisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frío',de:'kalt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fuerte',de:'stark',cat:'Bekannt',usedCount:1,addedAt:0},{es:'futuro',de:'zukünftig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fácil',de:'leicht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fácilmente',de:'leicht (Adverb)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'general',de:'allgemein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'global',de:'global',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gracias',de:'danke',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grande',de:'groß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grandísimo',de:'riesig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gratis',de:'kostenlos',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grosero',de:'unhöflich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grueso',de:'dick',cat:'Bekannt',usedCount:1,addedAt:0},{es:'hacer',de:'machen/tun',cat:'Bekannt',usedCount:1,addedAt:0},{es:'hasta',de:'bis',cat:'Bekannt',usedCount:1,addedAt:0},{es:'histórico',de:'historisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'hoy',de:'heute',cat:'Bekannt',usedCount:1,addedAt:0},{es:'humilde',de:'bescheiden',cat:'Bekannt',usedCount:1,addedAt:0},{es:'idealista',de:'idealistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'igual',de:'gleich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ilegal',de:'illegal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'impaciente',de:'ungeduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'imperfecto',de:'unvollkommen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'importante',de:'wichtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'imposible',de:'unmöglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'incierto',de:'unsicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'indirecto',de:'indirekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'informal',de:'informell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'injusto',de:'ungerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'innecesario',de:'unnötig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'inteligente',de:'intelligent',cat:'Bekannt',usedCount:1,addedAt:0},{es:'interesante',de:'interessant',cat:'Bekannt',usedCount:1,addedAt:0},{es:'interior',de:'innen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'internacional',de:'international',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ir',de:'gehen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'izquierda',de:'links',cat:'Bekannt',usedCount:1,addedAt:0},{es:'joven',de:'jung',cat:'Bekannt',usedCount:1,addedAt:0},{es:'justo',de:'gerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'le',de:'ihm/ihr (indirektes Objekt)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leal',de:'loyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lejos',de:'weit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lento',de:'langsam',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ligero',de:'leicht (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'limpio',de:'sauber',cat:'Bekannt',usedCount:1,addedAt:0},{es:'llegar',de:'ankommen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lleno',de:'voll',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lo/la',de:'ihn/sie/es (direktes Objekt)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'local',de:'lokal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'los/las',de:'die (Plural)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'luminoso',de:'hell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mal',de:'schlecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'malo/a',de:'schlecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'malísimo',de:'sehr schlecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'matinal',de:'morgendlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mañana',de:'morgen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'me',de:'mich, mir',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mejor',de:'besser',cat:'Bekannt',usedCount:1,addedAt:0},{es:'menos',de:'weniger',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mensual',de:'monatlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mismo/a',de:'gleiche',cat:'Bekannt',usedCount:1,addedAt:0},{es:'moderno',de:'modern',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mojado',de:'nass',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mucho/a',de:'viel',cat:'Bekannt',usedCount:1,addedAt:0},{es:'muy',de:'sehr',cat:'Bekannt',usedCount:1,addedAt:0},{es:'más',de:'mehr',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nada',de:'nichts',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nadie',de:'niemand',cat:'Bekannt',usedCount:1,addedAt:0},{es:'necesario',de:'notwendig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nervioso',de:'nervös',cat:'Bekannt',usedCount:1,addedAt:0},{es:'no',de:'nein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nocturno',de:'nächtlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'normalmente',de:'normalerweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nosotros/as',de:'wir',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevamente',de:'erneut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevo',de:'neu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevo/a',de:'neu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nunca',de:'nie',cat:'Bekannt',usedCount:1,addedAt:0},{es:'o',de:'oder',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ocasional',de:'gelegentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'opcional',de:'wahlweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'orgulloso',de:'stolz',cat:'Bekannt',usedCount:1,addedAt:0},{es:'original',de:'original',cat:'Bekannt',usedCount:1,addedAt:0},{es:'oscuro',de:'dunkel',cat:'Bekannt',usedCount:1,addedAt:0},{es:'otro/a',de:'andere',cat:'Bekannt',usedCount:1,addedAt:0},{es:'paciente',de:'geduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'para',de:'für, um zu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'parcial',de:'teilweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasado',de:'vergangen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasar',de:'passieren/verbringen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasivo',de:'passiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'peligroso',de:'gefährlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'peor',de:'schlechter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pequeño/a',de:'klein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pequeñísimo',de:'winzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'perfecto',de:'perfekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pero',de:'aber',cat:'Bekannt',usedCount:1,addedAt:0},{es:'personal',de:'persönlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pesado',de:'schwer (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'picante',de:'scharf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pobre',de:'arm',cat:'Bekannt',usedCount:1,addedAt:0},{es:'poco/a',de:'wenig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'poder',de:'können',cat:'Bekannt',usedCount:1,addedAt:0},{es:'político',de:'politisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'poner',de:'legen/stellen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'popular',de:'populär',cat:'Bekannt',usedCount:1,addedAt:0},{es:'por',de:'durch, für, wegen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'por qué',de:'warum',cat:'Bekannt',usedCount:1,addedAt:0},{es:'porque',de:'weil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'posible',de:'möglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'posiblemente',de:'möglicherweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'presente',de:'gegenwärtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'primero',de:'erster',cat:'Bekannt',usedCount:1,addedAt:0},{es:'principal',de:'hauptsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'principalmente',de:'hauptsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'privado',de:'privat',cat:'Bekannt',usedCount:1,addedAt:0},{es:'probablemente',de:'wahrscheinlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'profesional',de:'beruflich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pronto',de:'bald',cat:'Bekannt',usedCount:1,addedAt:0},{es:'propio',de:'eigen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'público',de:'öffentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'querer',de:'wollen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'quién',de:'wer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'qué',de:'was',cat:'Bekannt',usedCount:1,addedAt:0},{es:'raramente',de:'selten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'raro',de:'selten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'real',de:'echt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realista',de:'realistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realmente',de:'wirklich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'recientemente',de:'kürzlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'regional',de:'regional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rico',de:'reich/lecker',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ruidoso',de:'laut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rural',de:'ländlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rápido',de:'schnell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'saber',de:'wissen/können',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sabroso',de:'lecker',cat:'Bekannt',usedCount:1,addedAt:0},{es:'salado',de:'salzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sano',de:'gesund',cat:'Bekannt',usedCount:1,addedAt:0},{es:'se',de:'sich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'seco',de:'trocken',cat:'Bekannt',usedCount:1,addedAt:0},{es:'seguro',de:'sicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'semanal',de:'wöchentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ser',de:'sein (dauerhaft)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'siempre',de:'immer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'siguiente',de:'nächste',cat:'Bekannt',usedCount:1,addedAt:0},{es:'silencioso',de:'leise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'similar',de:'ähnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'simple',de:'einfach',cat:'Bekannt',usedCount:1,addedAt:0},{es:'simpático',de:'sympathisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sin',de:'ohne',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sobre',de:'über, auf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'social',de:'sozial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'suave',de:'weich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sucio',de:'schmutzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sí',de:'ja',cat:'Bekannt',usedCount:1,addedAt:0},{es:'también',de:'auch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tampoco',de:'auch nicht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tarde',de:'spät',cat:'Bekannt',usedCount:1,addedAt:0},{es:'te',de:'dich, dir',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tecnológico',de:'technologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'temprano',de:'früh',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tener',de:'haben',cat:'Bekannt',usedCount:1,addedAt:0},{es:'todavía',de:'noch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'todo/a/os/as',de:'alles, alle',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tonto',de:'dumm',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tradicional',de:'traditionell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tranquilo',de:'ruhig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tres',de:'drei',cat:'Bekannt',usedCount:1,addedAt:0},{es:'triste',de:'traurig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tú',de:'du',cat:'Bekannt',usedCount:1,addedAt:0},{es:'táctil',de:'taktil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'típico',de:'typisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'un/una',de:'ein/eine',cat:'Bekannt',usedCount:1,addedAt:0},{es:'uno',de:'eins',cat:'Bekannt',usedCount:1,addedAt:0},{es:'unos/unas',de:'einige',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urbano',de:'städtisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urgente',de:'dringend',cat:'Bekannt',usedCount:1,addedAt:0},{es:'usado',de:'gebraucht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ustedes',de:'ihr/Sie (Lateinamerika)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'vacío',de:'leer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'varios',de:'verschiedene',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ver',de:'sehen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verbal',de:'mündlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'viejo',de:'alt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'viejo/a',de:'alt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'visual',de:'visuell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'y',de:'und',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ya',de:'schon, bereits',cat:'Bekannt',usedCount:1,addedAt:0},{es:'yo',de:'ich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'él',de:'er',cat:'Bekannt',usedCount:1,addedAt:0},{es:'último',de:'letzter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'único',de:'einzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'general',de:'allgemein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'especial',de:'besonders',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fácilmente',de:'leicht (Adverb)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuente',de:'häufig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ocasional',de:'gelegentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'directo',de:'direkt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'indirecto',de:'indirekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'completo',de:'vollständig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'parcial',de:'teilweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevo',de:'neu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'usado',de:'gebraucht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ancho',de:'breit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'estrecho',de:'eng',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pesado',de:'schwer (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ligero',de:'leicht (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grueso',de:'dick',cat:'Bekannt',usedCount:1,addedAt:0},{es:'delgado',de:'dünn',cat:'Bekannt',usedCount:1,addedAt:0},{es:'único',de:'einzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'varios',de:'verschiedene',cat:'Bekannt',usedCount:1,addedAt:0},{es:'necesario',de:'notwendig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'innecesario',de:'unnötig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cierto',de:'sicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'incierto',de:'unsicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cotidiano',de:'alltäglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'extraordinario',de:'außergewöhnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'perfecto',de:'perfekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'imperfecto',de:'unvollkommen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'similar',de:'ähnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'distinto',de:'verschieden',cat:'Bekannt',usedCount:1,addedAt:0},{es:'importante',de:'wichtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urgente',de:'dringend',cat:'Bekannt',usedCount:1,addedAt:0},{es:'opcional',de:'wahlweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'principalmente',de:'hauptsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'probablemente',de:'wahrscheinlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'posiblemente',de:'möglicherweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'efectivamente',de:'tatsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realmente',de:'wirklich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'normalmente',de:'normalerweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuentemente',de:'oft',cat:'Bekannt',usedCount:1,addedAt:0},{es:'raramente',de:'selten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevamente',de:'erneut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pronto',de:'bald',cat:'Bekannt',usedCount:1,addedAt:0},{es:'actualmente',de:'derzeit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'recientemente',de:'kürzlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'finalmente',de:'schließlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'original',de:'original',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tradicional',de:'traditionell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'moderno',de:'modern',cat:'Bekannt',usedCount:1,addedAt:0},{es:'global',de:'global',cat:'Bekannt',usedCount:1,addedAt:0},{es:'local',de:'lokal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'internacional',de:'international',cat:'Bekannt',usedCount:1,addedAt:0},{es:'regional',de:'regional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'personal',de:'persönlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'profesional',de:'beruflich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'académico',de:'akademisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cultural',de:'kulturell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'social',de:'sozial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'político',de:'politisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'económico',de:'wirtschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ambiental',de:'ökologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'educativo',de:'erzieherisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'científico',de:'wissenschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tecnológico',de:'technologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'histórico',de:'historisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'futuro',de:'zukünftig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasado',de:'vergangen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'presente',de:'gegenwärtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'anual',de:'jährlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mensual',de:'monatlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'semanal',de:'wöchentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diario',de:'täglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'matinal',de:'morgendlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nocturno',de:'nächtlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verbal',de:'mündlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'escrito',de:'schriftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'visual',de:'visuell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'auditivo',de:'auditiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'táctil',de:'taktil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'clásico',de:'klassisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'popular',de:'populär',cat:'Bekannt',usedCount:1,addedAt:0},{es:'formal',de:'formell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'informal',de:'informell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'legal',de:'legal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ilegal',de:'illegal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'justo',de:'gerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'injusto',de:'ungerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leal',de:'loyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'desleal',de:'illoyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ciudadano',de:'bürgerlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rural',de:'ländlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urbano',de:'städtisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'interior',de:'innen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'exterior',de:'außen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alto',de:'laut (Ton)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bajo',de:'leise (Ton)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realista',de:'realistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'idealista',de:'idealistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'paciente',de:'geduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'impaciente',de:'ungeduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'típico',de:'typisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'allgemein',de:'general',cat:'Bekannt',usedCount:1,addedAt:0},{es:'besonders',de:'especial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leicht (Adverb)',de:'fácilmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gelegentlich',de:'ocasional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'direkt',de:'directo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'indirekt',de:'indirecto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'teilweise',de:'parcial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'neu',de:'nuevo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gebraucht',de:'usado',cat:'Bekannt',usedCount:1,addedAt:0},{es:'breit',de:'ancho',cat:'Bekannt',usedCount:1,addedAt:0},{es:'eng',de:'estrecho',cat:'Bekannt',usedCount:1,addedAt:0},{es:'schwer (Gewicht)',de:'pesado',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leicht (Gewicht)',de:'ligero',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dick',de:'grueso',cat:'Bekannt',usedCount:1,addedAt:0},{es:'einzig',de:'único',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verschiedene',de:'varios',cat:'Bekannt',usedCount:1,addedAt:0},{es:'notwendig',de:'necesario',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sicher',de:'cierto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'unsicher',de:'incierto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'perfekt',de:'perfecto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'unvollkommen',de:'imperfecto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verschieden',de:'distinto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wichtig',de:'importante',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dringend',de:'urgente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wahlweise',de:'opcional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wahrscheinlich',de:'probablemente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wirklich',de:'realmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'normalerweise',de:'normalmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'oft',de:'frecuentemente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'selten',de:'raramente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'erneut',de:'nuevamente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bald',de:'pronto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'derzeit',de:'actualmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'original',de:'original',cat:'Bekannt',usedCount:1,addedAt:0},{es:'traditionell',de:'tradicional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'modern',de:'moderno',cat:'Bekannt',usedCount:1,addedAt:0},{es:'global',de:'global',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lokal',de:'local',cat:'Bekannt',usedCount:1,addedAt:0},{es:'international',de:'internacional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'regional',de:'regional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'beruflich',de:'profesional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'akademisch',de:'académico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'kulturell',de:'cultural',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sozial',de:'social',cat:'Bekannt',usedCount:1,addedAt:0},{es:'politisch',de:'político',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wirtschaftlich',de:'económico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'erzieherisch',de:'educativo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wissenschaftlich',de:'científico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'technologisch',de:'tecnológico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'historisch',de:'histórico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'vergangen',de:'pasado',cat:'Bekannt',usedCount:1,addedAt:0},{es:'monatlich',de:'mensual',cat:'Bekannt',usedCount:1,addedAt:0},{es:'morgendlich',de:'matinal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'schriftlich',de:'escrito',cat:'Bekannt',usedCount:1,addedAt:0},{es:'visuell',de:'visual',cat:'Bekannt',usedCount:1,addedAt:0},{es:'auditiv',de:'auditivo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'taktil',de:'táctil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'klassisch',de:'clásico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'formell',de:'formal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'informell',de:'informal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'legal',de:'legal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'illegal',de:'ilegal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gerecht',de:'justo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ungerecht',de:'injusto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'loyal',de:'leal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'illoyal',de:'desleal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'innen',de:'interior',cat:'Bekannt',usedCount:1,addedAt:0},{es:'laut (Ton)',de:'alto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leise (Ton)',de:'bajo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realistisch',de:'realista',cat:'Bekannt',usedCount:1,addedAt:0},{es:'idealistisch',de:'idealista',cat:'Bekannt',usedCount:1,addedAt:0},{es:'geduldig',de:'paciente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ungeduldig',de:'impaciente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'typisch',de:'típico',cat:'Bekannt',usedCount:1,addedAt:0}];
+
+function loadState(){
+  try{
+    const r=localStorage.getItem(STORAGE_KEY);
+    if(r){
+      const s=JSON.parse(r);
+      // Migrate from older storage key (v3)
+      if(!s._knownLoaded){
+        const existing=new Set(s.words.map(w=>w.es.toLowerCase()));
+        KNOWN_WORDS.forEach(w=>{if(!existing.has(w.es.toLowerCase()))s.words.push(w)});
+        s._knownLoaded=true;
+        localStorage.setItem(STORAGE_KEY,JSON.stringify(s));
+      }
+      return s;
+    }
+  }catch(e){}
+  // Fresh state — preload all known words
+  return{words:[...KNOWN_WORDS],stories:[],learnedVerbs:[],lastVerbDate:null,lastVerb:null,_knownLoaded:true};
+}
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}}
 let state=loadState();
 
 // ── TABS ──
 function showTab(id){
-  ['stories','verb','vocab'].forEach((t,i)=>{
+  ['stories','verb','vocab','learn','grammar','irregvocab'].forEach((t,i)=>{
     document.querySelectorAll('.nav-top-tab')[i]?.classList.toggle('active',t===id);
     document.getElementById('nbt-'+t)?.classList.toggle('active',t===id);
   });
@@ -390,6 +616,7 @@ function showTab(id){
   document.getElementById('panel-'+id).classList.add('active');
   if(id==='verb')loadDailyVerb();
   if(id==='vocab')renderVocabTable();
+  if(id==='learn')initLearnTab();
   updateHeaderStats();
 }
 
@@ -474,37 +701,254 @@ function toggleDE(btn){const de=btn.nextElementSibling;const s=de.style.display=
 
 // ── VERB DB ──
 const VERB_DB=[
-  {infinitivo:'ser',deutsch:'sein',ejemplo:'Ella es médica y trabaja en un hospital grande.',ejemplo_de:'Sie ist Ärztin und arbeitet in einem großen Krankenhaus.',presente:['soy','eres','es','somos','sois','son'],preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'],preteritoImperfecto:['era','eras','era','éramos','erais','eran'],futuro:['seré','serás','será','seremos','seréis','serán'],condicional:['sería','serías','sería','seríamos','seríais','serían'],subjuntivo:['sea','seas','sea','seamos','seáis','sean']},
-  {infinitivo:'estar',deutsch:'sein / sich befinden',ejemplo:'Estoy muy cansado después del trabajo.',ejemplo_de:'Ich bin sehr müde nach der Arbeit.',presente:['estoy','estás','está','estamos','estáis','están'],preteritoIndefinido:['estuve','estuviste','estuvo','estuvimos','estuvisteis','estuvieron'],preteritoImperfecto:['estaba','estabas','estaba','estábamos','estabais','estaban'],futuro:['estaré','estarás','estará','estaremos','estaréis','estarán'],condicional:['estaría','estarías','estaría','estaríamos','estaríais','estarían'],subjuntivo:['esté','estés','esté','estemos','estéis','estén']},
-  {infinitivo:'tener',deutsch:'haben',ejemplo:'Tenemos que salir antes de las ocho.',ejemplo_de:'Wir müssen vor acht Uhr gehen.',presente:['tengo','tienes','tiene','tenemos','tenéis','tienen'],preteritoIndefinido:['tuve','tuviste','tuvo','tuvimos','tuvisteis','tuvieron'],preteritoImperfecto:['tenía','tenías','tenía','teníamos','teníais','tenían'],futuro:['tendré','tendrás','tendrá','tendremos','tendréis','tendrán'],condicional:['tendría','tendrías','tendría','tendríamos','tendríais','tendrían'],subjuntivo:['tenga','tengas','tenga','tengamos','tengáis','tengan']},
-  {infinitivo:'hacer',deutsch:'machen / tun',ejemplo:'¿Qué haces cuando no tienes nada que hacer?',ejemplo_de:'Was machst du, wenn du nichts zu tun hast?',presente:['hago','haces','hace','hacemos','hacéis','hacen'],preteritoIndefinido:['hice','hiciste','hizo','hicimos','hicisteis','hicieron'],preteritoImperfecto:['hacía','hacías','hacía','hacíamos','hacíais','hacían'],futuro:['haré','harás','hará','haremos','haréis','harán'],condicional:['haría','harías','haría','haríamos','haríais','harían'],subjuntivo:['haga','hagas','haga','hagamos','hagáis','hagan']},
-  {infinitivo:'ir',deutsch:'gehen / fahren',ejemplo:'Voy al mercado todos los sábados por la mañana.',ejemplo_de:'Ich gehe jeden Samstag morgens auf den Markt.',presente:['voy','vas','va','vamos','vais','van'],preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'],preteritoImperfecto:['iba','ibas','iba','íbamos','ibais','iban'],futuro:['iré','irás','irá','iremos','iréis','irán'],condicional:['iría','irías','iría','iríamos','iríais','irían'],subjuntivo:['vaya','vayas','vaya','vayamos','vayáis','vayan']},
-  {infinitivo:'poder',deutsch:'können / dürfen',ejemplo:'No puedo dormir bien cuando hace mucho calor.',ejemplo_de:'Ich kann nicht gut schlafen, wenn es sehr heiß ist.',presente:['puedo','puedes','puede','podemos','podéis','pueden'],preteritoIndefinido:['pude','pudiste','pudo','pudimos','pudisteis','pudieron'],preteritoImperfecto:['podía','podías','podía','podíamos','podíais','podían'],futuro:['podré','podrás','podrá','podremos','podréis','podrán'],condicional:['podría','podrías','podría','podríamos','podríais','podrían'],subjuntivo:['pueda','puedas','pueda','podamos','podáis','puedan']},
-  {infinitivo:'querer',deutsch:'wollen / lieben',ejemplo:'Quiero aprender español para viajar por Latinoamérica.',ejemplo_de:'Ich möchte Spanisch lernen, um durch Lateinamerika zu reisen.',presente:['quiero','quieres','quiere','queremos','queréis','quieren'],preteritoIndefinido:['quise','quisiste','quiso','quisimos','quisisteis','quisieron'],preteritoImperfecto:['quería','querías','quería','queríamos','queríais','querían'],futuro:['querré','querrás','querrá','querremos','querréis','querrán'],condicional:['querría','querrías','querría','querríamos','querríais','querrían'],subjuntivo:['quiera','quieras','quiera','queramos','queráis','quieran']},
-  {infinitivo:'saber',deutsch:'wissen / können',ejemplo:'¿Sabes dónde está la estación de tren más cercana?',ejemplo_de:'Weißt du, wo der nächste Bahnhof ist?',presente:['sé','sabes','sabe','sabemos','sabéis','saben'],preteritoIndefinido:['supe','supiste','supo','supimos','supisteis','supieron'],preteritoImperfecto:['sabía','sabías','sabía','sabíamos','sabíais','sabían'],futuro:['sabré','sabrás','sabrá','sabremos','sabréis','sabrán'],condicional:['sabría','sabrías','sabría','sabríamos','sabríais','sabrían'],subjuntivo:['sepa','sepas','sepa','sepamos','sepáis','sepan']},
-  {infinitivo:'venir',deutsch:'kommen',ejemplo:'Mis amigos vienen a cenar esta noche a las nueve.',ejemplo_de:'Meine Freunde kommen heute Abend um neun zum Abendessen.',presente:['vengo','vienes','viene','venimos','venís','vienen'],preteritoIndefinido:['vine','viniste','vino','vinimos','vinisteis','vinieron'],preteritoImperfecto:['venía','venías','venía','veníamos','veníais','venían'],futuro:['vendré','vendrás','vendrá','vendremos','vendréis','vendrán'],condicional:['vendría','vendrías','vendría','vendríamos','vendríais','vendrían'],subjuntivo:['venga','vengas','venga','vengamos','vengáis','vengan']},
-  {infinitivo:'ver',deutsch:'sehen / schauen',ejemplo:'Vemos una película juntos cada viernes por la noche.',ejemplo_de:'Wir schauen jeden Freitagabend gemeinsam einen Film.',presente:['veo','ves','ve','vemos','veis','ven'],preteritoIndefinido:['vi','viste','vio','vimos','visteis','vieron'],preteritoImperfecto:['veía','veías','veía','veíamos','veíais','veían'],futuro:['veré','verás','verá','veremos','veréis','verán'],condicional:['vería','verías','vería','veríamos','veríais','verían'],subjuntivo:['vea','veas','vea','veamos','veáis','vean']},
-  {infinitivo:'dar',deutsch:'geben',ejemplo:'Le di las gracias por su ayuda y su amabilidad.',ejemplo_de:'Ich dankte ihm für seine Hilfe und seine Freundlichkeit.',presente:['doy','das','da','damos','dais','dan'],preteritoIndefinido:['di','diste','dio','dimos','disteis','dieron'],preteritoImperfecto:['daba','dabas','daba','dábamos','dabais','daban'],futuro:['daré','darás','dará','daremos','daréis','darán'],condicional:['daría','darías','daría','daríamos','daríais','darían'],subjuntivo:['dé','des','dé','demos','deis','den']},
-  {infinitivo:'decir',deutsch:'sagen',ejemplo:'Ella siempre dice la verdad, aunque sea difícil.',ejemplo_de:'Sie sagt immer die Wahrheit, auch wenn es schwierig ist.',presente:['digo','dices','dice','decimos','decís','dicen'],preteritoIndefinido:['dije','dijiste','dijo','dijimos','dijisteis','dijeron'],preteritoImperfecto:['decía','decías','decía','decíamos','decíais','decían'],futuro:['diré','dirás','dirá','diremos','diréis','dirán'],condicional:['diría','dirías','diría','diríamos','diríais','dirían'],subjuntivo:['diga','digas','diga','digamos','digáis','digan']},
-  {infinitivo:'poner',deutsch:'stellen / legen / setzen',ejemplo:'Pon la mesa antes de que lleguen los invitados.',ejemplo_de:'Deck den Tisch, bevor die Gäste ankommen.',presente:['pongo','pones','pone','ponemos','ponéis','ponen'],preteritoIndefinido:['puse','pusiste','puso','pusimos','pusisteis','pusieron'],preteritoImperfecto:['ponía','ponías','ponía','poníamos','poníais','ponían'],futuro:['pondré','pondrás','pondrá','pondremos','pondréis','pondrán'],condicional:['pondría','pondrías','pondría','pondríamos','pondríais','pondrían'],subjuntivo:['ponga','pongas','ponga','pongamos','pongáis','pongan']},
-  {infinitivo:'salir',deutsch:'ausgehen / herausgehen',ejemplo:'Salimos a pasear por el parque cuando hace buen tiempo.',ejemplo_de:'Wir gehen spazieren im Park, wenn das Wetter schön ist.',presente:['salgo','sales','sale','salimos','salís','salen'],preteritoIndefinido:['salí','saliste','salió','salimos','salisteis','salieron'],preteritoImperfecto:['salía','salías','salía','salíamos','salíais','salían'],futuro:['saldré','saldrás','saldrá','saldremos','saldréis','saldrán'],condicional:['saldría','saldrías','saldría','saldríamos','saldríais','saldrían'],subjuntivo:['salga','salgas','salga','salgamos','salgáis','salgan']},
-  {infinitivo:'traer',deutsch:'bringen / mitbringen',ejemplo:'¿Puedes traer algo de comer a la reunión de mañana?',ejemplo_de:'Kannst du etwas zu essen zum morgigen Treffen mitbringen?',presente:['traigo','traes','trae','traemos','traéis','traen'],preteritoIndefinido:['traje','trajiste','trajo','trajimos','trajisteis','trajeron'],preteritoImperfecto:['traía','traías','traía','traíamos','traíais','traían'],futuro:['traeré','traerás','traerá','traeremos','traeréis','traerán'],condicional:['traería','traerías','traería','traeríamos','traeríais','traerían'],subjuntivo:['traiga','traigas','traiga','traigamos','traigáis','traigan']},
-  {infinitivo:'volver',deutsch:'zurückkehren',ejemplo:'Volví a casa muy tarde después de la fiesta del viernes.',ejemplo_de:'Ich kam sehr spät nach Hause nach der Freitagsparty.',presente:['vuelvo','vuelves','vuelve','volvemos','volvéis','vuelven'],preteritoIndefinido:['volví','volviste','volvió','volvimos','volvisteis','volvieron'],preteritoImperfecto:['volvía','volvías','volvía','volvíamos','volvíais','volvían'],futuro:['volveré','volverás','volverá','volveremos','volveréis','volverán'],condicional:['volvería','volverías','volvería','volveríamos','volveríais','volverían'],subjuntivo:['vuelva','vuelvas','vuelva','volvamos','volváis','vuelvan']},
-  {infinitivo:'dormir',deutsch:'schlafen',ejemplo:'Los niños duermen profundamente después de jugar todo el día.',ejemplo_de:'Die Kinder schlafen tief, nachdem sie den ganzen Tag gespielt haben.',presente:['duermo','duermes','duerme','dormimos','dormís','duermen'],preteritoIndefinido:['dormí','dormiste','durmió','dormimos','dormisteis','durmieron'],preteritoImperfecto:['dormía','dormías','dormía','dormíamos','dormíais','dormían'],futuro:['dormiré','dormirás','dormirá','dormiremos','dormiréis','dormirán'],condicional:['dormiría','dormirías','dormiría','dormiríamos','dormiríais','dormirían'],subjuntivo:['duerma','duermas','duerma','durmamos','durmáis','duerman']},
-  {infinitivo:'pedir',deutsch:'bitten / bestellen',ejemplo:'Pedimos dos cafés y un trozo de tarta de chocolate.',ejemplo_de:'Wir bestellten zwei Kaffees und ein Stück Schokoladenkuchen.',presente:['pido','pides','pide','pedimos','pedís','piden'],preteritoIndefinido:['pedí','pediste','pidió','pedimos','pedisteis','pidieron'],preteritoImperfecto:['pedía','pedías','pedía','pedíamos','pedíais','pedían'],futuro:['pediré','pedirás','pedirá','pediremos','pediréis','pedirán'],condicional:['pediría','pedirías','pediría','pediríamos','pediríais','pedirían'],subjuntivo:['pida','pidas','pida','pidamos','pidáis','pidan']},
-  {infinitivo:'seguir',deutsch:'folgen / weitermachen',ejemplo:'Sigue recto y luego gira a la derecha en el semáforo.',ejemplo_de:'Geh geradeaus und biege dann an der Ampel rechts ab.',presente:['sigo','sigues','sigue','seguimos','seguís','siguen'],preteritoIndefinido:['seguí','seguiste','siguió','seguimos','seguisteis','siguieron'],preteritoImperfecto:['seguía','seguías','seguía','seguíamos','seguíais','seguían'],futuro:['seguiré','seguirás','seguirá','seguiremos','seguiréis','seguirán'],condicional:['seguiría','seguirías','seguiría','seguiríamos','seguiríais','seguirían'],subjuntivo:['siga','sigas','siga','sigamos','sigáis','sigan']},
-  {infinitivo:'sentir',deutsch:'fühlen / spüren',ejemplo:'Siento mucho no haber podido asistir a tu cumpleaños.',ejemplo_de:'Es tut mir sehr leid, dass ich nicht zu deinem Geburtstag kommen konnte.',presente:['siento','sientes','siente','sentimos','sentís','sienten'],preteritoIndefinido:['sentí','sentiste','sintió','sentimos','sentisteis','sintieron'],preteritoImperfecto:['sentía','sentías','sentía','sentíamos','sentíais','sentían'],futuro:['sentiré','sentirás','sentirá','sentiremos','sentiréis','sentirán'],condicional:['sentiría','sentirías','sentiría','sentiríamos','sentiríais','sentirían'],subjuntivo:['sienta','sientas','sienta','sintamos','sintáis','sientan']},
-  {infinitivo:'conocer',deutsch:'kennen / kennenlernen',ejemplo:'Conocí a mi mejor amigo en el primer día de universidad.',ejemplo_de:'Ich lernte meinen besten Freund am ersten Tag der Universität kennen.',presente:['conozco','conoces','conoce','conocemos','conocéis','conocen'],preteritoIndefinido:['conocí','conociste','conoció','conocimos','conocisteis','conocieron'],preteritoImperfecto:['conocía','conocías','conocía','conocíamos','conocíais','conocían'],futuro:['conoceré','conocerás','conocerá','conoceremos','conoceréis','conocerán'],condicional:['conocería','conocerías','conocería','conoceríamos','conoceríais','conocerían'],subjuntivo:['conozca','conozcas','conozca','conozcamos','conozcáis','conozcan']},
-  {infinitivo:'perder',deutsch:'verlieren / verpassen',ejemplo:'Perdí el tren por quedarme dormido esta mañana.',ejemplo_de:'Ich habe den Zug verpasst, weil ich heute Morgen verschlafen habe.',presente:['pierdo','pierdes','pierde','perdemos','perdéis','pierden'],preteritoIndefinido:['perdí','perdiste','perdió','perdimos','perdisteis','perdieron'],preteritoImperfecto:['perdía','perdías','perdía','perdíamos','perdíais','perdían'],futuro:['perderé','perderás','perderá','perderemos','perderéis','perderán'],condicional:['perdería','perderías','perdería','perderíamos','perderíais','perderían'],subjuntivo:['pierda','pierdas','pierda','perdamos','perdáis','pierdan']},
-  {infinitivo:'entender',deutsch:'verstehen',ejemplo:'No entiendo bien el subjuntivo, pero sigo practicando.',ejemplo_de:'Ich verstehe den Konjunktiv nicht gut, aber ich übe weiter.',presente:['entiendo','entiendes','entiende','entendemos','entendéis','entienden'],preteritoIndefinido:['entendí','entendiste','entendió','entendimos','entendisteis','entendieron'],preteritoImperfecto:['entendía','entendías','entendía','entendíamos','entendíais','entendían'],futuro:['entenderé','entenderás','entenderá','entenderemos','entenderéis','entenderán'],condicional:['entendería','entenderías','entendería','entenderíamos','entenderíais','entenderían'],subjuntivo:['entienda','entiendas','entienda','entendamos','entendáis','entiendan']},
-  {infinitivo:'jugar',deutsch:'spielen',ejemplo:'Los niños juegan al fútbol en el parque cada tarde.',ejemplo_de:'Die Kinder spielen jeden Nachmittag im Park Fußball.',presente:['juego','juegas','juega','jugamos','jugáis','juegan'],preteritoIndefinido:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron'],preteritoImperfecto:['jugaba','jugabas','jugaba','jugábamos','jugabais','jugaban'],futuro:['jugaré','jugarás','jugará','jugaremos','jugaréis','jugarán'],condicional:['jugaría','jugarías','jugaría','jugaríamos','jugaríais','jugarían'],subjuntivo:['juegue','juegues','juegue','juguemos','juguéis','jueguen']},
-  {infinitivo:'caer',deutsch:'fallen',ejemplo:'Se cayó en la calle porque no vio el escalón.',ejemplo_de:'Er fiel auf der Straße, weil er die Stufe nicht sah.',presente:['caigo','caes','cae','caemos','caéis','caen'],preteritoIndefinido:['caí','caíste','cayó','caímos','caísteis','cayeron'],preteritoImperfecto:['caía','caías','caía','caíamos','caíais','caían'],futuro:['caeré','caerás','caerá','caeremos','caeréis','caerán'],condicional:['caería','caerías','caería','caeríamos','caeríais','caerían'],subjuntivo:['caiga','caigas','caiga','caigamos','caigáis','caigan']},
-  {infinitivo:'reír',deutsch:'lachen',ejemplo:'Nos reímos mucho con las historias de nuestro abuelo.',ejemplo_de:'Wir lachten viel über die Geschichten unseres Großvaters.',presente:['río','ríes','ríe','reímos','reís','ríen'],preteritoIndefinido:['reí','reíste','rió','reímos','reísteis','rieron'],preteritoImperfecto:['reía','reías','reía','reíamos','reíais','reían'],futuro:['reiré','reirás','reirá','reiremos','reiréis','reirán'],condicional:['reiría','reirías','reiría','reiríamos','reiríais','reirían'],subjuntivo:['ría','rías','ría','riamos','riáis','rían']},
-  {infinitivo:'morir',deutsch:'sterben',ejemplo:'Desgraciadamente, la planta murió porque olvidé regarla.',ejemplo_de:'Leider ist die Pflanze gestorben, weil ich vergessen habe, sie zu gießen.',presente:['muero','mueres','muere','morimos','morís','mueren'],preteritoIndefinido:['morí','moriste','murió','morimos','moristeis','murieron'],preteritoImperfecto:['moría','morías','moría','moríamos','moríais','morían'],futuro:['moriré','morirás','morirá','moriremos','moriréis','morirán'],condicional:['moriría','morirías','moriría','moriríamos','moriríais','morirían'],subjuntivo:['muera','mueras','muera','muramos','muráis','mueran']},
-  {infinitivo:'oír',deutsch:'hören',ejemplo:'Oí una canción preciosa que nunca había escuchado antes.',ejemplo_de:'Ich hörte ein wunderschönes Lied, das ich noch nie gehört hatte.',presente:['oigo','oyes','oye','oímos','oís','oyen'],preteritoIndefinido:['oí','oíste','oyó','oímos','oísteis','oyeron'],preteritoImperfecto:['oía','oías','oía','oíamos','oíais','oían'],futuro:['oiré','oirás','oirá','oiremos','oiréis','oirán'],condicional:['oiría','oirías','oiría','oiríamos','oiríais','oirían'],subjuntivo:['oiga','oigas','oiga','oigamos','oigáis','oigan']},
-  {infinitivo:'conducir',deutsch:'fahren / führen',ejemplo:'Conduzco con cuidado porque las carreteras están mojadas.',ejemplo_de:'Ich fahre vorsichtig, weil die Straßen nass sind.',presente:['conduzco','conduces','conduce','conducimos','conducís','conducen'],preteritoIndefinido:['conduje','condujiste','condujo','condujimos','condujisteis','condujeron'],preteritoImperfecto:['conducía','conducías','conducía','conducíamos','conducíais','conducían'],futuro:['conduciré','conducirás','conducirá','conduciremos','conduciréis','conducirán'],condicional:['conduciría','conducirías','conduciría','conduciríamos','conduciríais','conducirían'],subjuntivo:['conduzca','conduzcas','conduzca','conduzcamos','conduzcáis','conduzcan']},
-  {infinitivo:'construir',deutsch:'bauen / konstruieren',ejemplo:'Están construyendo un nuevo puente sobre el río.',ejemplo_de:'Sie bauen eine neue Brücke über den Fluss.',presente:['construyo','construyes','construye','construimos','construís','construyen'],preteritoIndefinido:['construí','construiste','construyó','construimos','construisteis','construyeron'],preteritoImperfecto:['construía','construías','construía','construíamos','construíais','construían'],futuro:['construiré','construirás','construirá','construiremos','construiréis','construirán'],condicional:['construiría','construirías','construiría','construiríamos','construiríais','construirían'],subjuntivo:['construya','construyas','construya','construyamos','construyáis','construyan']},
-  {infinitivo:'elegir',deutsch:'wählen / auswählen',ejemplo:'Elegí estudiar idiomas porque me apasionan las culturas.',ejemplo_de:'Ich entschied mich, Sprachen zu studieren, weil mich Kulturen begeistern.',presente:['elijo','eliges','elige','elegimos','elegís','eligen'],preteritoIndefinido:['elegí','elegiste','eligió','elegimos','elegisteis','eligieron'],preteritoImperfecto:['elegía','elegías','elegía','elegíamos','elegíais','elegían'],futuro:['elegiré','elegirás','elegirá','elegiremos','elegiréis','elegirán'],condicional:['elegiría','elegirías','elegiría','elegiríamos','elegiríais','elegirían'],subjuntivo:['elija','elijas','elija','elijamos','elijáis','elijan']}
+  {infinitivo:'ser',deutsch:'sein',
+   ejemplo:'Ella es médica y trabaja en un hospital grande.',ejemplo_de:'Sie ist Ärztin und arbeitet in einem großen Krankenhaus.',
+   ejemplos:[
+     {es:'Soy de Berlín, pero vivo en Múnich desde hace cinco años.',de:'Ich bin aus Berlin, aber ich lebe seit fünf Jahren in München.'},
+     {es:'Ayer fue un día muy difícil para todos nosotros.',de:'Gestern war ein sehr schwieriger Tag für uns alle.'},
+     {es:'Lo más importante es ser honesto contigo mismo.',de:'Das Wichtigste ist, ehrlich zu sich selbst zu sein.'}
+   ],
+   presente:['soy','eres','es','somos','sois','son'],preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'],preteritoImperfecto:['era','eras','era','éramos','erais','eran'],futuro:['seré','serás','será','seremos','seréis','serán'],condicional:['sería','serías','sería','seríamos','seríais','serían'],subjuntivo:['sea','seas','sea','seamos','seáis','sean']},
+  {infinitivo:'estar',deutsch:'sein / sich befinden',
+   ejemplo:'Estoy muy cansado después del trabajo.',ejemplo_de:'Ich bin sehr müde nach der Arbeit.',
+   ejemplos:[
+     {es:'¿Dónde estás? Te espero desde hace media hora.',de:'Wo bist du? Ich warte schon seit einer halben Stunde auf dich.'},
+     {es:'Cuando era pequeño, siempre estaba enfermo en invierno.',de:'Als ich klein war, war ich im Winter immer krank.'},
+     {es:'El café está encima de la mesa, al lado de tu libro.',de:'Der Kaffee steht auf dem Tisch, neben deinem Buch.'}
+   ],
+   presente:['estoy','estás','está','estamos','estáis','están'],preteritoIndefinido:['estuve','estuviste','estuvo','estuvimos','estuvisteis','estuvieron'],preteritoImperfecto:['estaba','estabas','estaba','estábamos','estabais','estaban'],futuro:['estaré','estarás','estará','estaremos','estaréis','estarán'],condicional:['estaría','estarías','estaría','estaríamos','estaríais','estarían'],subjuntivo:['esté','estés','esté','estemos','estéis','estén']},
+  {infinitivo:'tener',deutsch:'haben',
+   ejemplo:'Tenemos que salir antes de las ocho.',ejemplo_de:'Wir müssen vor acht Uhr gehen.',
+   ejemplos:[
+     {es:'Tengo muchas ganas de verte pronto.',de:'Ich freue mich sehr darauf, dich bald zu sehen.'},
+     {es:'Cuando era joven, tenía mucho tiempo libre.',de:'Als ich jung war, hatte ich viel Freizeit.'},
+     {es:'¿Tienes hambre? Puedo preparar algo de comer.',de:'Hast du Hunger? Ich kann etwas zu essen zubereiten.'}
+   ],
+   presente:['tengo','tienes','tiene','tenemos','tenéis','tienen'],preteritoIndefinido:['tuve','tuviste','tuvo','tuvimos','tuvisteis','tuvieron'],preteritoImperfecto:['tenía','tenías','tenía','teníamos','teníais','tenían'],futuro:['tendré','tendrás','tendrá','tendremos','tendréis','tendrán'],condicional:['tendría','tendrías','tendría','tendríamos','tendríais','tendrían'],subjuntivo:['tenga','tengas','tenga','tengamos','tengáis','tengan']},
+  {infinitivo:'hacer',deutsch:'machen / tun',
+   ejemplo:'¿Qué haces cuando no tienes nada que hacer?',ejemplo_de:'Was machst du, wenn du nichts zu tun hast?',
+   ejemplos:[
+     {es:'Hice los deberes antes de salir con mis amigos.',de:'Ich habe die Hausaufgaben gemacht, bevor ich mit meinen Freunden wegging.'},
+     {es:'Hace mucho frío hoy — no olvides ponerte el abrigo.',de:'Heute ist es sehr kalt — vergiss nicht, deinen Mantel anzuziehen.'},
+     {es:'¿Qué harías si te tocara la lotería?',de:'Was würdest du tun, wenn du im Lotto gewinnen würdest?'}
+   ],
+   presente:['hago','haces','hace','hacemos','hacéis','hacen'],preteritoIndefinido:['hice','hiciste','hizo','hicimos','hicisteis','hicieron'],preteritoImperfecto:['hacía','hacías','hacía','hacíamos','hacíais','hacían'],futuro:['haré','harás','hará','haremos','haréis','harán'],condicional:['haría','harías','haría','haríamos','haríais','harían'],subjuntivo:['haga','hagas','haga','hagamos','hagáis','hagan']},
+  {infinitivo:'ir',deutsch:'gehen / fahren',
+   ejemplo:'Voy al mercado todos los sábados por la mañana.',ejemplo_de:'Ich gehe jeden Samstag morgens auf den Markt.',
+   ejemplos:[
+     {es:'¿Vas al gimnasio esta tarde o prefieres quedarte en casa?',de:'Gehst du heute Nachmittag ins Fitnessstudio oder bleibst du lieber zu Hause?'},
+     {es:'Fuimos a la playa el verano pasado y fue increíble.',de:'Wir sind letzten Sommer zum Strand gefahren und es war unglaublich.'},
+     {es:'El próximo mes iré a México para aprender español.',de:'Nächsten Monat werde ich nach Mexiko fahren, um Spanisch zu lernen.'}
+   ],
+   presente:['voy','vas','va','vamos','vais','van'],preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'],preteritoImperfecto:['iba','ibas','iba','íbamos','ibais','iban'],futuro:['iré','irás','irá','iremos','iréis','irán'],condicional:['iría','irías','iría','iríamos','iríais','irían'],subjuntivo:['vaya','vayas','vaya','vayamos','vayáis','vayan']},
+  {infinitivo:'poder',deutsch:'können / dürfen',
+   ejemplo:'No puedo dormir bien cuando hace mucho calor.',ejemplo_de:'Ich kann nicht gut schlafen, wenn es sehr heiß ist.',
+   ejemplos:[
+     {es:'¿Puedes hablar más despacio, por favor? No te entiendo bien.',de:'Kannst du bitte langsamer sprechen? Ich verstehe dich nicht gut.'},
+     {es:'Cuando era niño, no podía comer verduras sin protestar.',de:'Als ich Kind war, konnte ich kein Gemüse essen, ohne zu protestieren.'},
+     {es:'Si pudiera, viviría en Argentina durante un año entero.',de:'Wenn ich könnte, würde ich ein ganzes Jahr in Argentinien leben.'}
+   ],
+   presente:['puedo','puedes','puede','podemos','podéis','pueden'],preteritoIndefinido:['pude','pudiste','pudo','pudimos','pudisteis','pudieron'],preteritoImperfecto:['podía','podías','podía','podíamos','podíais','podían'],futuro:['podré','podrás','podrá','podremos','podréis','podrán'],condicional:['podría','podrías','podría','podríamos','podríais','podrían'],subjuntivo:['pueda','puedas','pueda','podamos','podáis','puedan']},
+  {infinitivo:'querer',deutsch:'wollen / lieben',
+   ejemplo:'Quiero aprender español para viajar por Latinoamérica.',ejemplo_de:'Ich möchte Spanisch lernen, um durch Lateinamerika zu reisen.',
+   ejemplos:[
+     {es:'Te quiero mucho — eres la persona más importante de mi vida.',de:'Ich liebe dich sehr — du bist die wichtigste Person in meinem Leben.'},
+     {es:'¿Qué quieres hacer este fin de semana?',de:'Was möchtest du dieses Wochenende machen?'},
+     {es:'Quería llamarte antes, pero no encontré el momento.',de:'Ich wollte dich früher anrufen, aber ich fand keinen geeigneten Moment.'}
+   ],
+   presente:['quiero','quieres','quiere','queremos','queréis','quieren'],preteritoIndefinido:['quise','quisiste','quiso','quisimos','quisisteis','quisieron'],preteritoImperfecto:['quería','querías','quería','queríamos','queríais','querían'],futuro:['querré','querrás','querrá','querremos','querréis','querrán'],condicional:['querría','querrías','querría','querríamos','querríais','querrían'],subjuntivo:['quiera','quieras','quiera','queramos','queráis','quieran']},
+  {infinitivo:'saber',deutsch:'wissen / können',
+   ejemplo:'¿Sabes dónde está la estación de tren más cercana?',ejemplo_de:'Weißt du, wo der nächste Bahnhof ist?',
+   ejemplos:[
+     {es:'No sé qué decir — la situación es muy complicada.',de:'Ich weiß nicht, was ich sagen soll — die Situation ist sehr kompliziert.'},
+     {es:'¿Sabías que el español es el segundo idioma más hablado del mundo?',de:'Wusstest du, dass Spanisch die zweithäufigst gesprochene Sprache der Welt ist?'},
+     {es:'Si supiera la respuesta, te la diría inmediatamente.',de:'Wenn ich die Antwort wüsste, würde ich sie dir sofort sagen.'}
+   ],
+   presente:['sé','sabes','sabe','sabemos','sabéis','saben'],preteritoIndefinido:['supe','supiste','supo','supimos','supisteis','supieron'],preteritoImperfecto:['sabía','sabías','sabía','sabíamos','sabíais','sabían'],futuro:['sabré','sabrás','sabrá','sabremos','sabréis','sabrán'],condicional:['sabría','sabrías','sabría','sabríamos','sabríais','sabrían'],subjuntivo:['sepa','sepas','sepa','sepamos','sepáis','sepan']},
+  {infinitivo:'venir',deutsch:'kommen',
+   ejemplo:'Mis amigos vienen a cenar esta noche a las nueve.',ejemplo_de:'Meine Freunde kommen heute Abend um neun zum Abendessen.',
+   ejemplos:[
+     {es:'Ven aquí un momento — tengo algo importante que contarte.',de:'Komm mal her — ich habe dir etwas Wichtiges zu erzählen.'},
+     {es:'¿De dónde viene esa música tan bonita?',de:'Woher kommt diese wunderschöne Musik?'},
+     {es:'Vine a esta ciudad buscando nuevas oportunidades.',de:'Ich kam in diese Stadt auf der Suche nach neuen Möglichkeiten.'}
+   ],
+   presente:['vengo','vienes','viene','venimos','venís','vienen'],preteritoIndefinido:['vine','viniste','vino','vinimos','vinisteis','vinieron'],preteritoImperfecto:['venía','venías','venía','veníamos','veníais','venían'],futuro:['vendré','vendrás','vendrá','vendremos','vendréis','vendrán'],condicional:['vendría','vendrías','vendría','vendríamos','vendríais','vendrían'],subjuntivo:['venga','vengas','venga','vengamos','vengáis','vengan']},
+  {infinitivo:'ver',deutsch:'sehen / schauen',
+   ejemplo:'Vemos una película juntos cada viernes por la noche.',ejemplo_de:'Wir schauen jeden Freitagabend gemeinsam einen Film.',
+   ejemplos:[
+     {es:'¿Has visto las noticias hoy? Ha pasado algo increíble.',de:'Hast du heute die Nachrichten gesehen? Es ist etwas Unglaubliches passiert.'},
+     {es:'No te veo desde hace meses — ¡cuánto has cambiado!',de:'Ich habe dich seit Monaten nicht gesehen — wie du dich verändert hast!'},
+     {es:'Hay que ver cómo resuelve este problema tan complejo.',de:'Man muss sehen, wie er dieses so komplexe Problem löst.'}
+   ],
+   presente:['veo','ves','ve','vemos','veis','ven'],preteritoIndefinido:['vi','viste','vio','vimos','visteis','vieron'],preteritoImperfecto:['veía','veías','veía','veíamos','veíais','veían'],futuro:['veré','verás','verá','veremos','veréis','verán'],condicional:['vería','verías','vería','veríamos','veríais','verían'],subjuntivo:['vea','veas','vea','veamos','veáis','vean']},
+  {infinitivo:'dar',deutsch:'geben',
+   ejemplo:'Le di las gracias por su ayuda y su amabilidad.',ejemplo_de:'Ich dankte ihm für seine Hilfe und seine Freundlichkeit.',
+   ejemplos:[
+     {es:'Dame un minuto — necesito pensar bien la respuesta.',de:'Gib mir eine Minute — ich muss die Antwort gut durchdenken.'},
+     {es:'Nos dieron el resultado del examen al día siguiente.',de:'Sie gaben uns das Prüfungsergebnis am nächsten Tag.'},
+     {es:'¿Me das tu número de teléfono antes de que te vayas?',de:'Gibst du mir deine Telefonnummer, bevor du gehst?'}
+   ],
+   presente:['doy','das','da','damos','dais','dan'],preteritoIndefinido:['di','diste','dio','dimos','disteis','dieron'],preteritoImperfecto:['daba','dabas','daba','dábamos','dabais','daban'],futuro:['daré','darás','dará','daremos','daréis','darán'],condicional:['daría','darías','daría','daríamos','daríais','darían'],subjuntivo:['dé','des','dé','demos','deis','den']},
+  {infinitivo:'decir',deutsch:'sagen',
+   ejemplo:'Ella siempre dice la verdad, aunque sea difícil.',ejemplo_de:'Sie sagt immer die Wahrheit, auch wenn es schwierig ist.',
+   ejemplos:[
+     {es:'Te dije que llegaríamos tarde si no salíamos antes.',de:'Ich habe dir gesagt, dass wir zu spät ankommen würden, wenn wir nicht früher losgehen.'},
+     {es:'¿Qué te dijo tu jefe en la reunión de ayer?',de:'Was hat dir dein Chef in dem gestrigen Meeting gesagt?'},
+     {es:'Dicen que aprender un idioma abre muchas puertas.',de:'Man sagt, dass das Erlernen einer Sprache viele Türen öffnet.'}
+   ],
+   presente:['digo','dices','dice','decimos','decís','dicen'],preteritoIndefinido:['dije','dijiste','dijo','dijimos','dijisteis','dijeron'],preteritoImperfecto:['decía','decías','decía','decíamos','decíais','decían'],futuro:['diré','dirás','dirá','diremos','diréis','dirán'],condicional:['diría','dirías','diría','diríamos','diríais','dirían'],subjuntivo:['diga','digas','diga','digamos','digáis','digan']},
+  {infinitivo:'poner',deutsch:'stellen / legen / setzen',
+   ejemplo:'Pon la mesa antes de que lleguen los invitados.',ejemplo_de:'Deck den Tisch, bevor die Gäste ankommen.',
+   ejemplos:[
+     {es:'¿Dónde pusiste las llaves? No las encuentro por ningún lado.',de:'Wo hast du die Schlüssel hingelegt? Ich finde sie nirgendwo.'},
+     {es:'Pon atención — esto es importante para el examen.',de:'Pass auf — das ist wichtig für die Prüfung.'},
+     {es:'Me puse nervioso cuando me preguntaron delante de toda la clase.',de:'Ich wurde nervös, als sie mich vor der ganzen Klasse befragten.'}
+   ],
+   presente:['pongo','pones','pone','ponemos','ponéis','ponen'],preteritoIndefinido:['puse','pusiste','puso','pusimos','pusisteis','pusieron'],preteritoImperfecto:['ponía','ponías','ponía','poníamos','poníais','ponían'],futuro:['pondré','pondrás','pondrá','pondremos','pondréis','pondrán'],condicional:['pondría','pondrías','pondría','pondríamos','pondríais','pondrían'],subjuntivo:['ponga','pongas','ponga','pongamos','pongáis','pongan']},
+  {infinitivo:'salir',deutsch:'ausgehen / herausgehen',
+   ejemplo:'Salimos a pasear por el parque cuando hace buen tiempo.',ejemplo_de:'Wir gehen spazieren im Park, wenn das Wetter schön ist.',
+   ejemplos:[
+     {es:'¿A qué hora sales del trabajo normalmente?',de:'Um wie viel Uhr gehst du normalerweise von der Arbeit weg?'},
+     {es:'Salimos corriendo cuando empezó a llover con fuerza.',de:'Wir rannten los, als es stark anfing zu regnen.'},
+     {es:'Esta noche sal con nosotros — te hará bien distraerte un poco.',de:'Geh heute Abend mit uns aus — es wird dir gut tun, dich etwas abzulenken.'}
+   ],
+   presente:['salgo','sales','sale','salimos','salís','salen'],preteritoIndefinido:['salí','saliste','salió','salimos','salisteis','salieron'],preteritoImperfecto:['salía','salías','salía','salíamos','salíais','salían'],futuro:['saldré','saldrás','saldrá','saldremos','saldréis','saldrán'],condicional:['saldría','saldrías','saldría','saldríamos','saldríais','saldrían'],subjuntivo:['salga','salgas','salga','salgamos','salgáis','salgan']},
+  {infinitivo:'traer',deutsch:'bringen / mitbringen',
+   ejemplo:'¿Puedes traer algo de comer a la reunión de mañana?',ejemplo_de:'Kannst du etwas zu essen zum morgigen Treffen mitbringen?',
+   ejemplos:[
+     {es:'Traje un pastel de cumpleaños para sorprender a mi amiga.',de:'Ich brachte eine Geburtstagstorte mit, um meine Freundin zu überraschen.'},
+     {es:'¿Me traes un vaso de agua, por favor?',de:'Kannst du mir bitte ein Glas Wasser bringen?'},
+     {es:'No traigas malas noticias a la cena — quiero que sea una noche tranquila.',de:'Bring keine schlechten Neuigkeiten zum Abendessen — ich möchte, dass es ein ruhiger Abend wird.'}
+   ],
+   presente:['traigo','traes','trae','traemos','traéis','traen'],preteritoIndefinido:['traje','trajiste','trajo','trajimos','trajisteis','trajeron'],preteritoImperfecto:['traía','traías','traía','traíamos','traíais','traían'],futuro:['traeré','traerás','traerá','traeremos','traeréis','traerán'],condicional:['traería','traerías','traería','traeríamos','traeríais','traerían'],subjuntivo:['traiga','traigas','traiga','traigamos','traigáis','traigan']},
+  {infinitivo:'volver',deutsch:'zurückkehren',
+   ejemplo:'Volví a casa muy tarde después de la fiesta del viernes.',ejemplo_de:'Ich kam sehr spät nach Hause nach der Freitagsparty.',
+   ejemplos:[
+     {es:'¿Cuándo vuelves de tu viaje por Latinoamérica?',de:'Wann kommst du von deiner Reise durch Lateinamerika zurück?'},
+     {es:'Después de años en el extranjero, volvió a su ciudad natal.',de:'Nach Jahren im Ausland kehrte er in seine Heimatstadt zurück.'},
+     {es:'Vuelve a intentarlo — sé que puedes hacerlo mejor.',de:'Versuch es nochmal — ich weiß, dass du es besser kannst.'}
+   ],
+   presente:['vuelvo','vuelves','vuelve','volvemos','volvéis','vuelven'],preteritoIndefinido:['volví','volviste','volvió','volvimos','volvisteis','volvieron'],preteritoImperfecto:['volvía','volvías','volvía','volvíamos','volvíais','volvían'],futuro:['volveré','volverás','volverá','volveremos','volveréis','volverán'],condicional:['volvería','volverías','volvería','volveríamos','volveríais','volverían'],subjuntivo:['vuelva','vuelvas','vuelva','volvamos','volváis','vuelvan']},
+  {infinitivo:'dormir',deutsch:'schlafen',
+   ejemplo:'Los niños duermen profundamente después de jugar todo el día.',ejemplo_de:'Die Kinder schlafen tief, nachdem sie den ganzen Tag gespielt haben.',
+   ejemplos:[
+     {es:'No pude dormir bien anoche — tenía muchas cosas en la cabeza.',de:'Ich konnte letzte Nacht nicht gut schlafen — ich hatte viele Dinge im Kopf.'},
+     {es:'¿Cuántas horas duermes normalmente?',de:'Wie viele Stunden schläfst du normalerweise?'},
+     {es:'Duérmete ya — mañana tienes que levantarte temprano.',de:'Schlaf jetzt ein — morgen musst du früh aufstehen.'}
+   ],
+   presente:['duermo','duermes','duerme','dormimos','dormís','duermen'],preteritoIndefinido:['dormí','dormiste','durmió','dormimos','dormisteis','durmieron'],preteritoImperfecto:['dormía','dormías','dormía','dormíamos','dormíais','dormían'],futuro:['dormiré','dormirás','dormirá','dormiremos','dormiréis','dormirán'],condicional:['dormiría','dormirías','dormiría','dormiríamos','dormiríais','dormirían'],subjuntivo:['duerma','duermas','duerma','durmamos','durmáis','duerman']},
+  {infinitivo:'pedir',deutsch:'bitten / bestellen',
+   ejemplo:'Pedimos dos cafés y un trozo de tarta de chocolate.',ejemplo_de:'Wir bestellten zwei Kaffees und ein Stück Schokoladenkuchen.',
+   ejemplos:[
+     {es:'Le pedí disculpas por haber llegado tan tarde.',de:'Ich bat ihn um Entschuldigung dafür, so spät gekommen zu sein.'},
+     {es:'¿Puedo pedirte un favor? Necesito tu ayuda con algo.',de:'Darf ich dich um einen Gefallen bitten? Ich brauche deine Hilfe bei etwas.'},
+     {es:'En el restaurante siempre pido el plato del día.',de:'Im Restaurant bestelle ich immer das Tagesgericht.'}
+   ],
+   presente:['pido','pides','pide','pedimos','pedís','piden'],preteritoIndefinido:['pedí','pediste','pidió','pedimos','pedisteis','pidieron'],preteritoImperfecto:['pedía','pedías','pedía','pedíamos','pedíais','pedían'],futuro:['pediré','pedirás','pedirá','pediremos','pediréis','pedirán'],condicional:['pediría','pedirías','pediría','pediríamos','pediríais','pedirían'],subjuntivo:['pida','pidas','pida','pidamos','pidáis','pidan']},
+  {infinitivo:'seguir',deutsch:'folgen / weitermachen',
+   ejemplo:'Sigue recto y luego gira a la derecha en el semáforo.',ejemplo_de:'Geh geradeaus und biege dann an der Ampel rechts ab.',
+   ejemplos:[
+     {es:'Sigue practicando — tu español mejora cada día más.',de:'Mach weiter mit dem Üben — dein Spanisch verbessert sich von Tag zu Tag.'},
+     {es:'Seguimos trabajando juntos a pesar de las dificultades.',de:'Wir arbeiten trotz der Schwierigkeiten weiter zusammen.'},
+     {es:'¿Sigues viviendo en el mismo barrio de siempre?',de:'Wohnst du noch immer in derselben Gegend wie immer?'}
+   ],
+   presente:['sigo','sigues','sigue','seguimos','seguís','siguen'],preteritoIndefinido:['seguí','seguiste','siguió','seguimos','seguisteis','siguieron'],preteritoImperfecto:['seguía','seguías','seguía','seguíamos','seguíais','seguían'],futuro:['seguiré','seguirás','seguirá','seguiremos','seguiréis','seguirán'],condicional:['seguiría','seguirías','seguiría','seguiríamos','seguiríais','seguirían'],subjuntivo:['siga','sigas','siga','sigamos','sigáis','sigan']},
+  {infinitivo:'sentir',deutsch:'fühlen / spüren',
+   ejemplo:'Siento mucho no haber podido asistir a tu cumpleaños.',ejemplo_de:'Es tut mir sehr leid, dass ich nicht zu deinem Geburtstag kommen konnte.',
+   ejemplos:[
+     {es:'Siento un dolor en la espalda desde esta mañana.',de:'Ich spüre seit heute Morgen einen Schmerz im Rücken.'},
+     {es:'¿Cómo te sientes después de la operación?',de:'Wie fühlst du dich nach der Operation?'},
+     {es:'Sentí una gran alegría cuando me dieron la noticia.',de:'Ich empfand eine große Freude, als man mir die Neuigkeit mitteilte.'}
+   ],
+   presente:['siento','sientes','siente','sentimos','sentís','sienten'],preteritoIndefinido:['sentí','sentiste','sintió','sentimos','sentisteis','sintieron'],preteritoImperfecto:['sentía','sentías','sentía','sentíamos','sentíais','sentían'],futuro:['sentiré','sentirás','sentirá','sentiremos','sentiréis','sentirán'],condicional:['sentiría','sentirías','sentiría','sentiríamos','sentiríais','sentirían'],subjuntivo:['sienta','sientas','sienta','sintamos','sintáis','sientan']},
+  {infinitivo:'conocer',deutsch:'kennen / kennenlernen',
+   ejemplo:'Conocí a mi mejor amigo en el primer día de universidad.',ejemplo_de:'Ich lernte meinen besten Freund am ersten Tag der Universität kennen.',
+   ejemplos:[
+     {es:'¿Conoces algún buen restaurante por aquí cerca?',de:'Kennst du ein gutes Restaurant hier in der Nähe?'},
+     {es:'Nos conocimos en un viaje y desde entonces somos inseparables.',de:'Wir lernten uns auf einer Reise kennen und seitdem sind wir unzertrennlich.'},
+     {es:'Cuanto más la conozco, más me parece una persona admirable.',de:'Je mehr ich sie kenne, desto bewundernswerter erscheint sie mir.'}
+   ],
+   presente:['conozco','conoces','conoce','conocemos','conocéis','conocen'],preteritoIndefinido:['conocí','conociste','conoció','conocimos','conocisteis','conocieron'],preteritoImperfecto:['conocía','conocías','conocía','conocíamos','conocíais','conocían'],futuro:['conoceré','conocerás','conocerá','conoceremos','conoceréis','conocerán'],condicional:['conocería','conocerías','conocería','conoceríamos','conoceríais','conocerían'],subjuntivo:['conozca','conozcas','conozca','conozcamos','conozcáis','conozcan']},
+  {infinitivo:'perder',deutsch:'verlieren / verpassen',
+   ejemplo:'Perdí el tren por quedarme dormido esta mañana.',ejemplo_de:'Ich habe den Zug verpasst, weil ich heute Morgen verschlafen habe.',
+   ejemplos:[
+     {es:'No pierdas la esperanza — las cosas mejorarán pronto.',de:'Verlier nicht die Hoffnung — die Dinge werden sich bald verbessern.'},
+     {es:'Perdimos el partido en los últimos segundos del juego.',de:'Wir verloren das Spiel in den letzten Sekunden.'},
+     {es:'He perdido mis gafas — ¿las has visto por algún lado?',de:'Ich habe meine Brille verloren — hast du sie irgendwo gesehen?'}
+   ],
+   presente:['pierdo','pierdes','pierde','perdemos','perdéis','pierden'],preteritoIndefinido:['perdí','perdiste','perdió','perdimos','perdisteis','perdieron'],preteritoImperfecto:['perdía','perdías','perdía','perdíamos','perdíais','perdían'],futuro:['perderé','perderás','perderá','perderemos','perderéis','perderán'],condicional:['perdería','perderías','perdería','perderíamos','perderíais','perderían'],subjuntivo:['pierda','pierdas','pierda','perdamos','perdáis','pierdan']},
+  {infinitivo:'entender',deutsch:'verstehen',
+   ejemplo:'No entiendo bien el subjuntivo, pero sigo practicando.',ejemplo_de:'Ich verstehe den Konjunktiv nicht gut, aber ich übe weiter.',
+   ejemplos:[
+     {es:'¿Me entiendes o hablo demasiado rápido?',de:'Verstehst du mich oder rede ich zu schnell?'},
+     {es:'Por fin entendí por qué este tema es tan difícil.',de:'Endlich habe ich verstanden, warum dieses Thema so schwierig ist.'},
+     {es:'No entiendo cómo la gente puede vivir sin música.',de:'Ich verstehe nicht, wie Menschen ohne Musik leben können.'}
+   ],
+   presente:['entiendo','entiendes','entiende','entendemos','entendéis','entienden'],preteritoIndefinido:['entendí','entendiste','entendió','entendimos','entendisteis','entendieron'],preteritoImperfecto:['entendía','entendías','entendía','entendíamos','entendíais','entendían'],futuro:['entenderé','entenderás','entenderá','entenderemos','entenderéis','entenderán'],condicional:['entendería','entenderías','entendería','entenderíamos','entenderíais','entenderían'],subjuntivo:['entienda','entiendas','entienda','entendamos','entendáis','entiendan']},
+  {infinitivo:'jugar',deutsch:'spielen',
+   ejemplo:'Los niños juegan al fútbol en el parque cada tarde.',ejemplo_de:'Die Kinder spielen jeden Nachmittag im Park Fußball.',
+   ejemplos:[
+     {es:'¿Juegas al ajedrez? Me encantaría echar una partida contigo.',de:'Spielst du Schach? Ich würde gerne eine Partie mit dir spielen.'},
+     {es:'De pequeño jugaba al baloncesto todos los fines de semana.',de:'Als Kind spielte ich jeden Wochenende Basketball.'},
+     {es:'Jugamos al fútbol hasta que oscureció completamente.',de:'Wir spielten Fußball, bis es vollständig dunkel wurde.'}
+   ],
+   presente:['juego','juegas','juega','jugamos','jugáis','juegan'],preteritoIndefinido:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron'],preteritoImperfecto:['jugaba','jugabas','jugaba','jugábamos','jugabais','jugaban'],futuro:['jugaré','jugarás','jugará','jugaremos','jugaréis','jugarán'],condicional:['jugaría','jugarías','jugaría','jugaríamos','jugaríais','jugarían'],subjuntivo:['juegue','juegues','juegue','juguemos','juguéis','jueguen']},
+  {infinitivo:'caer',deutsch:'fallen',
+   ejemplo:'Se cayó en la calle porque no vio el escalón.',ejemplo_de:'Er fiel auf der Straße, weil er die Stufe nicht sah.',
+   ejemplos:[
+     {es:'Se me cayó el teléfono al suelo y se rompió la pantalla.',de:'Mir fiel das Handy auf den Boden und der Bildschirm zerbrach.'},
+     {es:'Me cae muy bien tu hermana — es muy simpática.',de:'Deine Schwester gefällt mir sehr — sie ist sehr sympathisch.'},
+     {es:'El precio de las acciones cayó bruscamente esta semana.',de:'Der Aktienkurs ist diese Woche stark gefallen.'}
+   ],
+   presente:['caigo','caes','cae','caemos','caéis','caen'],preteritoIndefinido:['caí','caíste','cayó','caímos','caísteis','cayeron'],preteritoImperfecto:['caía','caías','caía','caíamos','caíais','caían'],futuro:['caeré','caerás','caerá','caeremos','caeréis','caerán'],condicional:['caería','caerías','caería','caeríamos','caeríais','caerían'],subjuntivo:['caiga','caigas','caiga','caigamos','caigáis','caigan']},
+  {infinitivo:'reír',deutsch:'lachen',
+   ejemplo:'Nos reímos mucho con las historias de nuestro abuelo.',ejemplo_de:'Wir lachten viel über die Geschichten unseres Großvaters.',
+   ejemplos:[
+     {es:'Ríete de la vida — el humor es la mejor medicina.',de:'Lach über das Leben — Humor ist die beste Medizin.'},
+     {es:'No pude evitar reírme cuando vi su cara de sorpresa.',de:'Ich konnte nicht aufhören zu lachen, als ich seinen überraschten Gesichtsausdruck sah.'},
+     {es:'Rieron tanto que les dolía el estómago.',de:'Sie lachten so sehr, dass ihnen der Bauch wehttat.'}
+   ],
+   presente:['río','ríes','ríe','reímos','reís','ríen'],preteritoIndefinido:['reí','reíste','rió','reímos','reísteis','rieron'],preteritoImperfecto:['reía','reías','reía','reíamos','reíais','reían'],futuro:['reiré','reirás','reirá','reiremos','reiréis','reirán'],condicional:['reiría','reirías','reiría','reiríamos','reiríais','reirían'],subjuntivo:['ría','rías','ría','riamos','riáis','rían']},
+  {infinitivo:'morir',deutsch:'sterben',
+   ejemplo:'Desgraciadamente, la planta murió porque olvidé regarla.',ejemplo_de:'Leider ist die Pflanze gestorben, weil ich vergessen habe, sie zu gießen.',
+   ejemplos:[
+     {es:'Me muero de hambre — ¿podemos parar a comer algo?',de:'Ich sterbe vor Hunger — können wir anhalten, um etwas zu essen?'},
+     {es:'Murió rodeado de su familia, en paz y sin dolor.',de:'Er starb umgeben von seiner Familie, in Frieden und ohne Schmerzen.'},
+     {es:'Me muero de vergüenza cada vez que recuerdo ese momento.',de:'Ich sterbe jedes Mal vor Scham, wenn ich mich an diesen Moment erinnere.'}
+   ],
+   presente:['muero','mueres','muere','morimos','morís','mueren'],preteritoIndefinido:['morí','moriste','murió','morimos','moristeis','murieron'],preteritoImperfecto:['moría','morías','moría','moríamos','moríais','morían'],futuro:['moriré','morirás','morirá','moriremos','moriréis','morirán'],condicional:['moriría','morirías','moriría','moriríamos','moriríais','morirían'],subjuntivo:['muera','mueras','muera','muramos','muráis','mueran']},
+  {infinitivo:'oír',deutsch:'hören',
+   ejemplo:'Oí una canción preciosa que nunca había escuchado antes.',ejemplo_de:'Ich hörte ein wunderschönes Lied, das ich noch nie gehört hatte.',
+   ejemplos:[
+     {es:'¿Oyes ese ruido? Creo que alguien está llamando a la puerta.',de:'Hörst du dieses Geräusch? Ich glaube, jemand klopft an die Tür.'},
+     {es:'Oí por casualidad una conversación muy interesante en el metro.',de:'Ich hörte zufällig ein sehr interessantes Gespräch in der U-Bahn.'},
+     {es:'¡Oye! ¿A dónde vas tan rápido?',de:'Hey! Wohin gehst du so schnell?'}
+   ],
+   presente:['oigo','oyes','oye','oímos','oís','oyen'],preteritoIndefinido:['oí','oíste','oyó','oímos','oísteis','oyeron'],preteritoImperfecto:['oía','oías','oía','oíamos','oíais','oían'],futuro:['oiré','oirás','oirá','oiremos','oiréis','oirán'],condicional:['oiría','oirías','oiría','oiríamos','oiríais','oirían'],subjuntivo:['oiga','oigas','oiga','oigamos','oigáis','oigan']},
+  {infinitivo:'conducir',deutsch:'fahren / führen',
+   ejemplo:'Conduzco con cuidado porque las carreteras están mojadas.',ejemplo_de:'Ich fahre vorsichtig, weil die Straßen nass sind.',
+   ejemplos:[
+     {es:'¿Sabes conducir? Me gustaría que me llevaras al aeropuerto.',de:'Kannst du Auto fahren? Ich würde mich freuen, wenn du mich zum Flughafen bringen könntest.'},
+     {es:'Nunca conduzco cuando he bebido — es demasiado peligroso.',de:'Ich fahre nie, wenn ich getrunken habe — es ist zu gefährlich.'},
+     {es:'Condujo durante diez horas seguidas para llegar a tiempo.',de:'Er fuhr zehn Stunden am Stück, um rechtzeitig anzukommen.'}
+   ],
+   presente:['conduzco','conduces','conduce','conducimos','conducís','conducen'],preteritoIndefinido:['conduje','condujiste','condujo','condujimos','condujisteis','condujeron'],preteritoImperfecto:['conducía','conducías','conducía','conducíamos','conducíais','conducían'],futuro:['conduciré','conducirás','conducirá','conduciremos','conduciréis','conducirán'],condicional:['conduciría','conducirías','conduciría','conduciríamos','conduciríais','conducirían'],subjuntivo:['conduzca','conduzcas','conduzca','conduzcamos','conduzcáis','conduzcan']},
+  {infinitivo:'construir',deutsch:'bauen / konstruieren',
+   ejemplo:'Están construyendo un nuevo puente sobre el río.',ejemplo_de:'Sie bauen eine neue Brücke über den Fluss.',
+   ejemplos:[
+     {es:'Construyeron la catedral a lo largo de varios siglos.',de:'Die Kathedrale wurde über mehrere Jahrhunderte hinweg gebaut.'},
+     {es:'Quiero construir una buena relación con mis colegas del trabajo.',de:'Ich möchte eine gute Beziehung zu meinen Arbeitskollegen aufbauen.'},
+     {es:'Los cimientos son lo más importante al construir una casa.',de:'Das Fundament ist das Wichtigste beim Hausbau.'}
+   ],
+   presente:['construyo','construyes','construye','construimos','construís','construyen'],preteritoIndefinido:['construí','construiste','construyó','construimos','construisteis','construyeron'],preteritoImperfecto:['construía','construías','construía','construíamos','construíais','construían'],futuro:['construiré','construirás','construirá','construiremos','construiréis','construirán'],condicional:['construiría','construirías','construiría','construiríamos','construiríais','construirían'],subjuntivo:['construya','construyas','construya','construyamos','construyáis','construyan']},
+  {infinitivo:'elegir',deutsch:'wählen / auswählen',
+   ejemplo:'Elegí estudiar idiomas porque me apasionan las culturas.',ejemplo_de:'Ich entschied mich, Sprachen zu studieren, weil mich Kulturen begeistern.',
+   ejemplos:[
+     {es:'Es difícil elegir entre tantas opciones tan buenas.',de:'Es ist schwierig, zwischen so vielen guten Optionen zu wählen.'},
+     {es:'Elige el camino que te haga más feliz, no el más fácil.',de:'Wähle den Weg, der dich am glücklichsten macht, nicht den einfachsten.'},
+     {es:'Nos eligieron a nosotros para representar al equipo.',de:'Man wählte uns aus, um das Team zu vertreten.'}
+   ],
+   presente:['elijo','eliges','elige','elegimos','elegís','eligen'],preteritoIndefinido:['elegí','elegiste','eligió','elegimos','elegisteis','eligieron'],preteritoImperfecto:['elegía','elegías','elegía','elegíamos','elegíais','elegían'],futuro:['elegiré','elegirás','elegirá','elegiremos','elegiréis','elegirán'],condicional:['elegiría','elegirías','elegiría','elegiríamos','elegiríais','elegirían'],subjuntivo:['elija','elijas','elija','elijamos','elijáis','elijan']}
 ];
 
 const PRONOUNS=['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
@@ -525,17 +969,59 @@ function renderVerbCard(vd,tense){
   const forms=vd[tense]||[];
   const conjs=PRONOUNS.map((p,i)=>`<div class="conj-row"><span class="conj-pro">${p}</span><span class="conj-form">${forms[i]||'—'}</span></div>`).join('');
   const tabs=Object.entries(TENSES).map(([k,l])=>`<button class="tense-btn ${k===tense?'active':''}" onclick="switchTense('${k}')">${l}</button>`).join('');
+  const tenseEx=(vd.tenseEjemplos&&vd.tenseEjemplos[tense])||vd.ejemplos||[];
+  const tenseLabel={presente:'Presente',preteritoIndefinido:'Pretérito Indefinido',preteritoImperfecto:'Pretérito Imperfecto',futuro:'Futuro',condicional:'Condicional',subjuntivo:'Subjuntivo'}[tense]||tense;
+  const ejemplosHtml=tenseEx.map((e,i)=>`
+    <div style="padding:10px 0;border-bottom:${i<(tenseEx.length-1)?'1px solid var(--border)':'none'}">
+      <div style="font-size:14px;color:var(--text);line-height:1.6"><em>"${e.es}"</em></div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${e.de}</div>
+    </div>`).join('');
+  // Pick a random form for the practice exercise
+  const practiceIdx=Math.floor(Math.random()*6);
+  const practicePro=PRONOUNS[practiceIdx];
+  const practiceForm=forms[practiceIdx]||'';
   document.getElementById('verb-card-content').innerHTML=`
     <div class="verb-hero">
       <div class="verb-day-label">Verb des Tages — ${today()}</div>
       <div class="verb-infinitive">${vd.infinitivo}</div>
       <div class="verb-translation">${vd.deutsch}</div>
-      <div class="verb-example"><em>"${vd.ejemplo}"</em><br><span style="font-style:normal;font-size:13px;color:var(--text-light)">${vd.ejemplo_de}</span></div>
     </div>
     <div class="verb-tense-tabs">${tabs}</div>
-    <div class="conjugation-grid">${conjs}</div>`;
+    <div class="conjugation-grid">${conjs}</div>
+    <div style="padding:1rem 1.25rem;border-top:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:2px">Beispielsätze — ${tenseLabel}</div>
+      ${ejemplosHtml||'<div style="color:var(--text-light);font-size:13px;padding:.5rem 0">Keine Beispiele verfügbar.</div>'}
+    </div>
+    <div style="padding:1rem 1.25rem;border-top:1px solid var(--border);background:var(--bg)">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:.75rem">Schnellübung — Konjugiere im ${tenseLabel}</div>
+      <div style="font-size:15px;color:var(--text);margin-bottom:.75rem">
+        <strong>${practicePro}</strong> ___ (${vd.infinitivo})
+      </div>
+      <div style="display:flex;gap:8px;margin-bottom:.625rem">
+        <input type="text" id="verb-practice-input" placeholder="Antwort eingeben…" style="flex:1" onkeydown="if(event.key==='Enter')checkVerbPractice('${practiceForm}','${vd.infinitivo}','${tense}')">
+        <button class="btn btn-primary btn-sm" onclick="checkVerbPractice('${practiceForm}','${vd.infinitivo}','${tense}')">Prüfen</button>
+      </div>
+      <div id="verb-practice-feedback" style="min-height:20px"></div>
+    </div>`;
+  setTimeout(()=>document.getElementById('verb-practice-input')?.focus?.(),100);
 }
 function switchTense(t){currentTense=t;if(state.lastVerb)renderVerbCard(state.lastVerb,t)}
+
+function checkVerbPractice(correct,verb,tense){
+  const input=document.getElementById('verb-practice-input');
+  if(!input)return;
+  const val=input.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const ans=correct.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const ok=val===ans;
+  const fb=document.getElementById('verb-practice-feedback');
+  if(ok){
+    fb.innerHTML='<div style="color:var(--green-dark);background:var(--green-light);padding:7px 12px;border-radius:8px;font-size:14px">✓ Richtig!</div>';
+    input.disabled=true;
+  } else {
+    fb.innerHTML=`<div style="color:var(--red);background:var(--red-light);padding:7px 12px;border-radius:8px;font-size:14px">✗ Falsch — richtig: <strong>${correct}</strong></div>`;
+    input.select();
+  }
+}
 
 // ── LEARNED VERBS ──
 function renderLearnedVerbs(){
@@ -568,8 +1054,15 @@ function openVerbModal(infinitivo){
 function renderModalConj(){
   const vd=modalCurrentVerb;if(!vd)return;
   const forms=vd[modalCurrentTense]||[];
+  const ejemplosHtml=(vd.ejemplos||[]).map((e,i)=>`
+    <div style="padding:8px 0;border-bottom:${i<(vd.ejemplos.length-1)?'1px solid var(--border)':'none'}">
+      <div style="font-size:14px;color:var(--text);line-height:1.6"><em>"${e.es}"</em></div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${e.de}</div>
+    </div>`).join('');
   document.getElementById('modal-tabs').innerHTML=Object.entries(TENSES).map(([k,l])=>`<button class="tense-btn ${k===modalCurrentTense?'active':''}" onclick="switchModalTense('${k}')">${l}</button>`).join('');
   document.getElementById('modal-grid').innerHTML=PRONOUNS.map((p,i)=>`<div class="conj-row"><span class="conj-pro">${p}</span><span class="conj-form">${forms[i]||'—'}</span></div>`).join('');
+  const exEl=document.getElementById('modal-examples');
+  if(exEl)exEl.innerHTML=ejemplosHtml;
 }
 function switchModalTense(t){modalCurrentTense=t;renderModalConj()}
 
@@ -609,6 +1102,622 @@ function downloadCSV(){
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`spanisch_vokabeln_${todayISO()}.csv`;a.click();
   showToast('CSV heruntergeladen!');
 }
+
+// ── FLASHCARDS ──
+let fcSource='all';
+let fcDifficulty='all';
+let fcDirection='es2de';
+let fcDeck=[];
+let fcIndex=0;
+let fcKnown=0;
+let fcUnknown=0;
+let fcFlipped=false;
+let fcHardCards=[];
+
+function getDifficulty(w){
+  const tc=(w.trackCorrect||0),tf=(w.trackWrong||0),ts=(w.trackStreak||0);
+  if(tc===0&&tf===0)return'new';
+  if(ts>=3)return'mastered';
+  if(tf>tc)return'hard';
+  return'learning';
+}
+function getDiffEmoji(d){return{new:'🟢',learning:'🟡',hard:'🔴',mastered:'⭐'}[d]||''}
+
+function initLearnTab(){updateAvailableLabel()}
+
+function setFcSource(src){
+  fcSource=src;
+  document.querySelectorAll('.fc-src-btn').forEach(b=>{
+    if(b.id&&b.id.startsWith('fcsrc-'))b.classList.remove('active');
+  });
+  document.getElementById('fcsrc-'+src)?.classList.add('active');
+  updateAvailableLabel();
+}
+
+function setFcDiff(d){
+  fcDifficulty=d;
+  document.querySelectorAll('[id^="fcdiff-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fcdiff-'+d)?.classList.add('active');
+  updateAvailableLabel();
+}
+
+function setFcDir(d){
+  fcDirection=d;
+  document.querySelectorAll('[id^="fcdir-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('fcdir-'+d)?.classList.add('active');
+}
+
+function getSourcePool(){
+  let pool=[];
+  const bekannt=state.words.filter(w=>w.cat==='Bekannt'&&w.addedAt===0);
+  const custom=state.words.filter(w=>!(w.cat==='Bekannt'&&w.addedAt===0));
+  if(fcSource==='all')pool=[...state.words.filter(w=>w.de),...state.learnedVerbs.map(v=>({es:v.infinitivo,de:v.deutsch,cat:'Verb',type:'verb',_verbRef:v.infinitivo}))];
+  else if(fcSource==='words')pool=custom.filter(w=>w.de);
+  else if(fcSource==='top100')pool=bekannt.slice(0,100).filter(w=>w.de);
+  else if(fcSource==='top101')pool=bekannt.slice(100,200).filter(w=>w.de);
+  else if(fcSource==='top201')pool=bekannt.slice(200,300).filter(w=>w.de);
+  else if(fcSource==='verbs')pool=state.learnedVerbs.map(v=>({es:v.infinitivo,de:v.deutsch,cat:'Verb',type:'verb',_verbRef:v.infinitivo}));
+  return pool;
+}
+
+function updateAvailableLabel(){
+  let pool=getSourcePool();
+  if(fcDifficulty!=='all')pool=pool.filter(w=>getDifficulty(w)===fcDifficulty);
+  const el=document.getElementById('fc-avail-lbl');
+  if(el)el.textContent=`(${pool.length} verfügbar)`;
+}
+
+function buildDeck(){
+  let pool=getSourcePool();
+  if(fcDifficulty!=='all')pool=pool.filter(w=>getDifficulty(w)===fcDifficulty);
+  if(!pool.length)return null;
+  const n=Math.min(parseInt(document.getElementById('fc-card-count')?.value||20),pool.length);
+  if(fcDifficulty==='all'){
+    const hard=pool.filter(w=>getDifficulty(w)==='hard');
+    const learning=pool.filter(w=>getDifficulty(w)==='learning');
+    const newW=pool.filter(w=>getDifficulty(w)==='new');
+    const mastered=pool.filter(w=>getDifficulty(w)==='mastered');
+    pool=[...shuffle(hard),...shuffle(learning),...shuffle(newW),...shuffle(mastered)];
+  } else pool=shuffle(pool);
+  // Apply direction — for mixed, randomly assign direction per card
+  return pool.slice(0,n).map(card=>{
+    const dir=fcDirection==='mixed'?(Math.random()<0.5?'es2de':'de2es'):fcDirection;
+    return {...card,_dir:dir};
+  });
+}
+
+function startFlashcards(){
+  const deck=buildDeck();
+  if(!deck){showToast('Keine Karten für diese Auswahl!');return}
+  if(!deck.length){showToast('Keine Karten verfügbar. Füge Wörter hinzu.');return}
+  fcDeck=deck;fcIndex=0;fcKnown=0;fcUnknown=0;fcFlipped=false;fcHardCards=[];
+  document.getElementById('fc-setup-card').style.display='none';
+  document.getElementById('fc-main').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+  updateFcStats();showFcCard();
+}
+
+function abortSession(){
+  document.getElementById('fc-setup-card').style.display='block';
+  document.getElementById('fc-main').style.display='none';
+  document.getElementById('fc-done').style.display='none';
+  updateAvailableLabel();
+}
+
+function showFcCard(){
+  if(fcIndex>=fcDeck.length){endSession();return}
+  const card=fcDeck[fcIndex];
+  fcFlipped=false;
+  document.getElementById('fc-card').classList.remove('flipped');
+  const diff=getDifficulty(card);
+  const dir=card._dir||'es2de';
+  const frontWord=dir==='es2de'?card.es:card.de;
+  const backWord=dir==='es2de'?card.de:card.es;
+  const frontLang=dir==='es2de'?'🇪🇸 Spanisch':'🇩🇪 Deutsch';
+  const backLang=dir==='es2de'?'🇩🇪 Deutsch':'🇪🇸 Spanisch';
+  const diffBadge=getDiffEmoji(diff);
+  document.getElementById('fc-front-cat').textContent=card.cat?`${card.cat} ${diffBadge}`:(diffBadge||'');
+  document.getElementById('fc-front-cat').style.display='block';
+  document.getElementById('fc-front-lang').textContent=frontLang;
+  document.getElementById('fc-front-word').textContent=frontWord;
+  document.getElementById('fc-back-cat').textContent=card.cat||'';
+  document.getElementById('fc-back-cat').style.display=card.cat?'block':'none';
+  document.getElementById('fc-back-lang').textContent=backLang;
+  document.getElementById('fc-back-word').textContent=backWord;
+  document.getElementById('fc-back-sub').textContent=card.type==='verb'?'Unregelmäßiges Verb':'';
+  document.getElementById('fc-action-btns').style.display='none';
+  document.getElementById('fc-flip-hint').style.display='block';
+  updateFcStats();
+}
+
+function flipCard(){
+  if(fcFlipped)return;
+  fcFlipped=true;
+  document.getElementById('fc-card').classList.add('flipped');
+  document.getElementById('fc-action-btns').style.display='flex';
+  document.getElementById('fc-flip-hint').style.display='none';
+}
+
+function markCard(known){
+  if(!fcFlipped)return;
+  const card=fcDeck[fcIndex];
+  const wordInState=state.words.find(w=>w.es===card.es);
+  if(wordInState){
+    if(known){wordInState.trackCorrect=(wordInState.trackCorrect||0)+1;wordInState.trackStreak=(wordInState.trackStreak||0)+1}
+    else{wordInState.trackWrong=(wordInState.trackWrong||0)+1;wordInState.trackStreak=0}
+  }
+  if(known)fcKnown++;else{fcUnknown++;fcHardCards.push(card)}
+  fcIndex++;saveState();updateFcStats();
+  setTimeout(()=>showFcCard(),180);
+}
+
+function updateFcStats(){
+  const total=fcDeck.length;const done=fcKnown+fcUnknown;const left=total-fcIndex;
+  document.getElementById('fc-known').textContent=fcKnown;
+  document.getElementById('fc-unknown').textContent=fcUnknown;
+  document.getElementById('fc-left').textContent=Math.max(0,left);
+  const pct=total>0?Math.round((done/total)*100):0;
+  document.getElementById('fc-bar').style.width=pct+'%';
+  document.getElementById('fc-prog-text').textContent=`${Math.min(done+1,total)} / ${total}`;
+  document.getElementById('fc-prog-pct').textContent=pct+'%';
+}
+
+function endSession(){
+  document.getElementById('fc-main').style.display='none';
+  document.getElementById('fc-done').style.display='block';
+  const total=fcDeck.length;const pct=total>0?Math.round((fcKnown/total)*100):0;
+  document.getElementById('fc-done-sub').textContent=`${pct}% der Karten waren richtig.`;
+  document.getElementById('fc-res-known').textContent=fcKnown;
+  document.getElementById('fc-res-unknown').textContent=fcUnknown;
+  const breakdown={new:0,learning:0,hard:0,mastered:0};
+  fcDeck.forEach(c=>{breakdown[getDifficulty(c)]=(breakdown[getDifficulty(c)]||0)+1});
+  document.getElementById('fc-diff-summary').innerHTML=`
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin:0 0 .5rem">
+      ${Object.entries(breakdown).map(([d,n])=>`<div style="background:var(--bg);border-radius:8px;padding:6px 4px;text-align:center">
+        <div style="font-size:16px">${getDiffEmoji(d)}</div>
+        <div style="font-size:14px;font-weight:600">${n}</div>
+        <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase">${{new:'Neu',learning:'Lernend',hard:'Schwer',mastered:'Gemeist.'}[d]}</div>
+      </div>`).join('')}
+    </div>`;
+  document.getElementById('fc-retry-btn').style.display=fcHardCards.length?'block':'none';
+}
+
+function restartHard(){
+  if(!fcHardCards.length){showToast('Keine schweren Karten!');return}
+  fcDeck=shuffle([...fcHardCards]).map(c=>({...c,_dir:fcDirection==='mixed'?(Math.random()<0.5?'es2de':'de2es'):fcDirection}));
+  fcIndex=0;fcKnown=0;fcUnknown=0;fcFlipped=false;fcHardCards=[];
+  document.getElementById('fc-main').style.display='block';
+  document.getElementById('fc-done').style.display='none';
+  updateFcStats();showFcCard();
+}
+
+// ── GRAMMAR EXERCISE (AI-generated questions) ──
+let exerciseState={tense:'',questions:[],idx:0,score:0,answered:false,loading:false};
+
+async function startExercise(tense){
+  exerciseState={tense,questions:[],idx:0,score:0,answered:false,loading:true};
+  const area=document.getElementById('exercise-area');
+  area.innerHTML='<div class="loading"><div class="spinner"></div>KI generiert neue Aufgaben…</div>';
+  const d=GRAMMAR_DATA[tense];
+  const prompt=`Erstelle genau 6 spanische Lückentextaufgaben für die Zeitform "${d.name}".
+Jede Aufgabe hat:
+- einen natürlichen spanischen Satz mit ___ als Lücke (das fehlende konjugierte Verb in Klammern dahinter)
+- die korrekte Antwort (nur das konjugierte Verb)
+- die vollständige deutsche Übersetzung des Satzes (MIT dem richtigen Verb, nicht mit Lücke)
+- einen kurzen Grammatik-Hinweis
+
+Nutze verschiedene Verben und Personen. Beantworte NUR mit einem JSON-Array, kein Text davor oder danach:
+[{"sentence":"Yo ___ (hablar) con mi jefa todos los lunes.","answer":"hablo","translation":"Ich spreche jeden Montag mit meiner Chefin.","hint":"yo + -AR Presente → -o"},...]`;
+  try {
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
+    });
+    const data=await resp.json();
+    const raw=data.content?.find(b=>b.type==='text')?.text||'';
+    const clean=raw.replace(/```json|```/g,'').trim();
+    exerciseState.questions=JSON.parse(clean);
+    exerciseState.loading=false;
+    showExerciseQuestion();
+  } catch(err) {
+    area.innerHTML=`<div style="color:var(--red);padding:.5rem">Fehler beim Laden: ${err.message}. <button class="btn btn-sm" onclick="startExercise('${tense}')">Nochmal</button></div>`;
+  }
+}
+
+function showExerciseQuestion(){
+  const qs=exerciseState.questions;
+  const idx=exerciseState.idx;
+  if(!qs.length||idx>=qs.length){finishExercise();return}
+  const ex=qs[idx];
+  const total=qs.length;
+  const pct=Math.round((idx/total)*100);
+  const sentenceHtml=ex.sentence.replace('___','<span style="background:var(--border);padding:2px 10px;border-radius:4px;font-style:italic;font-size:15px">___</span>');
+  document.getElementById('exercise-area').innerHTML=`
+    <div style="margin-bottom:.75rem">
+      <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:4px">
+        <span>Frage ${idx+1} / ${total}</span><span>${pct}%</span>
+      </div>
+      <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden">
+        <div style="height:100%;width:${pct}%;background:var(--green-mid);border-radius:2px;transition:width .3s"></div>
+      </div>
+    </div>
+    <div style="font-size:15px;color:var(--text);margin-bottom:.5rem;line-height:1.8">${sentenceHtml}</div>
+    <div style="font-size:13px;color:var(--text-muted);font-style:italic;margin-bottom:.875rem;padding:6px 10px;background:var(--bg);border-radius:6px">🇩🇪 ${ex.translation||''}</div>
+    <div style="font-size:12px;color:var(--text-light);margin-bottom:.75rem">💡 ${ex.hint||''}</div>
+    <div style="display:flex;gap:8px">
+      <input type="text" id="ex-input" placeholder="Konjugiertes Verb eingeben…" style="flex:1" onkeydown="if(event.key==='Enter')checkGrammarAnswer()">
+      <button class="btn btn-primary" onclick="checkGrammarAnswer()">Prüfen</button>
+    </div>
+    <div id="ex-feedback" style="margin-top:.75rem;min-height:24px"></div>`;
+  setTimeout(()=>document.getElementById('ex-input')?.focus(),50);
+}
+
+function checkGrammarAnswer(){
+  if(exerciseState.answered)return;
+  const ex=exerciseState.questions[exerciseState.idx];
+  const input=document.getElementById('ex-input');
+  if(!input)return;
+  const val=input.value.trim().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const correct=(ex.answer||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+  const isOk=val===correct;
+  if(isOk)exerciseState.score++;
+  exerciseState.answered=true;
+  input.disabled=true;
+  const solvedSentence=ex.sentence.replace('___',`<strong>${ex.answer}</strong>`);
+  const fb=document.getElementById('ex-feedback');
+  fb.innerHTML=isOk
+    ?`<div style="color:var(--green-dark);background:var(--green-light);padding:10px 12px;border-radius:8px;font-size:14px"><b>✓ Richtig!</b> <em>${solvedSentence}</em></div>`
+    :`<div style="color:var(--red);background:var(--red-light);padding:10px 12px;border-radius:8px;font-size:14px"><b>✗ Falsch.</b> Richtig: <strong>${ex.answer}</strong><br><em style="font-size:13px">${solvedSentence}</em></div>`;
+  const isLast=exerciseState.idx>=exerciseState.questions.length-1;
+  fb.innerHTML+=`<div style="margin-top:8px;text-align:right">
+    <button class="btn btn-primary btn-sm" onclick="${isLast?'finishExercise()':'nextGrammarQuestion()'}">
+      ${isLast?'Ergebnis sehen ▶':'Nächste Frage →'}
+    </button></div>`;
+}
+
+function nextGrammarQuestion(){
+  exerciseState.idx++;
+  exerciseState.answered=false;
+  showExerciseQuestion();
+}
+
+function finishExercise(){
+  const total=exerciseState.questions.length;
+  const s=exerciseState.score;
+  const pct=total>0?Math.round((s/total)*100):0;
+  const icon=pct>=80?'🎉':pct>=50?'👍':'💪';
+  document.getElementById('exercise-area').innerHTML=`
+    <div style="text-align:center;padding:1rem 0">
+      <div style="font-size:40px;margin-bottom:.5rem">${icon}</div>
+      <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--green-dark);margin-bottom:.25rem">${s} / ${total} richtig</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:1.25rem">${pct}% — ${pct>=80?'Ausgezeichnet!':pct>=50?'Gut gemacht!':'Weiter üben!'}</div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="startExercise('${exerciseState.tense}')">Neue Aufgaben generieren 🔄</button>
+        <button class="btn btn-sm" onclick="showGrammar('${exerciseState.tense}')">Theorie lesen</button>
+      </div>
+    </div>`;
+}
+
+// ── IRREG VOCAB QUIZ ──
+let ivQuiz={active:false,deck:[],idx:0,score:0,flipped:false,wrong:[]};
+
+function startIrregQuiz(){
+  const filtered=currentIrregFilter==='alle'?IRREG_VOCAB:IRREG_VOCAB.filter(v=>v.cat===currentIrregFilter);
+  if(!filtered.length){showToast('Keine Vokabeln für diese Auswahl!');return}
+  ivQuiz={active:true,deck:shuffle(filtered.map(v=>v)),idx:0,score:0,flipped:false,wrong:[]};
+  renderIrregQuizCard();
+  document.getElementById('iv-quiz-area').style.display='block';
+  document.getElementById('iv-list-area').style.display='none';
+  document.getElementById('iv-quiz-btn').textContent='Übung beenden';
+  document.getElementById('iv-quiz-btn').onclick=stopIrregQuiz;
+}
+
+function stopIrregQuiz(){
+  ivQuiz.active=false;
+  document.getElementById('iv-quiz-area').style.display='none';
+  document.getElementById('iv-list-area').style.display='block';
+  document.getElementById('iv-quiz-btn').textContent='Übung starten ▶';
+  document.getElementById('iv-quiz-btn').onclick=startIrregQuiz;
+}
+
+function renderIrregQuizCard(){
+  const area=document.getElementById('iv-quiz-area');
+  if(ivQuiz.idx>=ivQuiz.deck.length){
+    const pct=Math.round((ivQuiz.score/ivQuiz.deck.length)*100);
+    area.innerHTML=`<div class="card fc-done">
+      <div class="fc-done-icon">${pct>=80?'🎉':pct>=50?'👍':'💪'}</div>
+      <div class="fc-done-title">${ivQuiz.score}/${ivQuiz.deck.length} richtig</div>
+      <div style="font-size:13px;color:var(--text-muted);margin-bottom:1rem">${pct}% — ${pct>=80?'Super!':pct>=50?'Gut!':'Weiter üben!'}</div>
+      <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
+        <button class="btn btn-primary btn-sm" onclick="startIrregQuiz()">Nochmal</button>
+        <button class="btn btn-sm" onclick="stopIrregQuiz()">Zur Liste</button>
+      </div></div>`;
+    return;
+  }
+  const v=ivQuiz.deck[ivQuiz.idx];
+  const total=ivQuiz.deck.length;
+  const pct=Math.round((ivQuiz.idx/total)*100);
+  if(!ivQuiz.flipped){
+    area.innerHTML=`
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
+          <span>${ivQuiz.idx+1} / ${total}</span><span>${ivQuiz.score} richtig</span>
+        </div>
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:1rem">
+          <div style="height:100%;width:${pct}%;background:var(--green-mid);border-radius:2px"></div>
+        </div>
+        <div style="text-align:center;padding:1.25rem 0">
+          <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:.4rem">Spanisch</div>
+          <div style="font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:var(--green-dark);margin-bottom:.25rem">${v.verb}</div>
+          <div style="font-size:12px;color:var(--text-light)">Was bedeutet dieses Verb?</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%" onclick="flipIrregCard()">Aufdecken 👁</button>
+      </div>`;
+  } else {
+    area.innerHTML=`
+      <div class="card">
+        <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--text-muted);margin-bottom:6px">
+          <span>${ivQuiz.idx+1} / ${total}</span><span>${ivQuiz.score} richtig</span>
+        </div>
+        <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:1rem">
+          <div style="height:100%;width:${pct}%;background:var(--green-mid);border-radius:2px"></div>
+        </div>
+        <div style="text-align:center;padding:.75rem 0">
+          <div style="font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--green-dark)">${v.verb}</div>
+          <div style="font-size:16px;color:var(--text-muted);margin:.25rem 0">${v.de}</div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:.75rem 0">
+          <div style="background:var(--bg);border-radius:7px;padding:6px 4px;text-align:center">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-light);margin-bottom:2px">yo</div>
+            <div style="font-size:13px;font-weight:600">${v.yo1}</div>
+          </div>
+          <div style="background:var(--bg);border-radius:7px;padding:6px 4px;text-align:center">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-light);margin-bottom:2px">él/ella</div>
+            <div style="font-size:13px;font-weight:600">${v.el3}</div>
+          </div>
+          <div style="background:var(--bg);border-radius:7px;padding:6px 4px;text-align:center">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-light);margin-bottom:2px">indef.</div>
+            <div style="font-size:13px;font-weight:600">${v.pret}</div>
+          </div>
+          <div style="background:var(--bg);border-radius:7px;padding:6px 4px;text-align:center">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text-light);margin-bottom:2px">imperf.</div>
+            <div style="font-size:13px;font-weight:600">${v.imp}</div>
+          </div>
+        </div>
+        <div style="background:var(--gold-light);border-radius:8px;padding:8px 10px;font-size:12px;color:#7a5c1e;margin-bottom:.875rem">💡 ${v.tip}</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-unknown" style="flex:1" onclick="markIrregCard(false)">✕ Nochmal</button>
+          <button class="btn btn-known" style="flex:1" onclick="markIrregCard(true)">✓ Bekannt</button>
+        </div>
+      </div>`;
+  }
+}
+
+function flipIrregCard(){ivQuiz.flipped=true;renderIrregQuizCard()}
+
+function markIrregCard(ok){
+  if(ok)ivQuiz.score++;else ivQuiz.wrong.push(ivQuiz.deck[ivQuiz.idx]);
+  ivQuiz.idx++;ivQuiz.flipped=false;
+  renderIrregQuizCard();
+}
+
+// ── IRREGULÄRE VOKABELN ──
+const IRREG_VOCAB=[
+  // ─── GRUPO: Presente irregular ───
+  {verb:'ser',de:'sein (dauerhaft)',tenseGroup:'Presente',cat:'modal',yo1:'soy',el3:'es',pret:'fui',imp:'era',
+   es_example:'Soy alemán y soy estudiante de comercio electrónico.',
+   de_example:'Ich bin Deutscher und Student des E-Commerce.',
+   tip:'ser vs. estar: ser = dauerhafte Eigenschaften (Herkunft, Beruf, Charakter)'},
+  {verb:'estar',de:'sein / sich befinden',tenseGroup:'Presente',cat:'modal',yo1:'estoy',el3:'está',pret:'estuve',imp:'estaba',
+   es_example:'Estoy muy contento porque hoy aprendo español.',
+   de_example:'Ich bin sehr zufrieden, weil ich heute Spanisch lerne.',
+   tip:'estar = vorübergehender Zustand (Gefühl, Ort, Gesundheit)'},
+  {verb:'tener',de:'haben',tenseGroup:'Presente',cat:'go-verben',yo1:'tengo',el3:'tiene',pret:'tuve',imp:'tenía',
+   es_example:'Tengo muchas ganas de practicar el español contigo.',
+   de_example:'Ich freue mich sehr darauf, Spanisch mit dir zu üben.',
+   tip:'tengo (yo) aber tienes/tiene — "go-Verb" nur in der yo-Form. tener que + Inf. = müssen'},
+  {verb:'hacer',de:'machen / tun',tenseGroup:'Presente',cat:'go-verben',yo1:'hago',el3:'hace',pret:'hice',imp:'hacía',
+   es_example:'Hago deporte todos los días para mantenerme en forma.',
+   de_example:'Ich treibe jeden Tag Sport, um fit zu bleiben.',
+   tip:'hago (yo) aber haces/hace. hace + Zeit = vor X Zeit: Hace dos años = vor zwei Jahren'},
+  {verb:'poner',de:'stellen / legen / setzen',tenseGroup:'Presente',cat:'go-verben',yo1:'pongo',el3:'pone',pret:'puse',imp:'ponía',
+   es_example:'Cada mañana me pongo los auriculares y escucho música.',
+   de_example:'Jeden Morgen setze ich mir die Kopfhörer auf und höre Musik.',
+   tip:'ponerse = sich anziehen / werden (Zustand): Me pongo nervioso = ich werde nervös'},
+  {verb:'salir',de:'ausgehen / weggehen',tenseGroup:'Presente',cat:'go-verben',yo1:'salgo',el3:'sale',pret:'salí',imp:'salía',
+   es_example:'Los viernes salgo con mis amigos después del trabajo.',
+   de_example:'Freitags gehe ich nach der Arbeit mit meinen Freunden aus.',
+   tip:'salgo (yo) aber sales/sale. salir de = verlassen; salir con = ausgehen mit'},
+  {verb:'traer',de:'bringen / mitbringen',tenseGroup:'Presente',cat:'go-verben',yo1:'traigo',el3:'trae',pret:'traje',imp:'traía',
+   es_example:'Siempre traigo algo de comer a las reuniones del equipo.',
+   de_example:'Ich bringe immer etwas zu essen zu den Teambesprechungen mit.',
+   tip:'traigo (yo) aber traes/trae. traer vs. llevar: traer = zum Sprecher bringen'},
+  {verb:'saber',de:'wissen / können',tenseGroup:'Presente',cat:'go-verben',yo1:'sé',el3:'sabe',pret:'supe',imp:'sabía',
+   es_example:'¿Sabes hablar español? Yo sé un poco todavía.',
+   de_example:'Kannst du Spanisch sprechen? Ich kann noch ein bisschen.',
+   tip:'sé (yo) aber sabes/sabe. saber vs. conocer: saber = Fakten/Fähigkeiten; conocer = Personen/Orte'},
+  {verb:'conocer',de:'kennen / kennenlernen',tenseGroup:'Presente',cat:'go-verben',yo1:'conozco',el3:'conoce',pret:'conocí',imp:'conocía',
+   es_example:'Conozco a mucha gente interesante en mi trabajo en CHECK24.',
+   de_example:'Ich kenne viele interessante Leute in meiner Arbeit bei CHECK24.',
+   tip:'conozco (yo) aber conoces/conoce. Im Indefinido = kennengelernt haben'},
+  {verb:'ver',de:'sehen / schauen',tenseGroup:'Presente',cat:'go-verben',yo1:'veo',el3:'ve',pret:'vi',imp:'veía',
+   es_example:'Veo series en español para mejorar mi comprensión.',
+   de_example:'Ich schaue Serien auf Spanisch, um mein Hörverstehen zu verbessern.',
+   tip:'veo (yo) aber ves/ve. ver vs. mirar: ver = (zufällig) sehen; mirar = absichtlich schauen'},
+
+  // ─── GRUPO: Pretérito Indefinido irregular ───
+  {verb:'ir / ser',de:'gehen / sein (Indefinido identisch)',tenseGroup:'Indefinido',cat:'vokalwechsel',yo1:'fui',el3:'fue',pret:'fui',imp:'iba / era',
+   es_example:'Fui a Madrid el año pasado y fue una experiencia increíble.',
+   de_example:'Ich fuhr letztes Jahr nach Madrid und es war eine unglaubliche Erfahrung.',
+   tip:'ir und ser haben IDENTISCHE Formen im Indefinido: fui, fuiste, fue, fuimos, fuisteis, fueron'},
+  {verb:'tener',de:'haben (Indefinido)',tenseGroup:'Indefinido',cat:'vokalwechsel',yo1:'tuve',el3:'tuvo',pret:'tuve',imp:'tenía',
+   es_example:'Tuve una reunión muy importante con un cliente ayer.',
+   de_example:'Ich hatte gestern ein sehr wichtiges Meeting mit einem Kunden.',
+   tip:'Stamm ändert sich: ten- → tuv-. Endungen: -e, -iste, -o, -imos, -isteis, -ieron'},
+  {verb:'hacer',de:'machen (Indefinido)',tenseGroup:'Indefinido',cat:'vokalwechsel',yo1:'hice',el3:'hizo',pret:'hice',imp:'hacía',
+   es_example:'¿Qué hiciste el fin de semana? Yo hice deporte y descansé.',
+   de_example:'Was hast du am Wochenende gemacht? Ich habe Sport gemacht und mich ausgeruht.',
+   tip:'hice/hiciste/hizo — Achtung: hizo (3. Pers.) mit z statt c (Aussprache bleibt gleich)'},
+  {verb:'estar',de:'sein (Indefinido)',tenseGroup:'Indefinido',cat:'vokalwechsel',yo1:'estuve',el3:'estuvo',pret:'estuve',imp:'estaba',
+   es_example:'Estuve en una formación profesional todo el día.',
+   de_example:'Ich war den ganzen Tag in einer Berufsausbildung.',
+   tip:'estuv-: estuve, estuviste, estuvo, estuvimos, estuvisteis, estuvieron'},
+  {verb:'poder',de:'können (Indefinido)',tenseGroup:'Indefinido',cat:'vokalwechsel',yo1:'pude',el3:'pudo',pret:'pude',imp:'podía',
+   es_example:'No pude terminar el proyecto a tiempo porque surgieron problemas.',
+   de_example:'Ich konnte das Projekt nicht rechtzeitig beenden, weil Probleme auftraten.',
+   tip:'pud-: pude, pudiste, pudo, pudimos, pudisteis, pudieron'},
+  {verb:'decir',de:'sagen (Indefinido)',tenseGroup:'Indefinido',cat:'go-verben',yo1:'digo',el3:'dijo',pret:'dije',imp:'decía',
+   es_example:'Le dije a mi jefe que quería aprender más sobre ventas B2B.',
+   de_example:'Ich sagte meinem Chef, dass ich mehr über B2B-Vertrieb lernen wollte.',
+   tip:'dij-: dije, dijiste, dijo, dijimos, dijisteis, dijeron — kein i in der 3. Pers. Plural!'},
+  {verb:'venir',de:'kommen (Indefinido)',tenseGroup:'Indefinido',cat:'go-verben',yo1:'vengo',el3:'vino',pret:'vine',imp:'venía',
+   es_example:'Vine a Berlín hace dos años buscando mejores oportunidades.',
+   de_example:'Ich kam vor zwei Jahren nach Berlin auf der Suche nach besseren Möglichkeiten.',
+   tip:'vin-: vine, viniste, vino, vinimos, vinisteis, vinieron'},
+  {verb:'traer',de:'bringen (Indefinido)',tenseGroup:'Indefinido',cat:'go-verben',yo1:'traigo',el3:'trajo',pret:'traje',imp:'traía',
+   es_example:'El proveedor trajo las muestras directamente a la oficina.',
+   de_example:'Der Lieferant brachte die Muster direkt ins Büro.',
+   tip:'traj-: traje, trajiste, trajo, trajimos, trajisteis, trajeron — auch kein i in 3. Pers. Plural'},
+
+  // ─── GRUPO: Pretérito Imperfecto irregular ───
+  {verb:'ser',de:'sein (Imperfecto)',tenseGroup:'Imperfecto',cat:'modal',yo1:'era',el3:'era',pret:'fui',imp:'era',
+   es_example:'Cuando era niño, siempre quería aprender idiomas nuevos.',
+   de_example:'Als ich Kind war, wollte ich immer neue Sprachen lernen.',
+   tip:'ser ist eines von NUR 3 unregelmäßigen Verben im Imperfecto: era, eras, era, éramos, erais, eran'},
+  {verb:'ir',de:'gehen (Imperfecto)',tenseGroup:'Imperfecto',cat:'vokalwechsel',yo1:'iba',el3:'iba',pret:'fui',imp:'iba',
+   es_example:'Antes iba al gimnasio tres veces por semana.',
+   de_example:'Früher ging ich dreimal pro Woche ins Fitnessstudio.',
+   tip:'ir Imperfecto: iba, ibas, iba, íbamos, ibais, iban — eines der 3 Ausnahmen'},
+  {verb:'ver',de:'sehen (Imperfecto)',tenseGroup:'Imperfecto',cat:'go-verben',yo1:'veía',el3:'veía',pret:'vi',imp:'veía',
+   es_example:'De pequeño, veía dibujos animados todas las mañanas.',
+   de_example:'Als ich klein war, schaute ich jeden Morgen Zeichentrickfilme.',
+   tip:'ver Imperfecto: veía, veías, veía, veíamos, veíais, veían — das dritte Ausnahme-Verb'},
+
+  // ─── GRUPO: Futuro irregular ───
+  {verb:'tener',de:'haben (Futuro)',tenseGroup:'Futuro',cat:'go-verben',yo1:'tendré',el3:'tendrá',pret:'tuve',imp:'tenía',
+   es_example:'El año que viene tendré más experiencia en ventas B2B.',
+   de_example:'Nächstes Jahr werde ich mehr Erfahrung im B2B-Vertrieb haben.',
+   tip:'Unregelmäßiger Stamm: tendr-. Endungen regulär: -é, -ás, -á, -emos, -éis, -án'},
+  {verb:'hacer',de:'machen (Futuro)',tenseGroup:'Futuro',cat:'go-verben',yo1:'haré',el3:'hará',pret:'hice',imp:'hacía',
+   es_example:'¿Qué harás cuando termines tu Ausbildung?',
+   de_example:'Was wirst du machen, wenn du deine Ausbildung beendest?',
+   tip:'Unregelmäßiger Stamm: har- (kürzer als Infinitiv). Häufiger Fehler: hacerá → haré/hará'},
+  {verb:'poder',de:'können (Futuro)',tenseGroup:'Futuro',cat:'vokalwechsel',yo1:'podré',el3:'podrá',pret:'pude',imp:'podía',
+   es_example:'Con práctica diaria, podrás hablar español con fluidez.',
+   de_example:'Mit täglichem Üben wirst du fließend Spanisch sprechen können.',
+   tip:'podr-: podré, podrás, podrá, podremos, podréis, podrán'},
+  {verb:'salir',de:'ausgehen (Futuro)',tenseGroup:'Futuro',cat:'go-verben',yo1:'saldré',el3:'saldrá',pret:'salí',imp:'salía',
+   es_example:'Cuando llegues a México, saldrás a explorar la ciudad enseguida.',
+   de_example:'Wenn du in Mexiko ankommst, wirst du sofort die Stadt erkunden.',
+   tip:'saldr-: saldré, saldrás, saldrá, saldremos, saldréis, saldrán'},
+  {verb:'venir',de:'kommen (Futuro)',tenseGroup:'Futuro',cat:'go-verben',yo1:'vendré',el3:'vendrá',pret:'vine',imp:'venía',
+   es_example:'Mi profesor vendrá a la próxima clase con materiales nuevos.',
+   de_example:'Mein Lehrer wird mit neuen Materialien zur nächsten Stunde kommen.',
+   tip:'vendr-: vendré, vendrás, vendrá, vendremos, vendréis, vendrán'},
+
+  // ─── GRUPO: Condicional irregular ───
+  {verb:'querer',de:'wollen / lieben (Condicional)',tenseGroup:'Condicional',cat:'vokalwechsel',yo1:'querría',el3:'querría',pret:'quise',imp:'quería',
+   es_example:'Querría vivir en México durante un año para mejorar mi español.',
+   de_example:'Ich würde gerne ein Jahr in Mexiko leben, um mein Spanisch zu verbessern.',
+   tip:'querr-: querría, querrías, querría — dieselben unregelmäßigen Stämme wie im Futuro'},
+  {verb:'poder',de:'können (Condicional)',tenseGroup:'Condicional',cat:'vokalwechsel',yo1:'podría',el3:'podría',pret:'pude',imp:'podía',
+   es_example:'¿Podrías explicarme la diferencia entre ser y estar otra vez?',
+   de_example:'Könntest du mir den Unterschied zwischen ser und estar nochmal erklären?',
+   tip:'podría ist die höfliche Form von "können" — sehr häufig in formellen Gesprächen'},
+  {verb:'hacer',de:'machen (Condicional)',tenseGroup:'Condicional',cat:'go-verben',yo1:'haría',el3:'haría',pret:'hice',imp:'hacía',
+   es_example:'¿Qué harías si tuvieras un año libre para viajar?',
+   de_example:'Was würdest du tun, wenn du ein freies Jahr zum Reisen hättest?',
+   tip:'har-: haría, harías, haría, haríamos, haríais, harían'},
+
+  // ─── GRUPO: Subjuntivo irregular ───
+  {verb:'ser',de:'sein (Subjuntivo)',tenseGroup:'Subjuntivo',cat:'modal',yo1:'sea',el3:'sea',pret:'fui',imp:'era',
+   es_example:'Espero que mi español sea cada vez mejor.',
+   de_example:'Ich hoffe, dass mein Spanisch immer besser wird.',
+   tip:'sea, seas, sea, seamos, seáis, sean — völlig unregelmäßig, muss auswendig gelernt werden'},
+  {verb:'estar',de:'sein (Subjuntivo)',tenseGroup:'Subjuntivo',cat:'modal',yo1:'esté',el3:'esté',pret:'estuve',imp:'estaba',
+   es_example:'Es importante que estés concentrado durante la clase.',
+   de_example:'Es ist wichtig, dass du während des Unterrichts konzentriert bist.',
+   tip:'esté, estés, esté, estemos, estéis, estén — Akzentzeichen auf allen Formen außer nosotros/vosotros'},
+  {verb:'ir',de:'gehen (Subjuntivo)',tenseGroup:'Subjuntivo',cat:'vokalwechsel',yo1:'vaya',el3:'vaya',pret:'fui',imp:'iba',
+   es_example:'Quiero que vayas a México conmigo el año que viene.',
+   de_example:'Ich möchte, dass du nächstes Jahr mit mir nach Mexiko gehst.',
+   tip:'vaya, vayas, vaya, vayamos, vayáis, vayan — völlig unregelmäßig'},
+  {verb:'tener',de:'haben (Subjuntivo)',tenseGroup:'Subjuntivo',cat:'go-verben',yo1:'tenga',el3:'tenga',pret:'tuve',imp:'tenía',
+   es_example:'Es necesario que tengas paciencia para aprender un idioma.',
+   de_example:'Es ist notwendig, dass du Geduld hast, um eine Sprache zu lernen.',
+   tip:'tenga, tengas, tenga, tengamos, tengáis, tengan — Stamm vom Presente yo: tengo → teng-'},
+  {verb:'hacer',de:'machen (Subjuntivo)',tenseGroup:'Subjuntivo',cat:'go-verben',yo1:'haga',el3:'haga',pret:'hice',imp:'hacía',
+   es_example:'Ojalá haga buen tiempo cuando viaje a Monterrey.',
+   de_example:'Hoffentlich wird das Wetter schön sein, wenn ich nach Monterrey reise.',
+   tip:'haga, hagas, haga, hagamos, hagáis, hagan — Stamm: hago → hag-'},
+
+  // ─── GRUPO: Reflexive Verben ───
+  {verb:'llamarse',de:'heißen',tenseGroup:'Reflexiv',cat:'reflexiv',yo1:'me llamo',el3:'se llama',pret:'me llamé',imp:'me llamaba',
+   es_example:'Me llamo Alex y estoy aprendiendo español con un profesor.',
+   de_example:'Ich heiße Alex und lerne Spanisch mit einem Lehrer.',
+   tip:'¿Cómo te llamas? = Wie heißt du? Reflexivpronomen: me, te, se, nos, os, se'},
+  {verb:'levantarse',de:'aufstehen',tenseGroup:'Reflexiv',cat:'reflexiv',yo1:'me levanto',el3:'se levanta',pret:'me levanté',imp:'me levantaba',
+   es_example:'Normalmente me levanto a las seis para llegar al trabajo a tiempo.',
+   de_example:'Normalerweise stehe ich um sechs auf, um pünktlich zur Arbeit zu kommen.',
+   tip:'Reflexivpronomen steht vor dem konjugierten Verb oder nach dem Infinitiv: levantarme'},
+  {verb:'sentirse',de:'sich fühlen',tenseGroup:'Reflexiv',cat:'reflexiv',yo1:'me siento',el3:'se siente',pret:'me sentí',imp:'me sentía',
+   es_example:'¿Cómo te sientes cuando hablas español en clase?',
+   de_example:'Wie fühlst du dich, wenn du im Unterricht Spanisch sprichst?',
+   tip:'sentirse + adj: Me siento seguro = ich fühle mich sicher. e→ie Vokalwechsel im Presente'},
+  {verb:'acostarse',de:'sich hinlegen / schlafen gehen',tenseGroup:'Reflexiv',cat:'reflexiv',yo1:'me acuesto',el3:'se acuesta',pret:'me acosté',imp:'me acostaba',
+   es_example:'Me acuesto tarde los viernes porque salgo con amigos.',
+   de_example:'Ich gehe freitagabends spät schlafen, weil ich mit Freunden ausgehe.',
+   tip:'o→ue Vokalwechsel + reflexiv. acostarse = schlafen gehen; acostar a alguien = jemanden hinlegen'}
+];
+
+let currentIrregFilter='alle';
+
+function filterIrregVocab(cat){
+  currentIrregFilter=cat;
+  document.querySelectorAll('[id^="ivf-"]').forEach(b=>b.classList.remove('active'));
+  document.getElementById('ivf-'+cat)?.classList.add('active');
+  renderIrregVocab();
+}
+
+function renderIrregVocab(){
+  const filtered=currentIrregFilter==='alle'?IRREG_VOCAB:IRREG_VOCAB.filter(v=>v.cat===currentIrregFilter);
+  const catLabel={vokalwechsel:'Vokalwechsel','go-verben':'Go-Verben (yo-Form)',reflexiv:'Reflexive Verben',modal:'Modalverben'};
+  document.getElementById('irreg-vocab-list').innerHTML=filtered.map(v=>`
+    <div class="card" style="margin-bottom:.75rem">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">
+        <div>
+          <span style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green-dark)">${v.verb}</span>
+          <span style="font-size:14px;color:var(--text-muted);margin-left:8px">${v.de}</span>
+        </div>
+        <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--green-light);color:var(--green-dark)">${catLabel[v.cat]||v.cat}</span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:.75rem">
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">yo (Pres.)</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.yo1}</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">él/ella</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.el3}</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">Indefinido</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.pret}</div>
+        </div>
+        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">Imperfecto</div>
+          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.imp}</div>
+        </div>
+      </div>
+      <div style="background:var(--gold-light,#fdf3e0);border-radius:8px;padding:8px 12px;font-size:13px;color:#7a5c1e;line-height:1.55;border-left:3px solid var(--gold)">
+        💡 ${v.tip}
+      </div>
+    </div>`).join('');
+}
+
+// ── INIT (call grammar and irreg on first render) ──
+showGrammar('presente');
+renderIrregVocab();
 
 // ── INIT ──
 updateHeaderStats();
