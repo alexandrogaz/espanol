@@ -2,652 +2,231 @@
 <html lang="de">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EspaÃ±ol — Lern-App</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>español — Lern-App</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --green: #1a7a56;
-    --green-light: #e8f5ef;
-    --green-mid: #2da870;
-    --green-dark: #0f4f38;
-    --gold: #c9972a;
-    --gold-light: #fdf3e0;
-    --red: #c0392b;
-    --red-light: #fdecea;
-    --bg: #f7f5f0;
-    --surface: #ffffff;
-    --surface2: #f2f0ea;
-    --border: #e2ddd4;
-    --text: #1c1a16;
-    --text-muted: #7a7267;
-    --text-light: #b0a89a;
-    --radius: 14px;
-    --shadow: 0 2px 12px rgba(28,26,22,0.08);
-    --shadow-lg: 0 8px 40px rgba(28,26,22,0.13);
-  }
-
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  body {
-    font-family: 'DM Sans', sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    min-height: 100vh;
-    font-size: 15px;
-    line-height: 1.6;
-  }
-
-  /* Header */
-  .header {
-    background: var(--green-dark);
-    padding: 1.25rem 2rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
-  }
-
-  .header-logo {
-    font-family: 'Playfair Display', serif;
-    font-size: 22px;
-    color: #fff;
-    font-weight: 700;
-    letter-spacing: -0.3px;
-  }
-
-  .header-logo span {
-    color: var(--gold);
-  }
-
-  .header-stats {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  .hstat {
-    text-align: center;
-  }
-
-  .hstat-num {
-    font-size: 18px;
-    font-weight: 600;
-    color: #fff;
-    line-height: 1;
-  }
-
-  .hstat-lbl {
-    font-size: 10px;
-    color: rgba(255,255,255,0.55);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin-top: 2px;
-  }
-
-  /* Navigation tabs */
-  .nav {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    padding: 0 2rem;
-    gap: 0;
-  }
-
-  .nav-tab {
-    padding: 1rem 1.5rem;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    margin-bottom: -1px;
-    background: none;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    transition: color 0.2s, border-color 0.2s;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-
-  .nav-tab .icon { font-size: 16px; }
-  .nav-tab:hover { color: var(--green); }
-  .nav-tab.active { color: var(--green-dark); border-bottom-color: var(--green-mid); font-weight: 600; }
-
-  /* Main layout */
-  .main {
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 2rem 1.5rem;
-  }
-
-  /* Panel */
-  .panel { display: none; animation: fadeIn 0.25s ease; }
-  .panel.active { display: block; }
-
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(6px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  /* Cards */
-  .card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1.5rem;
-    margin-bottom: 1.25rem;
-    box-shadow: var(--shadow);
-  }
-
-  .card-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 17px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .card-title .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--green-mid);
-    flex-shrink: 0;
-  }
-
-  /* Buttons */
-  .btn {
-    padding: 9px 18px;
-    border-radius: 8px;
-    font-size: 14px;
-    font-weight: 500;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.15s;
-  }
-
-  .btn:hover { background: var(--bg); border-color: #ccc; }
-  .btn:active { transform: scale(0.98); }
-
-  .btn-primary {
-    background: var(--green);
-    color: #fff;
-    border-color: var(--green);
-  }
-
-  .btn-primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
-  .btn-primary:disabled { background: #9fd4bc; border-color: #9fd4bc; cursor: not-allowed; transform: none; }
-
-  .btn-sm { padding: 5px 12px; font-size: 12px; }
-  .btn-danger { color: var(--red); border-color: #f5c5c2; }
-  .btn-danger:hover { background: var(--red-light); }
-
-  .btn-outline-green {
-    border-color: var(--green-mid);
-    color: var(--green);
-  }
-
-  .btn-outline-green:hover { background: var(--green-light); }
-
-  /* Forms */
-  input[type=text], input[type=number], textarea, select {
-    width: 100%;
-    padding: 9px 13px;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    font-size: 14px;
-    font-family: 'DM Sans', sans-serif;
-    background: var(--surface);
-    color: var(--text);
-    transition: border-color 0.15s, box-shadow 0.15s;
-  }
-
-  input:focus, textarea:focus, select:focus {
-    outline: none;
-    border-color: var(--green-mid);
-    box-shadow: 0 0 0 3px rgba(45, 168, 112, 0.12);
-  }
-
-  label {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .field { margin-bottom: 1rem; }
-
-  /* Divider */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 1.25rem 0;
-  }
-
-  /* Upload area */
-  .upload-area {
-    border: 2px dashed var(--border);
-    border-radius: var(--radius);
-    padding: 1.75rem;
-    text-align: center;
-    cursor: pointer;
-    color: var(--text-muted);
-    font-size: 14px;
-    transition: all 0.2s;
-    background: var(--bg);
-  }
-
-  .upload-area:hover {
-    border-color: var(--green-mid);
-    background: var(--green-light);
-    color: var(--green-dark);
-  }
-
-  .upload-area input { display: none; }
-  .upload-icon { font-size: 28px; margin-bottom: 8px; }
-
-  /* Tags/chips */
-  .chip-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; min-height: 32px; }
-
-  .chip {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 3px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    background: var(--green-light);
-    color: var(--green-dark);
-    border: 1px solid rgba(45,168,112,0.2);
-  }
-
-  .chip.used {
-    background: var(--surface2);
-    color: var(--text-muted);
-    border-color: var(--border);
-  }
-
-  .chip-check { font-size: 10px; }
-
-  /* Loading */
-  .loading {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    color: var(--text-muted);
-    font-size: 14px;
-    padding: 1.5rem 0;
-    justify-content: center;
-  }
-
-  .spinner {
-    width: 18px;
-    height: 18px;
-    border: 2px solid var(--border);
-    border-top-color: var(--green-mid);
-    border-radius: 50%;
-    animation: spin 0.7s linear infinite;
-    flex-shrink: 0;
-  }
-
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* Story output */
-  .story-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-    margin-bottom: 1.25rem;
-    box-shadow: var(--shadow);
-    animation: fadeIn 0.3s ease;
-  }
-
-  .story-header {
-    background: var(--green-dark);
-    padding: 1rem 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .story-date {
-    font-size: 12px;
-    color: rgba(255,255,255,0.6);
-  }
-
-  .story-level-badge {
-    font-size: 11px;
-    font-weight: 700;
-    padding: 3px 10px;
-    border-radius: 20px;
-    background: var(--gold);
-    color: var(--green-dark);
-    letter-spacing: 0.5px;
-  }
-
-  .story-body { padding: 1.5rem; }
-
-  .story-es {
-    font-size: 15px;
-    line-height: 1.8;
-    color: var(--text);
-  }
-
-  .story-es .highlight-word {
-    background: var(--green-light);
-    color: var(--green-dark);
-    padding: 1px 4px;
-    border-radius: 4px;
-    font-weight: 500;
-  }
-
-  .story-toggle {
-    font-size: 12px;
-    font-weight: 600;
-    color: var(--green);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    margin-top: 1rem;
-    border: none;
-    background: none;
-    font-family: 'DM Sans', sans-serif;
-    padding: 0;
-  }
-
-  .story-toggle:hover { color: var(--green-dark); }
-
-  .story-de {
-    display: none;
-    margin-top: 0.75rem;
-    padding: 1rem;
-    background: var(--surface2);
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.7;
-    color: var(--text-muted);
-    border-left: 3px solid var(--green-mid);
-  }
-
-  .used-words-row {
-    padding: 0.75rem 1.5rem;
-    border-top: 1px solid var(--border);
-    background: var(--bg);
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    align-items: center;
-  }
-
-  .used-words-label {
-    font-size: 11px;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-light);
-    margin-right: 4px;
-  }
-
-  /* Verb of the day */
-  .verb-hero {
-    text-align: center;
-    padding: 2.5rem 1.5rem 1.5rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .verb-day-label {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--green-mid);
-    margin-bottom: 0.5rem;
-  }
-
-  .verb-infinitive {
-    font-family: 'Playfair Display', serif;
-    font-size: 42px;
-    font-weight: 700;
-    color: var(--green-dark);
-    line-height: 1;
-    margin-bottom: 0.5rem;
-  }
-
-  .verb-translation {
-    font-size: 16px;
-    color: var(--text-muted);
-    margin-bottom: 1rem;
-  }
-
-  .verb-example {
-    font-size: 14px;
-    color: var(--text-muted);
-    font-style: italic;
-    max-width: 480px;
-    margin: 0 auto;
-  }
-
-  .conjugation-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    padding: 1.5rem;
-  }
-
-  .conj-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 14px;
-    background: var(--bg);
-    border-radius: 8px;
-    border: 1px solid var(--border);
-  }
-
-  .conj-pro { font-size: 13px; color: var(--text-muted); }
-  .conj-form { font-size: 14px; font-weight: 600; color: var(--text); }
-
-  .verb-tense-tabs {
-    display: flex;
-    gap: 6px;
-    padding: 0 1.5rem 0;
-    flex-wrap: wrap;
-  }
-
-  .tense-btn {
-    padding: 5px 14px;
-    font-size: 12px;
-    font-weight: 500;
-    border-radius: 20px;
-    cursor: pointer;
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-muted);
-    font-family: 'DM Sans', sans-serif;
-    transition: all 0.15s;
-  }
-
-  .tense-btn:hover { background: var(--bg); }
-  .tense-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
-
-  /* Learned verbs */
-  .learned-verb-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-  }
-
-  .learned-verb-item:last-child { border-bottom: none; }
-  .lv-name { font-weight: 600; color: var(--green-dark); }
-  .lv-trans { color: var(--text-muted); font-size: 13px; }
-  .lv-date { font-size: 11px; color: var(--text-light); }
-
-  /* Vocab table */
-  .vocab-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
-  }
-
-  .vocab-table th {
-    text-align: left;
-    padding: 8px 12px;
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-    border-bottom: 1px solid var(--border);
-    background: var(--bg);
-  }
-
-  .vocab-table td {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text);
-  }
-
-  .vocab-table tr:last-child td { border-bottom: none; }
-
-  .vocab-table tr:hover td { background: var(--bg); }
-
-  .status-badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 12px;
-    font-size: 11px;
-    font-weight: 600;
-  }
-
-  .status-new { background: var(--green-light); color: var(--green-dark); }
-  .status-used { background: var(--surface2); color: var(--text-muted); }
-
-  /* Grid helpers */
-  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .flex-row { display: flex; gap: 10px; align-items: flex-end; }
-  .flex-row > *:first-child { flex: 1; }
-
-  /* Stats in header */
-  .stats-bar {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin-bottom: 1.5rem;
-  }
-
-  .stat-box {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 1rem;
-    text-align: center;
-    box-shadow: var(--shadow);
-  }
-
-  .stat-num {
-    font-family: 'Playfair Display', serif;
-    font-size: 28px;
-    font-weight: 700;
-    color: var(--green-dark);
-    line-height: 1;
-  }
-
-  .stat-lbl {
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--text-muted);
-    font-weight: 600;
-    margin-top: 4px;
-  }
-
-  /* Range slider */
-  .range-wrap { position: relative; }
-  input[type=range] {
-    width: 100%;
-    accent-color: var(--green-mid);
-    height: 4px;
-  }
-
-  .range-labels {
-    display: flex;
-    justify-content: space-between;
-    font-size: 11px;
-    color: var(--text-light);
-    margin-top: -2px;
-  }
-
-  /* Empty state */
-  .empty-state {
-    text-align: center;
-    padding: 2.5rem 1rem;
-    color: var(--text-muted);
-    font-size: 14px;
-  }
-
-  .empty-icon { font-size: 36px; margin-bottom: 0.75rem; }
-
-  /* Notification toast */
-  .toast {
-    position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
-    background: var(--green-dark);
-    color: #fff;
-    padding: 10px 18px;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 500;
-    box-shadow: var(--shadow-lg);
-    z-index: 9999;
-    animation: slideIn 0.25s ease;
-    max-width: 320px;
-  }
-
-  @keyframes slideIn {
-    from { transform: translateY(12px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-  }
-
-  /* Responsive */
-  @media (max-width: 600px) {
-    .header { padding: 1rem; }
-    .header-stats { gap: 1rem; }
-    .main { padding: 1rem; }
-    .grid-2, .grid-3, .grid-4, .stats-bar { grid-template-columns: 1fr 1fr; }
-    .verb-infinitive { font-size: 32px; }
-    .conjugation-grid { grid-template-columns: 1fr; }
-    .nav { padding: 0 0.5rem; overflow-x: auto; }
-    .nav-tab { padding: 0.75rem 1rem; white-space: nowrap; }
-  }
+:root {
+  --green: #1a7a56; --green-light: #e8f5ef; --green-mid: #2da870; --green-dark: #0f4f38;
+  --gold: #c9972a; --red: #c0392b; --red-light: #fdecea;
+  --bg: #f7f5f0; --surface: #ffffff; --surface2: #f2f0ea;
+  --border: #e2ddd4; --text: #1c1a16; --text-muted: #7a7267; --text-light: #b0a89a;
+  --radius: 14px; --shadow: 0 2px 12px rgba(28,26,22,0.08); --shadow-lg: 0 8px 40px rgba(28,26,22,0.18);
+  --nav-h: 62px; --header-h: 56px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;overflow-x:hidden}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.6}
+
+/* HEADER */
+.header{background:var(--green-dark);height:var(--header-h);padding:0 1.25rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 2px 20px rgba(0,0,0,0.2)}
+.header-logo{font-family:'Playfair Display',serif;font-size:20px;color:#fff;font-weight:700;letter-spacing:-0.3px}
+.header-logo span{color:var(--gold)}
+.header-stats{display:flex;gap:1.25rem}
+.hstat{text-align:center}
+.hstat-num{font-size:17px;font-weight:600;color:#fff;line-height:1}
+.hstat-lbl{font-size:9px;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:.5px;margin-top:2px}
+
+/* DESKTOP TOP NAV */
+.nav-top{background:var(--surface);border-bottom:1px solid var(--border);display:flex;padding:0 1.5rem}
+.nav-top-tab{padding:.875rem 1.25rem;font-size:14px;font-weight:500;cursor:pointer;color:var(--text-muted);border-bottom:2px solid transparent;margin-bottom:-1px;background:none;border-top:none;border-left:none;border-right:none;transition:color .2s,border-color .2s;display:flex;align-items:center;gap:6px;white-space:nowrap}
+.nav-top-tab:hover{color:var(--green)}
+.nav-top-tab.active{color:var(--green-dark);border-bottom-color:var(--green-mid);font-weight:600}
+
+/* MOBILE BOTTOM NAV */
+.nav-bottom{display:none;position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--surface);border-top:1px solid var(--border);z-index:200;box-shadow:0 -2px 16px rgba(28,26,22,0.08)}
+.nav-bottom-inner{height:var(--nav-h);display:flex;align-items:stretch}
+.nav-bottom-tab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;cursor:pointer;background:none;border:none;font-family:'DM Sans',sans-serif;color:var(--text-muted);font-size:10px;font-weight:500;transition:color .15s;padding:8px 4px;touch-action:manipulation}
+.nb-icon{font-size:22px;line-height:1}
+.nav-bottom-tab.active{color:var(--green-dark)}
+
+/* MAIN */
+.main{max-width:860px;margin:0 auto;padding:1.5rem 1.25rem}
+
+/* PANELS */
+.panel{display:none;animation:fadeIn .22s ease}
+.panel.active{display:block}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* CARDS */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem;margin-bottom:1rem;box-shadow:var(--shadow)}
+.card-title{font-family:'Playfair Display',serif;font-size:16px;font-weight:600;color:var(--text);margin-bottom:.875rem;display:flex;align-items:center;gap:8px}
+.card-title .dot{width:7px;height:7px;border-radius:50%;background:var(--green-mid);flex-shrink:0}
+
+/* BUTTONS */
+.btn{padding:10px 18px;border-radius:9px;font-size:14px;font-weight:500;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;transition:all .15s;touch-action:manipulation;min-height:44px}
+.btn:hover{background:var(--bg);border-color:#ccc}
+.btn:active{transform:scale(0.97)}
+.btn-primary{background:var(--green);color:#fff;border-color:var(--green)}
+.btn-primary:hover{background:var(--green-dark);border-color:var(--green-dark)}
+.btn-primary:disabled{background:#9fd4bc;border-color:#9fd4bc;cursor:not-allowed;transform:none}
+.btn-sm{padding:6px 12px;font-size:12px;min-height:36px}
+.btn-danger{color:var(--red);border-color:#f5c5c2}
+.btn-danger:hover{background:var(--red-light)}
+.btn-outline-green{border-color:var(--green-mid);color:var(--green)}
+.btn-outline-green:hover{background:var(--green-light)}
+
+/* FORMS */
+input[type=text],input[type=number],textarea,select{width:100%;padding:11px 13px;border:1px solid var(--border);border-radius:9px;font-size:16px;font-family:'DM Sans',sans-serif;background:var(--surface);color:var(--text);transition:border-color .15s,box-shadow .15s;-webkit-appearance:none;appearance:none;min-height:44px}
+input:focus,textarea:focus,select:focus{outline:none;border-color:var(--green-mid);box-shadow:0 0 0 3px rgba(45,168,112,.12)}
+label{font-size:11px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:5px}
+.field{margin-bottom:.875rem}
+
+/* DIVIDER */
+.divider{height:1px;background:var(--border);margin:1.1rem 0}
+
+/* UPLOAD */
+.upload-area{border:2px dashed var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;cursor:pointer;color:var(--text-muted);font-size:14px;transition:all .2s;background:var(--bg)}
+.upload-area:hover,.upload-area:active{border-color:var(--green-mid);background:var(--green-light);color:var(--green-dark)}
+.upload-area input{display:none}
+.upload-icon{font-size:26px;margin-bottom:6px}
+
+/* CHIPS */
+.chip-row{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;min-height:28px}
+.chip{display:inline-flex;align-items:center;gap:3px;padding:4px 10px;border-radius:20px;font-size:12px;font-weight:500;background:var(--green-light);color:var(--green-dark);border:1px solid rgba(45,168,112,.2)}
+.chip.used{background:var(--surface2);color:var(--text-muted);border-color:var(--border)}
+.chip-check{font-size:9px}
+
+/* LOADING */
+.loading{display:flex;align-items:center;gap:10px;color:var(--text-muted);font-size:14px;padding:1.5rem 0;justify-content:center}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--green-mid);border-radius:50%;animation:spin .7s linear infinite;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* STORY CARD */
+.story-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1rem;box-shadow:var(--shadow);animation:fadeIn .3s ease}
+.story-header{background:var(--green-dark);padding:.875rem 1.25rem;display:flex;justify-content:space-between;align-items:center}
+.story-date{font-size:12px;color:rgba(255,255,255,.6)}
+.story-level-badge{font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--gold);color:var(--green-dark);letter-spacing:.5px}
+.story-body{padding:1.25rem}
+.story-es{font-size:15px;line-height:1.85;color:var(--text)}
+.story-es .hl{background:var(--green-light);color:var(--green-dark);padding:1px 4px;border-radius:4px;font-weight:500}
+.story-toggle{font-size:12px;font-weight:600;color:var(--green);cursor:pointer;display:flex;align-items:center;gap:5px;margin-top:.875rem;border:none;background:none;font-family:'DM Sans',sans-serif;padding:0;min-height:36px}
+.story-de{display:none;margin-top:.75rem;padding:.875rem;background:var(--surface2);border-radius:8px;font-size:14px;line-height:1.7;color:var(--text-muted);border-left:3px solid var(--green-mid)}
+.used-words-row{padding:.75rem 1.25rem;border-top:1px solid var(--border);background:var(--bg);display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.uwl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-light);margin-right:4px}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:1.25rem}
+.stat-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:.875rem .5rem;text-align:center;box-shadow:var(--shadow)}
+.stat-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--green-dark);line-height:1}
+.stat-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);font-weight:600;margin-top:3px}
+
+/* RANGE */
+input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;min-height:auto;border:none;background:transparent}
+.range-labels{display:flex;justify-content:space-between;font-size:11px;color:var(--text-light);margin-top:2px}
+
+/* VERB HERO */
+.verb-hero{text-align:center;padding:2rem 1.25rem 1.25rem;border-bottom:1px solid var(--border)}
+.verb-day-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--green-mid);margin-bottom:.4rem}
+.verb-infinitive{font-family:'Playfair Display',serif;font-size:40px;font-weight:700;color:var(--green-dark);line-height:1;margin-bottom:.4rem}
+.verb-translation{font-size:15px;color:var(--text-muted);margin-bottom:.875rem}
+.verb-example{font-size:14px;color:var(--text-muted);font-style:italic;max-width:480px;margin:0 auto;line-height:1.6}
+
+/* TENSE TABS */
+.verb-tense-tabs{display:flex;gap:5px;padding:1rem 1.25rem .5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.verb-tense-tabs::-webkit-scrollbar{display:none}
+.tense-btn{padding:6px 13px;font-size:12px;font-weight:500;border-radius:20px;cursor:pointer;border:1px solid var(--border);background:var(--surface);color:var(--text-muted);font-family:'DM Sans',sans-serif;transition:all .15s;white-space:nowrap;min-height:36px;touch-action:manipulation;flex-shrink:0}
+.tense-btn:hover{background:var(--bg)}
+.tense-btn.active{background:var(--green);color:#fff;border-color:var(--green)}
+
+/* CONJUGATION GRID */
+.conjugation-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;padding:1.25rem}
+.conj-row{display:flex;justify-content:space-between;align-items:center;padding:9px 12px;background:var(--bg);border-radius:8px;border:1px solid var(--border)}
+.conj-pro{font-size:12px;color:var(--text-muted)}
+.conj-form{font-size:14px;font-weight:600;color:var(--text)}
+
+/* LEARNED VERBS */
+.lv-item{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);gap:8px;cursor:pointer;transition:all .12s;border-radius:0}
+.lv-item:last-child{border-bottom:none}
+.lv-item:active{background:var(--bg);margin:0 -1.25rem;padding:12px 1.25rem;border-radius:8px}
+.lv-main{flex:1;min-width:0}
+.lv-name{font-weight:600;color:var(--green-dark);font-size:15px}
+.lv-trans{color:var(--text-muted);font-size:13px}
+.lv-date{font-size:11px;color:var(--text-light);white-space:nowrap;flex-shrink:0}
+.lv-arrow{color:var(--green-mid);font-size:18px;flex-shrink:0;font-weight:300}
+
+/* MODAL */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(15,79,56,.5);z-index:500;align-items:flex-end;justify-content:center}
+.modal-overlay.open{display:flex;animation:overlayIn .2s ease}
+@keyframes overlayIn{from{opacity:0}to{opacity:1}}
+.modal{background:var(--surface);border-radius:20px 20px 0 0;width:100%;max-width:620px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideUp .25s ease;padding-bottom:env(safe-area-inset-bottom)}
+@keyframes slideUp{from{transform:translateY(60px);opacity:0}to{transform:translateY(0);opacity:1}}
+.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--border);margin:12px auto 0}
+.modal-header{padding:1rem 1.25rem .875rem;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--surface);z-index:1}
+.modal-title{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--green-dark);line-height:1}
+.modal-subtitle{font-size:14px;color:var(--text-muted);margin-top:3px}
+.modal-close{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg);border:1px solid var(--border);cursor:pointer;font-size:16px;color:var(--text-muted);flex-shrink:0;margin-left:8px;touch-action:manipulation}
+.modal-body{padding:.875rem 1.25rem 1.25rem}
+.modal-example{margin:.5rem 0 .875rem;padding:.875rem;background:var(--green-light);border-radius:10px;border-left:3px solid var(--green-mid);font-size:14px;color:var(--green-dark);line-height:1.6}
+.modal-tense-tabs{display:flex;gap:5px;padding:.25rem 0 .75rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.modal-tense-tabs::-webkit-scrollbar{display:none}
+.modal-conj-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+
+/* VOCAB TABLE */
+.vocab-table{width:100%;border-collapse:collapse;font-size:14px}
+.vocab-table th{text-align:left;padding:7px 10px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);border-bottom:1px solid var(--border);background:var(--bg)}
+.vocab-table td{padding:10px;border-bottom:1px solid var(--border);color:var(--text)}
+.vocab-table tr:last-child td{border-bottom:none}
+.vocab-table tr:hover td{background:var(--bg)}
+
+/* VOCAB MOBILE CARDS */
+.vocab-card-list{display:none}
+.vocab-card-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--border)}
+.vocab-card-item:last-child{border-bottom:none}
+.vc-text{flex:1;min-width:0}
+.vc-es{font-weight:600;font-size:15px;color:var(--text)}
+.vc-de{font-size:13px;color:var(--text-muted)}
+.vc-cat{font-size:11px;color:var(--text-light)}
+.vc-right{display:flex;flex-direction:column;align-items:flex-end;gap:6px;flex-shrink:0}
+
+.status-badge{display:inline-block;padding:2px 8px;border-radius:12px;font-size:11px;font-weight:600}
+.status-new{background:var(--green-light);color:var(--green-dark)}
+.status-used{background:var(--surface2);color:var(--text-muted)}
+
+/* GRID HELPERS */
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.flex-row{display:flex;gap:10px;align-items:flex-end}
+.flex-row>*:first-child{flex:1}
+
+/* EMPTY STATE */
+.empty-state{text-align:center;padding:2rem 1rem;color:var(--text-muted);font-size:14px}
+.empty-icon{font-size:34px;margin-bottom:.625rem}
+
+/* TOAST */
+.toast{position:fixed;bottom:calc(var(--nav-h) + .75rem + env(safe-area-inset-bottom));right:1rem;left:1rem;background:var(--green-dark);color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;font-weight:500;box-shadow:var(--shadow-lg);z-index:9999;animation:slideIn .25s ease;text-align:center}
+@keyframes slideIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* RESPONSIVE */
+@media(min-width:641px){
+  .nav-top{display:flex}
+  .nav-bottom{display:none}
+  .main{padding:2rem 1.5rem}
+  .toast{left:auto;max-width:320px;text-align:left;bottom:1.5rem;right:1.5rem}
+  .modal{border-radius:16px;margin:auto;margin-bottom:2.5rem}
+  .modal-overlay{align-items:center}
+  .modal-handle{display:none}
+}
+@media(max-width:640px){
+  .nav-top{display:none}
+  .nav-bottom{display:flex}
+  .main{padding:1rem;padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 1rem)}
+  .stats-bar{grid-template-columns:1fr 1fr}
+  .stat-num{font-size:22px}
+  .verb-infinitive{font-size:34px}
+  .conjugation-grid{grid-template-columns:1fr}
+  .grid-2,.grid-3{grid-template-columns:1fr}
+  .vocab-table-wrap{display:none}
+  .vocab-card-list{display:block}
+  .modal-conj-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
 <body>
 
+<!-- HEADER -->
 <div class="header">
   <div class="header-logo">es<span>pa</span>ñol</div>
   <div class="header-stats">
@@ -657,57 +236,81 @@
   </div>
 </div>
 
-<nav class="nav">
-  <button class="nav-tab active" onclick="showTab('stories')"><span class="icon">📖</span> Geschichten</button>
-  <button class="nav-tab" onclick="showTab('verb')"><span class="icon">🗓</span> Verb des Tages</button>
-  <button class="nav-tab" onclick="showTab('vocab')"><span class="icon">📚</span> Vokabeln</button>
+<!-- DESKTOP NAV -->
+<nav class="nav-top">
+  <button class="nav-top-tab active" onclick="showTab('stories')">📖 Geschichten</button>
+  <button class="nav-top-tab" onclick="showTab('verb')">🗓 Verb des Tages</button>
+  <button class="nav-top-tab" onclick="showTab('vocab')">📚 Vokabeln</button>
 </nav>
 
+<!-- MOBILE BOTTOM NAV -->
+<nav class="nav-bottom">
+  <div class="nav-bottom-inner">
+    <button class="nav-bottom-tab active" id="nbt-stories" onclick="showTab('stories')">
+      <span class="nb-icon">📖</span><span>Geschichten</span>
+    </button>
+    <button class="nav-bottom-tab" id="nbt-verb" onclick="showTab('verb')">
+      <span class="nb-icon">🗓</span><span>Verb</span>
+    </button>
+    <button class="nav-bottom-tab" id="nbt-vocab" onclick="showTab('vocab')">
+      <span class="nb-icon">📚</span><span>Vokabeln</span>
+    </button>
+  </div>
+</nav>
+
+<!-- VERB DETAIL MODAL -->
+<div class="modal-overlay" id="verbModal" onclick="closeModal(event)">
+  <div class="modal" id="verbModalBox">
+    <div class="modal-handle"></div>
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-inf">—</div>
+        <div class="modal-subtitle" id="modal-de">—</div>
+      </div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-example" id="modal-ex"></div>
+      <div class="modal-tense-tabs" id="modal-tabs"></div>
+      <div class="modal-conj-grid" id="modal-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="main">
 
-  <!-- ===================== PANEL: STORIES ===================== -->
+  <!-- PANEL: GESCHICHTEN -->
   <div class="panel active" id="panel-stories">
     <div class="stats-bar">
-      <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Wörter gesamt</div></div>
-      <div class="stat-box"><div class="stat-num" id="stat-unused">0</div><div class="stat-lbl">Neue Wörter</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Gesamt</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-unused">0</div><div class="stat-lbl">Neu</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-usedw">0</div><div class="stat-lbl">Geübt</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-stories">0</div><div class="stat-lbl">Geschichten</div></div>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot"></span>Wörter laden</div>
-      <label>CSV oder Excel hochladen</label>
+      <label>CSV hochladen</label>
       <div class="upload-area" onclick="document.getElementById('csvInput').click()">
-        <input type="file" id="csvInput" accept=".csv,.xlsx,.xls,.txt" onchange="handleFileUpload(event)">
+        <input type="file" id="csvInput" accept=".csv,.txt" onchange="handleFileUpload(event)">
         <div class="upload-icon">⬆️</div>
-        <strong>Datei hier ablegen</strong> oder klicken zum Hochladen<br>
-        <span style="font-size:12px;color:var(--text-light)">CSV: spanisch,deutsch — eine Zeile pro Wort</span>
+        <strong>Datei auswählen</strong><br>
+        <span style="font-size:12px;color:var(--text-light)">Format: spanisch,deutsch — eine Zeile pro Wort</span>
       </div>
       <div class="divider"></div>
-      <label>Oder Wörter manuell eingeben</label>
-      <div class="flex-row">
-        <textarea id="manualWords" rows="3" placeholder="hablar,sprechen&#10;comer,essen&#10;vivir,leben&#10;ser,sein"></textarea>
-        <button class="btn btn-primary" onclick="addManualWords()" style="white-space:nowrap;height:fit-content">Hinzufügen</button>
-      </div>
-      <div style="margin-top:1rem">
-        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:6px">
-          Geladene Wörter
-        </div>
-        <div class="chip-row" id="word-chips">
-          <span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span>
-        </div>
+      <label>Oder manuell eingeben</label>
+      <textarea id="manualWords" rows="3" placeholder="hablar,sprechen&#10;comer,essen&#10;vivir,leben"></textarea>
+      <button class="btn btn-primary" onclick="addManualWords()" style="width:100%;margin-top:8px">Wörter hinzufügen</button>
+      <div style="margin-top:.875rem">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:5px">Geladene Wörter</div>
+        <div class="chip-row" id="word-chips"><span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span></div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title"><span class="dot"></span>Geschichte generieren</div>
-      <div class="grid-2" style="margin-bottom:1rem">
-        <div class="field">
-          <label>Anzahl Wörter einbauen</label>
-          <input type="number" id="wordCount" value="5" min="1" max="30">
-        </div>
-        <div class="field">
-          <label>Sprachniveau</label>
+      <div class="grid-2" style="margin-bottom:.875rem">
+        <div class="field"><label>Anzahl Wörter</label><input type="number" id="wordCount" value="5" min="1" max="30"></div>
+        <div class="field"><label>Sprachniveau</label>
           <select id="difficulty">
             <option value="A1">A1 – Anfänger</option>
             <option value="A2">A2 – Grundlagen</option>
@@ -718,528 +321,296 @@
           </select>
         </div>
       </div>
+      <div class="field"><label>Thema (optional)</label><input type="text" id="storyTopic" placeholder="z.B. Reise nach Mexiko, Alltag in Berlin…"></div>
       <div class="field">
-        <label>Thema (optional)</label>
-        <input type="text" id="storyTopic" placeholder="z.B. Reise nach Mexiko, ein Tag in Berlin, ein Abenteuer im Wald...">
-      </div>
-      <div class="field">
-        <label>Neue vs. bekannte Wörter — <span id="pref-label" style="color:var(--green);font-weight:600">70% neue Wörter</span></label>
+        <label>Neue vs. bekannte Wörter — <span id="pref-label" style="color:var(--green);font-weight:600">70% neue</span></label>
         <input type="range" min="0" max="100" value="70" id="newWordsPref" oninput="updatePrefLabel(this.value)" style="width:100%;margin-bottom:4px">
         <div class="range-labels"><span>Viele bekannte</span><span>Viele neue</span></div>
       </div>
-      <button class="btn btn-primary" id="genBtn" onclick="generateStory()" style="width:100%;padding:11px">
-        Geschichte generieren
-      </button>
+      <button class="btn btn-primary" id="genBtn" onclick="generateStory()" style="width:100%;padding:13px;font-size:15px">Geschichte generieren</button>
     </div>
-
     <div id="story-output"></div>
   </div>
 
-  <!-- ===================== PANEL: VERB DES TAGES ===================== -->
+  <!-- PANEL: VERB DES TAGES -->
   <div class="panel" id="panel-verb">
     <div class="card" style="padding:0;overflow:hidden">
-      <div id="verb-card-content">
-        <div class="loading"><div class="spinner"></div>Lade heutiges Verb...</div>
-      </div>
+      <div id="verb-card-content"><div class="loading"><div class="spinner"></div>Lade heutiges Verb…</div></div>
     </div>
     <div class="card">
-      <div class="card-title"><span class="dot"></span>Gelernte Verben</div>
-      <div id="learned-verbs-list">
-        <div class="empty-state"><div class="empty-icon">📘</div>Noch keine Verben gelernt.</div>
-      </div>
+      <div class="card-title"><span class="dot"></span>Gelernte Verben <span style="font-size:12px;font-family:'DM Sans',sans-serif;font-weight:400;color:var(--text-muted);margin-left:4px">— tippe zum Öffnen</span></div>
+      <div id="learned-verbs-list"><div class="empty-state"><div class="empty-icon">📘</div>Noch keine Verben gelernt.</div></div>
     </div>
   </div>
 
-  <!-- ===================== PANEL: VOCAB ===================== -->
+  <!-- PANEL: VOKABELN -->
   <div class="panel" id="panel-vocab">
     <div class="card">
       <div class="card-title"><span class="dot"></span>Neue Vokabel hinzufügen</div>
-      <div class="grid-3" style="margin-bottom:0.75rem">
+      <div class="grid-3" style="margin-bottom:.75rem">
         <div class="field" style="margin-bottom:0"><label>Spanisch</label><input type="text" id="new-es" placeholder="hablar"></div>
         <div class="field" style="margin-bottom:0"><label>Deutsch</label><input type="text" id="new-de" placeholder="sprechen"></div>
         <div class="field" style="margin-bottom:0"><label>Kategorie</label><input type="text" id="new-cat" placeholder="Verben"></div>
       </div>
-      <button class="btn btn-primary" onclick="addVocabWord()" style="width:100%;margin-top:0.25rem">Wort hinzufügen</button>
+      <button class="btn btn-primary" onclick="addVocabWord()" style="width:100%;margin-top:4px">Wort hinzufügen</button>
     </div>
     <div class="card">
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.875rem;flex-wrap:wrap;gap:8px">
         <div class="card-title" style="margin-bottom:0"><span class="dot"></span>Meine Vokabeln</div>
-        <div style="display:flex;gap:8px">
-          <button class="btn btn-sm btn-outline-green" onclick="downloadCSV()">⬇ CSV herunterladen</button>
-        </div>
+        <button class="btn btn-sm btn-outline-green" onclick="downloadCSV()">⬇ CSV</button>
       </div>
-      <div id="vocab-stats" style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem"></div>
-      <div style="overflow-x:auto">
+      <div id="vocab-stats" style="font-size:13px;color:var(--text-muted);margin-bottom:.75rem"></div>
+      <div class="vocab-table-wrap" style="overflow-x:auto">
         <table class="vocab-table">
-          <thead>
-            <tr>
-              <th>Spanisch</th>
-              <th>Deutsch</th>
-              <th>Kategorie</th>
-              <th>Status</th>
-              <th>Benutzt</th>
-              <th></th>
-            </tr>
-          </thead>
+          <thead><tr><th>Spanisch</th><th>Deutsch</th><th>Kategorie</th><th>Status</th><th></th></tr></thead>
           <tbody id="vocab-table-body"></tbody>
         </table>
       </div>
-      <div id="vocab-empty" class="empty-state">
-        <div class="empty-icon">📚</div>
-        Noch keine Vokabeln gespeichert. Füge Wörter oben hinzu oder lade sie in der Geschichten-Ansicht hoch.
-      </div>
+      <div class="vocab-card-list" id="vocab-card-list"></div>
+      <div id="vocab-empty" class="empty-state"><div class="empty-icon">📚</div>Noch keine Vokabeln gespeichert.</div>
     </div>
   </div>
 
 </div>
 
 <script>
-// ───────────────────────── STATE ─────────────────────────
-const STORAGE_KEY = 'espanol_app_v2';
+// ── STATE ──
+const STORAGE_KEY='espanol_app_v3';
+function loadState(){try{const r=localStorage.getItem(STORAGE_KEY);if(r)return JSON.parse(r)}catch(e){}return{words:[],stories:[],learnedVerbs:[],lastVerbDate:null,lastVerb:null}}
+function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}}
+let state=loadState();
 
-function loadState() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return { words: [], stories: [], learnedVerbs: [], lastVerbDate: null, lastVerb: null };
-}
-
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-}
-
-let state = loadState();
-
-// ───────────────────────── TABS ─────────────────────────
-function showTab(id) {
-  document.querySelectorAll('.nav-tab').forEach((t, i) => {
-    t.classList.toggle('active', ['stories','verb','vocab'][i] === id);
+// ── TABS ──
+function showTab(id){
+  ['stories','verb','vocab'].forEach((t,i)=>{
+    document.querySelectorAll('.nav-top-tab')[i]?.classList.toggle('active',t===id);
+    document.getElementById('nbt-'+t)?.classList.toggle('active',t===id);
   });
-  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('panel-' + id).classList.add('active');
-  if (id === 'verb') loadDailyVerb();
-  if (id === 'vocab') renderVocabTable();
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  if(id==='verb')loadDailyVerb();
+  if(id==='vocab')renderVocabTable();
   updateHeaderStats();
 }
 
-// ───────────────────────── UTILS ─────────────────────────
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
-  return a;
+// ── UTILS ──
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+function showToast(msg){document.querySelectorAll('.toast').forEach(t=>t.remove());const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2800)}
+function today(){return new Date().toLocaleDateString('de-DE',{day:'2-digit',month:'2-digit',year:'numeric'})}
+function todayISO(){const d=new Date();return`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`}
+
+// ── HEADER STATS ──
+function updateHeaderStats(){
+  document.getElementById('h-words').textContent=state.words.length;
+  document.getElementById('h-stories').textContent=state.stories.length;
+  document.getElementById('h-verbs').textContent=state.learnedVerbs.length;
+  document.getElementById('stat-total').textContent=state.words.length;
+  document.getElementById('stat-unused').textContent=state.words.filter(w=>w.usedCount===0).length;
+  document.getElementById('stat-usedw').textContent=state.words.filter(w=>w.usedCount>0).length;
+  document.getElementById('stat-stories').textContent=state.stories.length;
 }
 
-function showToast(msg) {
-  const t = document.createElement('div');
-  t.className = 'toast';
-  t.textContent = msg;
-  document.body.appendChild(t);
-  setTimeout(() => t.remove(), 3000);
+// ── WORDS ──
+function renderWordChips(){
+  const el=document.getElementById('word-chips');
+  if(!state.words.length){el.innerHTML='<span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span>';return}
+  el.innerHTML=state.words.map(w=>`<span class="chip ${w.usedCount>0?'used':''}">${w.es}${w.usedCount>0?' <span class="chip-check">✓</span>':''}</span>`).join('');
 }
-
-function today() {
-  return new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
-}
-
-function todayISO() {
-  const d = new Date();
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-// ───────────────────────── HEADER STATS ─────────────────────────
-function updateHeaderStats() {
-  document.getElementById('h-words').textContent = state.words.length;
-  document.getElementById('h-stories').textContent = state.stories.length;
-  document.getElementById('h-verbs').textContent = state.learnedVerbs.length;
-  document.getElementById('stat-total').textContent = state.words.length;
-  document.getElementById('stat-unused').textContent = state.words.filter(w => w.usedCount === 0).length;
-  document.getElementById('stat-usedw').textContent = state.words.filter(w => w.usedCount > 0).length;
-  document.getElementById('stat-stories').textContent = state.stories.length;
-}
-
-// ───────────────────────── WORDS / CHIPS ─────────────────────────
-function renderWordChips() {
-  const el = document.getElementById('word-chips');
-  if (!state.words.length) {
-    el.innerHTML = '<span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span>';
-    return;
-  }
-  el.innerHTML = state.words.map(w =>
-    `<span class="chip ${w.usedCount > 0 ? 'used' : ''}">${w.es}${w.usedCount > 0 ? ' <span class="chip-check">✓</span>' : ''}</span>`
-  ).join('');
-}
-
-function handleFileUpload(e) {
-  const file = e.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => parseCSVText(ev.target.result);
-  reader.readAsText(file, 'UTF-8');
-  e.target.value = '';
-}
-
-function parseCSVText(text) {
-  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
-  let added = 0;
-  lines.forEach(line => {
-    const parts = line.split(/[,;]/).map(p => p.trim().replace(/^["']|["']$/g, ''));
-    if (!parts[0]) return;
-    const es = parts[0].trim();
-    const de = (parts[1] || '').trim();
-    const cat = (parts[2] || '').trim();
-    if (es && !state.words.find(w => w.es.toLowerCase() === es.toLowerCase())) {
-      state.words.push({ es, de, cat, usedCount: 0, addedAt: Date.now() });
-      added++;
-    }
+function handleFileUpload(e){const file=e.target.files[0];if(!file)return;const r=new FileReader();r.onload=ev=>parseCSVText(ev.target.result);r.readAsText(file,'UTF-8');e.target.value=''}
+function parseCSVText(text){
+  const lines=text.split('\n').map(l=>l.trim()).filter(l=>l);let added=0;
+  lines.forEach(line=>{
+    const parts=line.split(/[,;]/).map(p=>p.trim().replace(/^["']|["']$/g,''));
+    if(!parts[0])return;
+    const es=parts[0].trim(),de=(parts[1]||'').trim(),cat=(parts[2]||'').trim();
+    if(es&&!state.words.find(w=>w.es.toLowerCase()===es.toLowerCase())){state.words.push({es,de,cat,usedCount:0,addedAt:Date.now()});added++}
   });
-  saveState();
-  renderWordChips();
-  updateHeaderStats();
-  if (added > 0) showToast(`${added} neue Wörter hinzugefügt!`);
+  saveState();renderWordChips();updateHeaderStats();
+  if(added>0)showToast(`${added} neue Wörter hinzugefügt!`);
 }
+function addManualWords(){const val=document.getElementById('manualWords').value.trim();if(!val)return;parseCSVText(val);document.getElementById('manualWords').value=''}
 
-function addManualWords() {
-  const val = document.getElementById('manualWords').value.trim();
-  if (!val) return;
-  parseCSVText(val);
-  document.getElementById('manualWords').value = '';
+// ── STORY ──
+function updatePrefLabel(val){const el=document.getElementById('pref-label');const n=parseInt(val);if(n>=70)el.textContent=`${n}% neue`;else if(n<=30)el.textContent=`${100-n}% bekannte`;else el.textContent='Gemischt'}
+
+async function generateStory(){
+  if(!state.words.length){showToast('Bitte zuerst Wörter hinzufügen!');return}
+  const btn=document.getElementById('genBtn');btn.disabled=true;btn.textContent='Generiere…';
+  const output=document.getElementById('story-output');
+  output.innerHTML='<div class="loading"><div class="spinner"></div>Geschichte wird generiert…</div>';
+  const n=Math.min(parseInt(document.getElementById('wordCount').value)||5,state.words.length);
+  const pref=parseInt(document.getElementById('newWordsPref').value);
+  const level=document.getElementById('difficulty').value;
+  const topic=document.getElementById('storyTopic').value.trim();
+  const unused=state.words.filter(w=>w.usedCount===0),used=state.words.filter(w=>w.usedCount>0);
+  const nc=Math.min(Math.round(n*pref/100),unused.length),uc=Math.min(n-nc,used.length);
+  let sel=[...shuffle(unused).slice(0,nc),...shuffle(used).slice(0,uc)];
+  if(sel.length<n)sel=shuffle(state.words).slice(0,n);
+  const wl=sel.map(w=>w.de?`"${w.es}" (${w.de})`:`"${w.es}"`).join(', ');
+  const ld={A1:'sehr einfache Sätze, Präsens, max. 80 Wörter',A2:'einfache Sätze, Präsens+Perfekt, ca. 100 Wörter',B1:'mittelschwere Sätze, verschiedene Zeiten, ca. 120 Wörter',B2:'komplexere Sätze, Konjunktiv, ca. 140 Wörter',C1:'anspruchsvoller Stil, idiomatische Ausdrücke, ca. 160 Wörter',C2:'literarischer Stil, native-level Fluss, ca. 180 Wörter'}[level];
+  const prompt=`Du bist ein Spanisch-Sprachtrainer. Schreibe eine kurze Geschichte auf Spanisch für Niveau ${level} (${ld}).${topic?` Thema: ${topic}.`:''}\nBaue ALLE folgenden Wörter natürlich ein: ${wl}.\nMarkiere die eingebauten Vokabeln mit **Wort** (Markdown-fett).\nDanach schreibe "---" und dann die vollständige deutsche Übersetzung.\nNur Geschichte und Übersetzung, keine Kommentare.`;
+  try{
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const data=await resp.json();
+    const full=data.content?.find(b=>b.type==='text')?.text||'';
+    const parts=full.split('---');
+    const esText=(parts[0]||'').trim(),deText=(parts[1]||'').trim();
+    const esHTML=esText.replace(/\*\*(.+?)\*\*/g,'<span class="hl">$1</span>');
+    sel.forEach(w=>{w.usedCount=(w.usedCount||0)+1});
+    state.stories.unshift({id:Date.now(),es:esText,de:deText,level,words:sel.map(w=>w.es),date:today()});
+    saveState();renderWordChips();updateHeaderStats();
+    output.innerHTML=`<div class="story-card">
+      <div class="story-header"><span class="story-date">${today()}</span><span class="story-level-badge">${level}</span></div>
+      <div class="story-body">
+        <div class="story-es">${esHTML}</div>
+        ${deText?`<button class="story-toggle" onclick="toggleDE(this)">🇩🇪 Übersetzung anzeigen ▾</button><div class="story-de">${deText}</div>`:''}
+      </div>
+      <div class="used-words-row"><span class="uwl">Vokabeln:</span>${sel.map(w=>`<span class="chip">${w.es}</span>`).join('')}</div>
+    </div>`;
+  }catch(err){output.innerHTML=`<div class="card" style="color:var(--red)">Fehler: ${err.message}</div>`}
+  finally{btn.disabled=false;btn.textContent='Geschichte generieren'}
 }
+function toggleDE(btn){const de=btn.nextElementSibling;const s=de.style.display==='block';de.style.display=s?'none':'block';btn.textContent=s?'🇩🇪 Übersetzung anzeigen ▾':'🇩🇪 Übersetzung ausblenden ▴'}
 
-// ───────────────────────── STORY PREFERENCES ─────────────────────────
-function updatePrefLabel(val) {
-  const el = document.getElementById('pref-label');
-  const n = parseInt(val);
-  if (n >= 70) el.textContent = `${n}% neue Wörter`;
-  else if (n <= 30) el.textContent = `${100-n}% bekannte Wörter`;
-  else el.textContent = 'Gemischte Auswahl';
-}
-
-// ───────────────────────── GENERATE STORY ─────────────────────────
-async function generateStory() {
-  if (!state.words.length) { showToast('Bitte zuerst Wörter hinzufügen!'); return; }
-  const btn = document.getElementById('genBtn');
-  btn.disabled = true;
-  btn.textContent = 'Generiere...';
-  const output = document.getElementById('story-output');
-  output.innerHTML = '<div class="loading"><div class="spinner"></div>Geschichte wird generiert...</div>';
-
-  const n = Math.min(parseInt(document.getElementById('wordCount').value) || 5, state.words.length);
-  const pref = parseInt(document.getElementById('newWordsPref').value);
-  const level = document.getElementById('difficulty').value;
-  const topic = document.getElementById('storyTopic').value.trim();
-
-  const unused = state.words.filter(w => w.usedCount === 0);
-  const used = state.words.filter(w => w.usedCount > 0);
-  let selected = [];
-  const newCount = Math.min(Math.round(n * pref / 100), unused.length);
-  const usedCount = Math.min(n - newCount, used.length);
-  selected = [...shuffle(unused).slice(0, newCount), ...shuffle(used).slice(0, usedCount)];
-  if (selected.length < n) selected = shuffle(state.words).slice(0, n);
-
-  const wordList = selected.map(w => w.de ? `"${w.es}" (${w.de})` : `"${w.es}"`).join(', ');
-
-  const levelDesc = {
-    A1: 'sehr einfache Sätze, Präsens, häufigste Vokabeln, max. 80 Wörter',
-    A2: 'einfache Sätze, Präsens + etwas Perfekt, ca. 100 Wörter',
-    B1: 'mittelschwere Sätze, verschiedene Zeitformen, ca. 120 Wörter',
-    B2: 'komplexere Sätze, Konjunktiv, Passiv, ca. 140 Wörter',
-    C1: 'anspruchsvoller Stil, idiomatische Ausdrücke, komplexe Grammatik, ca. 160 Wörter',
-    C2: 'literarischer Stil, reiches Vokabular, anspruchsvolle Grammatik, native-level Fluss, ca. 180 Wörter'
-  }[level];
-
-  const prompt = `Du bist ein Spanisch-Sprachtrainer. Schreibe eine kurze Geschichte auf Spanisch für Niveau ${level} (${levelDesc}).
-${topic ? `Thema: ${topic}.` : ''}
-Baue ALLE folgenden Wörter natürlich in die Geschichte ein: ${wordList}.
-Markiere die eingebauten Vokabeln mit **Wort** (Markdown-fett).
-Danach schreibe "---" und dann die vollständige deutsche Übersetzung der Geschichte.
-Schreibe NUR die Geschichte und die Übersetzung, keine Einleitung, keine Kommentare.`;
-
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1000,
-        messages: [{ role: 'user', content: prompt }]
-      })
-    });
-    const data = await resp.json();
-    const fullText = data.content?.find(b => b.type === 'text')?.text || '';
-    const parts = fullText.split('---');
-    const esText = (parts[0] || '').trim();
-    const deText = (parts[1] || '').trim();
-
-    // Highlight bold words
-    const esHTML = esText.replace(/\*\*(.+?)\*\*/g, '<span class="highlight-word">$1</span>');
-
-    // Track used words
-    selected.forEach(w => { w.usedCount = (w.usedCount || 0) + 1; });
-    const storyRecord = { id: Date.now(), es: esText, de: deText, level, words: selected.map(w => w.es), date: today() };
-    state.stories.unshift(storyRecord);
-    saveState();
-    renderWordChips();
-    updateHeaderStats();
-
-    output.innerHTML = `
-      <div class="story-card">
-        <div class="story-header">
-          <span class="story-date">${today()}</span>
-          <span class="story-level-badge">${level}</span>
-        </div>
-        <div class="story-body">
-          <div class="story-es">${esHTML}</div>
-          ${deText ? `<button class="story-toggle" onclick="toggleDE(this)">🇩🇪 Deutsche Übersetzung anzeigen ▾</button>
-          <div class="story-de">${deText}</div>` : ''}
-        </div>
-        <div class="used-words-row">
-          <span class="used-words-label">Vokabeln:</span>
-          ${selected.map(w => `<span class="chip">${w.es}</span>`).join('')}
-        </div>
-      </div>`;
-
-  } catch(err) {
-    output.innerHTML = `<div class="card" style="color:var(--red)">Fehler beim Generieren: ${err.message}</div>`;
-  } finally {
-    btn.disabled = false;
-    btn.textContent = 'Geschichte generieren';
-  }
-}
-
-function toggleDE(btn) {
-  const de = btn.nextElementSibling;
-  const shown = de.style.display === 'block';
-  de.style.display = shown ? 'none' : 'block';
-  btn.textContent = shown ? '🇩🇪 Deutsche Übersetzung anzeigen ▾' : '🇩🇪 Übersetzung ausblenden ▴';
-}
-
-// ───────────────────────── VERB DATENBANK ─────────────────────────
-const VERB_DB = [
-  { infinitivo:'ser', deutsch:'sein', ejemplo:'Ella es médica y trabaja en un hospital grande.', ejemplo_de:'Sie ist Ärztin und arbeitet in einem großen Krankenhaus.',
-    presente:['soy','eres','es','somos','sois','son'], preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'], preteritoImperfecto:['era','eras','era','éramos','erais','eran'], futuro:['seré','serás','será','seremos','seréis','serán'], condicional:['sería','serías','sería','seríamos','seríais','serían'], subjuntivo:['sea','seas','sea','seamos','seáis','sean'] },
-  { infinitivo:'estar', deutsch:'sein / sich befinden', ejemplo:'Estoy muy cansado después del trabajo.', ejemplo_de:'Ich bin sehr müde nach der Arbeit.',
-    presente:['estoy','estás','está','estamos','estáis','están'], preteritoIndefinido:['estuve','estuviste','estuvo','estuvimos','estuvisteis','estuvieron'], preteritoImperfecto:['estaba','estabas','estaba','estábamos','estabais','estaban'], futuro:['estaré','estarás','estará','estaremos','estaréis','estarán'], condicional:['estaría','estarías','estaría','estaríamos','estaríais','estarían'], subjuntivo:['esté','estés','esté','estemos','estéis','estén'] },
-  { infinitivo:'tener', deutsch:'haben', ejemplo:'Tenemos que salir antes de las ocho.', ejemplo_de:'Wir müssen vor acht Uhr gehen.',
-    presente:['tengo','tienes','tiene','tenemos','tenéis','tienen'], preteritoIndefinido:['tuve','tuviste','tuvo','tuvimos','tuvisteis','tuvieron'], preteritoImperfecto:['tenía','tenías','tenía','teníamos','teníais','tenían'], futuro:['tendré','tendrás','tendrá','tendremos','tendréis','tendrán'], condicional:['tendría','tendrías','tendría','tendríamos','tendríais','tendrían'], subjuntivo:['tenga','tengas','tenga','tengamos','tengáis','tengan'] },
-  { infinitivo:'hacer', deutsch:'machen / tun', ejemplo:'¿Qué haces cuando no tienes nada que hacer?', ejemplo_de:'Was machst du, wenn du nichts zu tun hast?',
-    presente:['hago','haces','hace','hacemos','hacéis','hacen'], preteritoIndefinido:['hice','hiciste','hizo','hicimos','hicisteis','hicieron'], preteritoImperfecto:['hacía','hacías','hacía','hacíamos','hacíais','hacían'], futuro:['haré','harás','hará','haremos','haréis','harán'], condicional:['haría','harías','haría','haríamos','haríais','harían'], subjuntivo:['haga','hagas','haga','hagamos','hagáis','hagan'] },
-  { infinitivo:'ir', deutsch:'gehen / fahren', ejemplo:'Voy al mercado todos los sábados por la mañana.', ejemplo_de:'Ich gehe jeden Samstag morgens auf den Markt.',
-    presente:['voy','vas','va','vamos','vais','van'], preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'], preteritoImperfecto:['iba','ibas','iba','íbamos','ibais','iban'], futuro:['iré','irás','irá','iremos','iréis','irán'], condicional:['iría','irías','iría','iríamos','iríais','irían'], subjuntivo:['vaya','vayas','vaya','vayamos','vayáis','vayan'] },
-  { infinitivo:'poder', deutsch:'können / dürfen', ejemplo:'No puedo dormir bien cuando hace mucho calor.', ejemplo_de:'Ich kann nicht gut schlafen, wenn es sehr heiß ist.',
-    presente:['puedo','puedes','puede','podemos','podéis','pueden'], preteritoIndefinido:['pude','pudiste','pudo','pudimos','pudisteis','pudieron'], preteritoImperfecto:['podía','podías','podía','podíamos','podíais','podían'], futuro:['podré','podrás','podrá','podremos','podréis','podrán'], condicional:['podría','podrías','podría','podríamos','podríais','podrían'], subjuntivo:['pueda','puedas','pueda','podamos','podáis','puedan'] },
-  { infinitivo:'querer', deutsch:'wollen / lieben', ejemplo:'Quiero aprender español para viajar por Latinoamérica.', ejemplo_de:'Ich möchte Spanisch lernen, um durch Lateinamerika zu reisen.',
-    presente:['quiero','quieres','quiere','queremos','queréis','quieren'], preteritoIndefinido:['quise','quisiste','quiso','quisimos','quisisteis','quisieron'], preteritoImperfecto:['quería','querías','quería','queríamos','queríais','querían'], futuro:['querré','querrás','querrá','querremos','querréis','querrán'], condicional:['querría','querrías','querría','querríamos','querríais','querrían'], subjuntivo:['quiera','quieras','quiera','queramos','queráis','quieran'] },
-  { infinitivo:'saber', deutsch:'wissen / können', ejemplo:'¿Sabes dónde está la estación de tren más cercana?', ejemplo_de:'Weißt du, wo der nächste Bahnhof ist?',
-    presente:['sé','sabes','sabe','sabemos','sabéis','saben'], preteritoIndefinido:['supe','supiste','supo','supimos','supisteis','supieron'], preteritoImperfecto:['sabía','sabías','sabía','sabíamos','sabíais','sabían'], futuro:['sabré','sabrás','sabrá','sabremos','sabréis','sabrán'], condicional:['sabría','sabrías','sabría','sabríamos','sabríais','sabrían'], subjuntivo:['sepa','sepas','sepa','sepamos','sepáis','sepan'] },
-  { infinitivo:'venir', deutsch:'kommen', ejemplo:'Mis amigos vienen a cenar esta noche a las nueve.', ejemplo_de:'Meine Freunde kommen heute Abend um neun zum Abendessen.',
-    presente:['vengo','vienes','viene','venimos','venís','vienen'], preteritoIndefinido:['vine','viniste','vino','vinimos','vinisteis','vinieron'], preteritoImperfecto:['venía','venías','venía','veníamos','veníais','venían'], futuro:['vendré','vendrás','vendrá','vendremos','vendréis','vendrán'], condicional:['vendría','vendrías','vendría','vendríamos','vendríais','vendrían'], subjuntivo:['venga','vengas','venga','vengamos','vengáis','vengan'] },
-  { infinitivo:'ver', deutsch:'sehen / schauen', ejemplo:'Vemos una película juntos cada viernes por la noche.', ejemplo_de:'Wir schauen jeden Freitagabend gemeinsam einen Film.',
-    presente:['veo','ves','ve','vemos','veis','ven'], preteritoIndefinido:['vi','viste','vio','vimos','visteis','vieron'], preteritoImperfecto:['veía','veías','veía','veíamos','veíais','veían'], futuro:['veré','verás','verá','veremos','veréis','verán'], condicional:['vería','verías','vería','veríamos','veríais','verían'], subjuntivo:['vea','veas','vea','veamos','veáis','vean'] },
-  { infinitivo:'dar', deutsch:'geben', ejemplo:'Le di las gracias por su ayuda y su amabilidad.', ejemplo_de:'Ich dankte ihm für seine Hilfe und seine Freundlichkeit.',
-    presente:['doy','das','da','damos','dais','dan'], preteritoIndefinido:['di','diste','dio','dimos','disteis','dieron'], preteritoImperfecto:['daba','dabas','daba','dábamos','dabais','daban'], futuro:['daré','darás','dará','daremos','daréis','darán'], condicional:['daría','darías','daría','daríamos','daríais','darían'], subjuntivo:['dé','des','dé','demos','deis','den'] },
-  { infinitivo:'decir', deutsch:'sagen', ejemplo:'Ella siempre dice la verdad, aunque sea difícil.', ejemplo_de:'Sie sagt immer die Wahrheit, auch wenn es schwierig ist.',
-    presente:['digo','dices','dice','decimos','decís','dicen'], preteritoIndefinido:['dije','dijiste','dijo','dijimos','dijisteis','dijeron'], preteritoImperfecto:['decía','decías','decía','decíamos','decíais','decían'], futuro:['diré','dirás','dirá','diremos','diréis','dirán'], condicional:['diría','dirías','diría','diríamos','diríais','dirían'], subjuntivo:['diga','digas','diga','digamos','digáis','digan'] },
-  { infinitivo:'poner', deutsch:'setzen / stellen / legen', ejemplo:'Pon la mesa antes de que lleguen los invitados.', ejemplo_de:'Deck den Tisch, bevor die Gäste ankommen.',
-    presente:['pongo','pones','pone','ponemos','ponéis','ponen'], preteritoIndefinido:['puse','pusiste','puso','pusimos','pusisteis','pusieron'], preteritoImperfecto:['ponía','ponías','ponía','poníamos','poníais','ponían'], futuro:['pondré','pondrás','pondrá','pondremos','pondréis','pondrán'], condicional:['pondría','pondrías','pondría','pondríamos','pondríais','pondrían'], subjuntivo:['ponga','pongas','ponga','pongamos','pongáis','pongan'] },
-  { infinitivo:'salir', deutsch:'ausgehen / herausgehen', ejemplo:'Salimos a pasear por el parque cuando hace buen tiempo.', ejemplo_de:'Wir gehen spazieren im Park, wenn das Wetter schön ist.',
-    presente:['salgo','sales','sale','salimos','salís','salen'], preteritoIndefinido:['salí','saliste','salió','salimos','salisteis','salieron'], preteritoImperfecto:['salía','salías','salía','salíamos','salíais','salían'], futuro:['saldré','saldrás','saldrá','saldremos','saldréis','saldrán'], condicional:['saldría','saldrías','saldría','saldríamos','saldríais','saldrían'], subjuntivo:['salga','salgas','salga','salgamos','salgáis','salgan'] },
-  { infinitivo:'traer', deutsch:'bringen / mitbringen', ejemplo:'¿Puedes traer algo de comer a la reunión de mañana?', ejemplo_de:'Kannst du etwas zu essen zum morgigen Treffen mitbringen?',
-    presente:['traigo','traes','trae','traemos','traéis','traen'], preteritoIndefinido:['traje','trajiste','trajo','trajimos','trajisteis','trajeron'], preteritoImperfecto:['traía','traías','traía','traíamos','traíais','traían'], futuro:['traeré','traerás','traerá','traeremos','traeréis','traerán'], condicional:['traería','traerías','traería','traeríamos','traeríais','traerían'], subjuntivo:['traiga','traigas','traiga','traigamos','traigáis','traigan'] },
-  { infinitivo:'volver', deutsch:'zurückkehren / wiederkommen', ejemplo:'Volví a casa muy tarde después de la fiesta del viernes.', ejemplo_de:'Ich kam sehr spät nach Hause nach der Freitagsparty.',
-    presente:['vuelvo','vuelves','vuelve','volvemos','volvéis','vuelven'], preteritoIndefinido:['volví','volviste','volvió','volvimos','volvisteis','volvieron'], preteritoImperfecto:['volvía','volvías','volvía','volvíamos','volvíais','volvían'], futuro:['volveré','volverás','volverá','volveremos','volveréis','volverán'], condicional:['volvería','volverías','volvería','volveríamos','volveríais','volverían'], subjuntivo:['vuelva','vuelvas','vuelva','volvamos','volváis','vuelvan'] },
-  { infinitivo:'dormir', deutsch:'schlafen', ejemplo:'Los niños duermen profundamente después de jugar todo el día.', ejemplo_de:'Die Kinder schlafen tief, nachdem sie den ganzen Tag gespielt haben.',
-    presente:['duermo','duermes','duerme','dormimos','dormís','duermen'], preteritoIndefinido:['dormí','dormiste','durmió','dormimos','dormisteis','durmieron'], preteritoImperfecto:['dormía','dormías','dormía','dormíamos','dormíais','dormían'], futuro:['dormiré','dormirás','dormirá','dormiremos','dormiréis','dormirán'], condicional:['dormiría','dormirías','dormiría','dormiríamos','dormiríais','dormirían'], subjuntivo:['duerma','duermas','duerma','durmamos','durmáis','duerman'] },
-  { infinitivo:'pedir', deutsch:'bitten / bestellen', ejemplo:'Pedimos dos cafés y un trozo de tarta de chocolate.', ejemplo_de:'Wir bestellten zwei Kaffees und ein Stück Schokoladenkuchen.',
-    presente:['pido','pides','pide','pedimos','pedís','piden'], preteritoIndefinido:['pedí','pediste','pidió','pedimos','pedisteis','pidieron'], preteritoImperfecto:['pedía','pedías','pedía','pedíamos','pedíais','pedían'], futuro:['pediré','pedirás','pedirá','pediremos','pediréis','pedirán'], condicional:['pediría','pedirías','pediría','pediríamos','pediríais','pedirían'], subjuntivo:['pida','pidas','pida','pidamos','pidáis','pidan'] },
-  { infinitivo:'seguir', deutsch:'folgen / weitermachen', ejemplo:'Sigue recto y luego gira a la derecha en el semáforo.', ejemplo_de:'Geh geradeaus und biege dann an der Ampel rechts ab.',
-    presente:['sigo','sigues','sigue','seguimos','seguís','siguen'], preteritoIndefinido:['seguí','seguiste','siguió','seguimos','seguisteis','siguieron'], preteritoImperfecto:['seguía','seguías','seguía','seguíamos','seguíais','seguían'], futuro:['seguiré','seguirás','seguirá','seguiremos','seguiréis','seguirán'], condicional:['seguiría','seguirías','seguiría','seguiríamos','seguiríais','seguirían'], subjuntivo:['siga','sigas','siga','sigamos','sigáis','sigan'] },
-  { infinitivo:'sentir', deutsch:'fühlen / spüren', ejemplo:'Siento mucho no haber podido asistir a tu cumpleaños.', ejemplo_de:'Es tut mir sehr leid, dass ich nicht zu deinem Geburtstag kommen konnte.',
-    presente:['siento','sientes','siente','sentimos','sentís','sienten'], preteritoIndefinido:['sentí','sentiste','sintió','sentimos','sentisteis','sintieron'], preteritoImperfecto:['sentía','sentías','sentía','sentíamos','sentíais','sentían'], futuro:['sentiré','sentirás','sentirá','sentiremos','sentiréis','sentirán'], condicional:['sentiría','sentirías','sentiría','sentiríamos','sentiríais','sentirían'], subjuntivo:['sienta','sientas','sienta','sintamos','sintáis','sientan'] },
-  { infinitivo:'conocer', deutsch:'kennen / kennenlernen', ejemplo:'Conocí a mi mejor amigo en el primer día de universidad.', ejemplo_de:'Ich lernte meinen besten Freund am ersten Tag der Universität kennen.',
-    presente:['conozco','conoces','conoce','conocemos','conocéis','conocen'], preteritoIndefinido:['conocí','conociste','conoció','conocimos','conocisteis','conocieron'], preteritoImperfecto:['conocía','conocías','conocía','conocíamos','conocíais','conocían'], futuro:['conoceré','conocerás','conocerá','conoceremos','conoceréis','conocerán'], condicional:['conocería','conocerías','conocería','conoceríamos','conoceríais','conocerían'], subjuntivo:['conozca','conozcas','conozca','conozcamos','conozcáis','conozcan'] },
-  { infinitivo:'perder', deutsch:'verlieren / verpassen', ejemplo:'Perdí el tren por quedarme dormido esta mañana.', ejemplo_de:'Ich habe den Zug verpasst, weil ich heute Morgen verschlafen habe.',
-    presente:['pierdo','pierdes','pierde','perdemos','perdéis','pierden'], preteritoIndefinido:['perdí','perdiste','perdió','perdimos','perdisteis','perdieron'], preteritoImperfecto:['perdía','perdías','perdía','perdíamos','perdíais','perdían'], futuro:['perderé','perderás','perderá','perderemos','perderéis','perderán'], condicional:['perdería','perderías','perdería','perderíamos','perderíais','perderían'], subjuntivo:['pierda','pierdas','pierda','perdamos','perdáis','pierdan'] },
-  { infinitivo:'entender', deutsch:'verstehen', ejemplo:'No entiendo bien el subjuntivo, pero sigo practicando.', ejemplo_de:'Ich verstehe den Konjunktiv nicht gut, aber ich übe weiter.',
-    presente:['entiendo','entiendes','entiende','entendemos','entendéis','entienden'], preteritoIndefinido:['entendí','entendiste','entendió','entendimos','entendisteis','entendieron'], preteritoImperfecto:['entendía','entendías','entendía','entendíamos','entendíais','entendían'], futuro:['entenderé','entenderás','entenderá','entenderemos','entenderéis','entenderán'], condicional:['entendería','entenderías','entendería','entenderíamos','entenderíais','entenderían'], subjuntivo:['entienda','entiendas','entienda','entendamos','entendáis','entiendan'] },
-  { infinitivo:'jugar', deutsch:'spielen', ejemplo:'Los niños juegan al fútbol en el parque cada tarde.', ejemplo_de:'Die Kinder spielen jeden Nachmittag im Park Fußball.',
-    presente:['juego','juegas','juega','jugamos','jugáis','juegan'], preteritoIndefinido:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron'], preteritoImperfecto:['jugaba','jugabas','jugaba','jugábamos','jugabais','jugaban'], futuro:['jugaré','jugarás','jugará','jugaremos','jugaréis','jugarán'], condicional:['jugaría','jugarías','jugaría','jugaríamos','jugaríais','jugarían'], subjuntivo:['juegue','juegues','juegue','juguemos','juguéis','jueguen'] },
-  { infinitivo:'caer', deutsch:'fallen', ejemplo:'Se cayó en la calle porque no vio el escalón.', ejemplo_de:'Er fiel auf der Straße, weil er die Stufe nicht sah.',
-    presente:['caigo','caes','cae','caemos','caéis','caen'], preteritoIndefinido:['caí','caíste','cayó','caímos','caísteis','cayeron'], preteritoImperfecto:['caía','caías','caía','caíamos','caíais','caían'], futuro:['caeré','caerás','caerá','caeremos','caeréis','caerán'], condicional:['caería','caerías','caería','caeríamos','caeríais','caerían'], subjuntivo:['caiga','caigas','caiga','caigamos','caigáis','caigan'] },
-  { infinitivo:'reír', deutsch:'lachen', ejemplo:'Nos reímos mucho con las historias de nuestro abuelo.', ejemplo_de:'Wir lachten viel über die Geschichten unseres Großvaters.',
-    presente:['río','ríes','ríe','reímos','reís','ríen'], preteritoIndefinido:['reí','reíste','rió','reímos','reísteis','rieron'], preteritoImperfecto:['reía','reías','reía','reíamos','reíais','reían'], futuro:['reiré','reirás','reirá','reiremos','reiréis','reirán'], condicional:['reiría','reirías','reiría','reiríamos','reiríais','reirían'], subjuntivo:['ría','rías','ría','riamos','riáis','rían'] },
-  { infinitivo:'morir', deutsch:'sterben', ejemplo:'Desgraciadamente, la planta murió porque olvidé regarla.', ejemplo_de:'Leider ist die Pflanze gestorben, weil ich vergessen habe, sie zu gießen.',
-    presente:['muero','mueres','muere','morimos','morís','mueren'], preteritoIndefinido:['morí','moriste','murió','morimos','moristeis','murieron'], preteritoImperfecto:['moría','morías','moría','moríamos','moríais','morían'], futuro:['moriré','morirás','morirá','moriremos','moriréis','morirán'], condicional:['moriría','morirías','moriría','moriríamos','moriríais','morirían'], subjuntivo:['muera','mueras','muera','muramos','muráis','mueran'] },
-  { infinitivo:'oír', deutsch:'hören', ejemplo:'Oí una canción preciosa que nunca había escuchado antes.', ejemplo_de:'Ich hörte ein wunderschönes Lied, das ich noch nie gehört hatte.',
-    presente:['oigo','oyes','oye','oímos','oís','oyen'], preteritoIndefinido:['oí','oíste','oyó','oímos','oísteis','oyeron'], preteritoImperfecto:['oía','oías','oía','oíamos','oíais','oían'], futuro:['oiré','oirás','oirá','oiremos','oiréis','oirán'], condicional:['oiría','oirías','oiría','oiríamos','oiríais','oirían'], subjuntivo:['oiga','oigas','oiga','oigamos','oigáis','oigan'] },
-  { infinitivo:'conducir', deutsch:'fahren / führen', ejemplo:'Conduzco con cuidado porque las carreteras están mojadas.', ejemplo_de:'Ich fahre vorsichtig, weil die Straßen nass sind.',
-    presente:['conduzco','conduces','conduce','conducimos','conducís','conducen'], preteritoIndefinido:['conduje','condujiste','condujo','condujimos','condujisteis','condujeron'], preteritoImperfecto:['conducía','conducías','conducía','conducíamos','conducíais','conducían'], futuro:['conduciré','conducirás','conducirá','conduciremos','conduciréis','conducirán'], condicional:['conduciría','conducirías','conduciría','conduciríamos','conduciríais','conducirían'], subjuntivo:['conduzca','conduzcas','conduzca','conduzcamos','conduzcáis','conduzcan'] },
-  { infinitivo:'construir', deutsch:'bauen / konstruieren', ejemplo:'Están construyendo un nuevo puente sobre el río.', ejemplo_de:'Sie bauen eine neue Brücke über den Fluss.',
-    presente:['construyo','construyes','construye','construimos','construís','construyen'], preteritoIndefinido:['construí','construiste','construyó','construimos','construisteis','construyeron'], preteritoImperfecto:['construía','construías','construía','construíamos','construíais','construían'], futuro:['construiré','construirás','construirá','construiremos','construiréis','construirán'], condicional:['construiría','construirías','construiría','construiríamos','construiríais','construirían'], subjuntivo:['construya','construyas','construya','construyamos','construyáis','construyan'] },
-  { infinitivo:'elegir', deutsch:'wählen / auswählen', ejemplo:'Elegí estudiar idiomas porque me apasionan las culturas.', ejemplo_de:'Ich entschied mich, Sprachen zu studieren, weil mich Kulturen begeistern.',
-    presente:['elijo','eliges','elige','elegimos','elegís','eligen'], preteritoIndefinido:['elegí','elegiste','eligió','elegimos','elegisteis','eligieron'], preteritoImperfecto:['elegía','elegías','elegía','elegíamos','elegíais','elegían'], futuro:['elegiré','elegirás','elegirá','elegiremos','elegiréis','elegirán'], condicional:['elegiría','elegirías','elegiría','elegiríamos','elegiríais','elegirían'], subjuntivo:['elija','elijas','elija','elijamos','elijáis','elijan'] }
+// ── VERB DB ──
+const VERB_DB=[
+  {infinitivo:'ser',deutsch:'sein',ejemplo:'Ella es médica y trabaja en un hospital grande.',ejemplo_de:'Sie ist Ärztin und arbeitet in einem großen Krankenhaus.',presente:['soy','eres','es','somos','sois','son'],preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'],preteritoImperfecto:['era','eras','era','éramos','erais','eran'],futuro:['seré','serás','será','seremos','seréis','serán'],condicional:['sería','serías','sería','seríamos','seríais','serían'],subjuntivo:['sea','seas','sea','seamos','seáis','sean']},
+  {infinitivo:'estar',deutsch:'sein / sich befinden',ejemplo:'Estoy muy cansado después del trabajo.',ejemplo_de:'Ich bin sehr müde nach der Arbeit.',presente:['estoy','estás','está','estamos','estáis','están'],preteritoIndefinido:['estuve','estuviste','estuvo','estuvimos','estuvisteis','estuvieron'],preteritoImperfecto:['estaba','estabas','estaba','estábamos','estabais','estaban'],futuro:['estaré','estarás','estará','estaremos','estaréis','estarán'],condicional:['estaría','estarías','estaría','estaríamos','estaríais','estarían'],subjuntivo:['esté','estés','esté','estemos','estéis','estén']},
+  {infinitivo:'tener',deutsch:'haben',ejemplo:'Tenemos que salir antes de las ocho.',ejemplo_de:'Wir müssen vor acht Uhr gehen.',presente:['tengo','tienes','tiene','tenemos','tenéis','tienen'],preteritoIndefinido:['tuve','tuviste','tuvo','tuvimos','tuvisteis','tuvieron'],preteritoImperfecto:['tenía','tenías','tenía','teníamos','teníais','tenían'],futuro:['tendré','tendrás','tendrá','tendremos','tendréis','tendrán'],condicional:['tendría','tendrías','tendría','tendríamos','tendríais','tendrían'],subjuntivo:['tenga','tengas','tenga','tengamos','tengáis','tengan']},
+  {infinitivo:'hacer',deutsch:'machen / tun',ejemplo:'¿Qué haces cuando no tienes nada que hacer?',ejemplo_de:'Was machst du, wenn du nichts zu tun hast?',presente:['hago','haces','hace','hacemos','hacéis','hacen'],preteritoIndefinido:['hice','hiciste','hizo','hicimos','hicisteis','hicieron'],preteritoImperfecto:['hacía','hacías','hacía','hacíamos','hacíais','hacían'],futuro:['haré','harás','hará','haremos','haréis','harán'],condicional:['haría','harías','haría','haríamos','haríais','harían'],subjuntivo:['haga','hagas','haga','hagamos','hagáis','hagan']},
+  {infinitivo:'ir',deutsch:'gehen / fahren',ejemplo:'Voy al mercado todos los sábados por la mañana.',ejemplo_de:'Ich gehe jeden Samstag morgens auf den Markt.',presente:['voy','vas','va','vamos','vais','van'],preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'],preteritoImperfecto:['iba','ibas','iba','íbamos','ibais','iban'],futuro:['iré','irás','irá','iremos','iréis','irán'],condicional:['iría','irías','iría','iríamos','iríais','irían'],subjuntivo:['vaya','vayas','vaya','vayamos','vayáis','vayan']},
+  {infinitivo:'poder',deutsch:'können / dürfen',ejemplo:'No puedo dormir bien cuando hace mucho calor.',ejemplo_de:'Ich kann nicht gut schlafen, wenn es sehr heiß ist.',presente:['puedo','puedes','puede','podemos','podéis','pueden'],preteritoIndefinido:['pude','pudiste','pudo','pudimos','pudisteis','pudieron'],preteritoImperfecto:['podía','podías','podía','podíamos','podíais','podían'],futuro:['podré','podrás','podrá','podremos','podréis','podrán'],condicional:['podría','podrías','podría','podríamos','podríais','podrían'],subjuntivo:['pueda','puedas','pueda','podamos','podáis','puedan']},
+  {infinitivo:'querer',deutsch:'wollen / lieben',ejemplo:'Quiero aprender español para viajar por Latinoamérica.',ejemplo_de:'Ich möchte Spanisch lernen, um durch Lateinamerika zu reisen.',presente:['quiero','quieres','quiere','queremos','queréis','quieren'],preteritoIndefinido:['quise','quisiste','quiso','quisimos','quisisteis','quisieron'],preteritoImperfecto:['quería','querías','quería','queríamos','queríais','querían'],futuro:['querré','querrás','querrá','querremos','querréis','querrán'],condicional:['querría','querrías','querría','querríamos','querríais','querrían'],subjuntivo:['quiera','quieras','quiera','queramos','queráis','quieran']},
+  {infinitivo:'saber',deutsch:'wissen / können',ejemplo:'¿Sabes dónde está la estación de tren más cercana?',ejemplo_de:'Weißt du, wo der nächste Bahnhof ist?',presente:['sé','sabes','sabe','sabemos','sabéis','saben'],preteritoIndefinido:['supe','supiste','supo','supimos','supisteis','supieron'],preteritoImperfecto:['sabía','sabías','sabía','sabíamos','sabíais','sabían'],futuro:['sabré','sabrás','sabrá','sabremos','sabréis','sabrán'],condicional:['sabría','sabrías','sabría','sabríamos','sabríais','sabrían'],subjuntivo:['sepa','sepas','sepa','sepamos','sepáis','sepan']},
+  {infinitivo:'venir',deutsch:'kommen',ejemplo:'Mis amigos vienen a cenar esta noche a las nueve.',ejemplo_de:'Meine Freunde kommen heute Abend um neun zum Abendessen.',presente:['vengo','vienes','viene','venimos','venís','vienen'],preteritoIndefinido:['vine','viniste','vino','vinimos','vinisteis','vinieron'],preteritoImperfecto:['venía','venías','venía','veníamos','veníais','venían'],futuro:['vendré','vendrás','vendrá','vendremos','vendréis','vendrán'],condicional:['vendría','vendrías','vendría','vendríamos','vendríais','vendrían'],subjuntivo:['venga','vengas','venga','vengamos','vengáis','vengan']},
+  {infinitivo:'ver',deutsch:'sehen / schauen',ejemplo:'Vemos una película juntos cada viernes por la noche.',ejemplo_de:'Wir schauen jeden Freitagabend gemeinsam einen Film.',presente:['veo','ves','ve','vemos','veis','ven'],preteritoIndefinido:['vi','viste','vio','vimos','visteis','vieron'],preteritoImperfecto:['veía','veías','veía','veíamos','veíais','veían'],futuro:['veré','verás','verá','veremos','veréis','verán'],condicional:['vería','verías','vería','veríamos','veríais','verían'],subjuntivo:['vea','veas','vea','veamos','veáis','vean']},
+  {infinitivo:'dar',deutsch:'geben',ejemplo:'Le di las gracias por su ayuda y su amabilidad.',ejemplo_de:'Ich dankte ihm für seine Hilfe und seine Freundlichkeit.',presente:['doy','das','da','damos','dais','dan'],preteritoIndefinido:['di','diste','dio','dimos','disteis','dieron'],preteritoImperfecto:['daba','dabas','daba','dábamos','dabais','daban'],futuro:['daré','darás','dará','daremos','daréis','darán'],condicional:['daría','darías','daría','daríamos','daríais','darían'],subjuntivo:['dé','des','dé','demos','deis','den']},
+  {infinitivo:'decir',deutsch:'sagen',ejemplo:'Ella siempre dice la verdad, aunque sea difícil.',ejemplo_de:'Sie sagt immer die Wahrheit, auch wenn es schwierig ist.',presente:['digo','dices','dice','decimos','decís','dicen'],preteritoIndefinido:['dije','dijiste','dijo','dijimos','dijisteis','dijeron'],preteritoImperfecto:['decía','decías','decía','decíamos','decíais','decían'],futuro:['diré','dirás','dirá','diremos','diréis','dirán'],condicional:['diría','dirías','diría','diríamos','diríais','dirían'],subjuntivo:['diga','digas','diga','digamos','digáis','digan']},
+  {infinitivo:'poner',deutsch:'stellen / legen / setzen',ejemplo:'Pon la mesa antes de que lleguen los invitados.',ejemplo_de:'Deck den Tisch, bevor die Gäste ankommen.',presente:['pongo','pones','pone','ponemos','ponéis','ponen'],preteritoIndefinido:['puse','pusiste','puso','pusimos','pusisteis','pusieron'],preteritoImperfecto:['ponía','ponías','ponía','poníamos','poníais','ponían'],futuro:['pondré','pondrás','pondrá','pondremos','pondréis','pondrán'],condicional:['pondría','pondrías','pondría','pondríamos','pondríais','pondrían'],subjuntivo:['ponga','pongas','ponga','pongamos','pongáis','pongan']},
+  {infinitivo:'salir',deutsch:'ausgehen / herausgehen',ejemplo:'Salimos a pasear por el parque cuando hace buen tiempo.',ejemplo_de:'Wir gehen spazieren im Park, wenn das Wetter schön ist.',presente:['salgo','sales','sale','salimos','salís','salen'],preteritoIndefinido:['salí','saliste','salió','salimos','salisteis','salieron'],preteritoImperfecto:['salía','salías','salía','salíamos','salíais','salían'],futuro:['saldré','saldrás','saldrá','saldremos','saldréis','saldrán'],condicional:['saldría','saldrías','saldría','saldríamos','saldríais','saldrían'],subjuntivo:['salga','salgas','salga','salgamos','salgáis','salgan']},
+  {infinitivo:'traer',deutsch:'bringen / mitbringen',ejemplo:'¿Puedes traer algo de comer a la reunión de mañana?',ejemplo_de:'Kannst du etwas zu essen zum morgigen Treffen mitbringen?',presente:['traigo','traes','trae','traemos','traéis','traen'],preteritoIndefinido:['traje','trajiste','trajo','trajimos','trajisteis','trajeron'],preteritoImperfecto:['traía','traías','traía','traíamos','traíais','traían'],futuro:['traeré','traerás','traerá','traeremos','traeréis','traerán'],condicional:['traería','traerías','traería','traeríamos','traeríais','traerían'],subjuntivo:['traiga','traigas','traiga','traigamos','traigáis','traigan']},
+  {infinitivo:'volver',deutsch:'zurückkehren',ejemplo:'Volví a casa muy tarde después de la fiesta del viernes.',ejemplo_de:'Ich kam sehr spät nach Hause nach der Freitagsparty.',presente:['vuelvo','vuelves','vuelve','volvemos','volvéis','vuelven'],preteritoIndefinido:['volví','volviste','volvió','volvimos','volvisteis','volvieron'],preteritoImperfecto:['volvía','volvías','volvía','volvíamos','volvíais','volvían'],futuro:['volveré','volverás','volverá','volveremos','volveréis','volverán'],condicional:['volvería','volverías','volvería','volveríamos','volveríais','volverían'],subjuntivo:['vuelva','vuelvas','vuelva','volvamos','volváis','vuelvan']},
+  {infinitivo:'dormir',deutsch:'schlafen',ejemplo:'Los niños duermen profundamente después de jugar todo el día.',ejemplo_de:'Die Kinder schlafen tief, nachdem sie den ganzen Tag gespielt haben.',presente:['duermo','duermes','duerme','dormimos','dormís','duermen'],preteritoIndefinido:['dormí','dormiste','durmió','dormimos','dormisteis','durmieron'],preteritoImperfecto:['dormía','dormías','dormía','dormíamos','dormíais','dormían'],futuro:['dormiré','dormirás','dormirá','dormiremos','dormiréis','dormirán'],condicional:['dormiría','dormirías','dormiría','dormiríamos','dormiríais','dormirían'],subjuntivo:['duerma','duermas','duerma','durmamos','durmáis','duerman']},
+  {infinitivo:'pedir',deutsch:'bitten / bestellen',ejemplo:'Pedimos dos cafés y un trozo de tarta de chocolate.',ejemplo_de:'Wir bestellten zwei Kaffees und ein Stück Schokoladenkuchen.',presente:['pido','pides','pide','pedimos','pedís','piden'],preteritoIndefinido:['pedí','pediste','pidió','pedimos','pedisteis','pidieron'],preteritoImperfecto:['pedía','pedías','pedía','pedíamos','pedíais','pedían'],futuro:['pediré','pedirás','pedirá','pediremos','pediréis','pedirán'],condicional:['pediría','pedirías','pediría','pediríamos','pediríais','pedirían'],subjuntivo:['pida','pidas','pida','pidamos','pidáis','pidan']},
+  {infinitivo:'seguir',deutsch:'folgen / weitermachen',ejemplo:'Sigue recto y luego gira a la derecha en el semáforo.',ejemplo_de:'Geh geradeaus und biege dann an der Ampel rechts ab.',presente:['sigo','sigues','sigue','seguimos','seguís','siguen'],preteritoIndefinido:['seguí','seguiste','siguió','seguimos','seguisteis','siguieron'],preteritoImperfecto:['seguía','seguías','seguía','seguíamos','seguíais','seguían'],futuro:['seguiré','seguirás','seguirá','seguiremos','seguiréis','seguirán'],condicional:['seguiría','seguirías','seguiría','seguiríamos','seguiríais','seguirían'],subjuntivo:['siga','sigas','siga','sigamos','sigáis','sigan']},
+  {infinitivo:'sentir',deutsch:'fühlen / spüren',ejemplo:'Siento mucho no haber podido asistir a tu cumpleaños.',ejemplo_de:'Es tut mir sehr leid, dass ich nicht zu deinem Geburtstag kommen konnte.',presente:['siento','sientes','siente','sentimos','sentís','sienten'],preteritoIndefinido:['sentí','sentiste','sintió','sentimos','sentisteis','sintieron'],preteritoImperfecto:['sentía','sentías','sentía','sentíamos','sentíais','sentían'],futuro:['sentiré','sentirás','sentirá','sentiremos','sentiréis','sentirán'],condicional:['sentiría','sentirías','sentiría','sentiríamos','sentiríais','sentirían'],subjuntivo:['sienta','sientas','sienta','sintamos','sintáis','sientan']},
+  {infinitivo:'conocer',deutsch:'kennen / kennenlernen',ejemplo:'Conocí a mi mejor amigo en el primer día de universidad.',ejemplo_de:'Ich lernte meinen besten Freund am ersten Tag der Universität kennen.',presente:['conozco','conoces','conoce','conocemos','conocéis','conocen'],preteritoIndefinido:['conocí','conociste','conoció','conocimos','conocisteis','conocieron'],preteritoImperfecto:['conocía','conocías','conocía','conocíamos','conocíais','conocían'],futuro:['conoceré','conocerás','conocerá','conoceremos','conoceréis','conocerán'],condicional:['conocería','conocerías','conocería','conoceríamos','conoceríais','conocerían'],subjuntivo:['conozca','conozcas','conozca','conozcamos','conozcáis','conozcan']},
+  {infinitivo:'perder',deutsch:'verlieren / verpassen',ejemplo:'Perdí el tren por quedarme dormido esta mañana.',ejemplo_de:'Ich habe den Zug verpasst, weil ich heute Morgen verschlafen habe.',presente:['pierdo','pierdes','pierde','perdemos','perdéis','pierden'],preteritoIndefinido:['perdí','perdiste','perdió','perdimos','perdisteis','perdieron'],preteritoImperfecto:['perdía','perdías','perdía','perdíamos','perdíais','perdían'],futuro:['perderé','perderás','perderá','perderemos','perderéis','perderán'],condicional:['perdería','perderías','perdería','perderíamos','perderíais','perderían'],subjuntivo:['pierda','pierdas','pierda','perdamos','perdáis','pierdan']},
+  {infinitivo:'entender',deutsch:'verstehen',ejemplo:'No entiendo bien el subjuntivo, pero sigo practicando.',ejemplo_de:'Ich verstehe den Konjunktiv nicht gut, aber ich übe weiter.',presente:['entiendo','entiendes','entiende','entendemos','entendéis','entienden'],preteritoIndefinido:['entendí','entendiste','entendió','entendimos','entendisteis','entendieron'],preteritoImperfecto:['entendía','entendías','entendía','entendíamos','entendíais','entendían'],futuro:['entenderé','entenderás','entenderá','entenderemos','entenderéis','entenderán'],condicional:['entendería','entenderías','entendería','entenderíamos','entenderíais','entenderían'],subjuntivo:['entienda','entiendas','entienda','entendamos','entendáis','entiendan']},
+  {infinitivo:'jugar',deutsch:'spielen',ejemplo:'Los niños juegan al fútbol en el parque cada tarde.',ejemplo_de:'Die Kinder spielen jeden Nachmittag im Park Fußball.',presente:['juego','juegas','juega','jugamos','jugáis','juegan'],preteritoIndefinido:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron'],preteritoImperfecto:['jugaba','jugabas','jugaba','jugábamos','jugabais','jugaban'],futuro:['jugaré','jugarás','jugará','jugaremos','jugaréis','jugarán'],condicional:['jugaría','jugarías','jugaría','jugaríamos','jugaríais','jugarían'],subjuntivo:['juegue','juegues','juegue','juguemos','juguéis','jueguen']},
+  {infinitivo:'caer',deutsch:'fallen',ejemplo:'Se cayó en la calle porque no vio el escalón.',ejemplo_de:'Er fiel auf der Straße, weil er die Stufe nicht sah.',presente:['caigo','caes','cae','caemos','caéis','caen'],preteritoIndefinido:['caí','caíste','cayó','caímos','caísteis','cayeron'],preteritoImperfecto:['caía','caías','caía','caíamos','caíais','caían'],futuro:['caeré','caerás','caerá','caeremos','caeréis','caerán'],condicional:['caería','caerías','caería','caeríamos','caeríais','caerían'],subjuntivo:['caiga','caigas','caiga','caigamos','caigáis','caigan']},
+  {infinitivo:'reír',deutsch:'lachen',ejemplo:'Nos reímos mucho con las historias de nuestro abuelo.',ejemplo_de:'Wir lachten viel über die Geschichten unseres Großvaters.',presente:['río','ríes','ríe','reímos','reís','ríen'],preteritoIndefinido:['reí','reíste','rió','reímos','reísteis','rieron'],preteritoImperfecto:['reía','reías','reía','reíamos','reíais','reían'],futuro:['reiré','reirás','reirá','reiremos','reiréis','reirán'],condicional:['reiría','reirías','reiría','reiríamos','reiríais','reirían'],subjuntivo:['ría','rías','ría','riamos','riáis','rían']},
+  {infinitivo:'morir',deutsch:'sterben',ejemplo:'Desgraciadamente, la planta murió porque olvidé regarla.',ejemplo_de:'Leider ist die Pflanze gestorben, weil ich vergessen habe, sie zu gießen.',presente:['muero','mueres','muere','morimos','morís','mueren'],preteritoIndefinido:['morí','moriste','murió','morimos','moristeis','murieron'],preteritoImperfecto:['moría','morías','moría','moríamos','moríais','morían'],futuro:['moriré','morirás','morirá','moriremos','moriréis','morirán'],condicional:['moriría','morirías','moriría','moriríamos','moriríais','morirían'],subjuntivo:['muera','mueras','muera','muramos','muráis','mueran']},
+  {infinitivo:'oír',deutsch:'hören',ejemplo:'Oí una canción preciosa que nunca había escuchado antes.',ejemplo_de:'Ich hörte ein wunderschönes Lied, das ich noch nie gehört hatte.',presente:['oigo','oyes','oye','oímos','oís','oyen'],preteritoIndefinido:['oí','oíste','oyó','oímos','oísteis','oyeron'],preteritoImperfecto:['oía','oías','oía','oíamos','oíais','oían'],futuro:['oiré','oirás','oirá','oiremos','oiréis','oirán'],condicional:['oiría','oirías','oiría','oiríamos','oiríais','oirían'],subjuntivo:['oiga','oigas','oiga','oigamos','oigáis','oigan']},
+  {infinitivo:'conducir',deutsch:'fahren / führen',ejemplo:'Conduzco con cuidado porque las carreteras están mojadas.',ejemplo_de:'Ich fahre vorsichtig, weil die Straßen nass sind.',presente:['conduzco','conduces','conduce','conducimos','conducís','conducen'],preteritoIndefinido:['conduje','condujiste','condujo','condujimos','condujisteis','condujeron'],preteritoImperfecto:['conducía','conducías','conducía','conducíamos','conducíais','conducían'],futuro:['conduciré','conducirás','conducirá','conduciremos','conduciréis','conducirán'],condicional:['conduciría','conducirías','conduciría','conduciríamos','conduciríais','conducirían'],subjuntivo:['conduzca','conduzcas','conduzca','conduzcamos','conduzcáis','conduzcan']},
+  {infinitivo:'construir',deutsch:'bauen / konstruieren',ejemplo:'Están construyendo un nuevo puente sobre el río.',ejemplo_de:'Sie bauen eine neue Brücke über den Fluss.',presente:['construyo','construyes','construye','construimos','construís','construyen'],preteritoIndefinido:['construí','construiste','construyó','construimos','construisteis','construyeron'],preteritoImperfecto:['construía','construías','construía','construíamos','construíais','construían'],futuro:['construiré','construirás','construirá','construiremos','construiréis','construirán'],condicional:['construiría','construirías','construiría','construiríamos','construiríais','construirían'],subjuntivo:['construya','construyas','construya','construyamos','construyáis','construyan']},
+  {infinitivo:'elegir',deutsch:'wählen / auswählen',ejemplo:'Elegí estudiar idiomas porque me apasionan las culturas.',ejemplo_de:'Ich entschied mich, Sprachen zu studieren, weil mich Kulturen begeistern.',presente:['elijo','eliges','elige','elegimos','elegís','eligen'],preteritoIndefinido:['elegí','elegiste','eligió','elegimos','elegisteis','eligieron'],preteritoImperfecto:['elegía','elegías','elegía','elegíamos','elegíais','elegían'],futuro:['elegiré','elegirás','elegirá','elegiremos','elegiréis','elegirán'],condicional:['elegiría','elegirías','elegiría','elegiríamos','elegiríais','elegirían'],subjuntivo:['elija','elijas','elija','elijamos','elijáis','elijan']}
 ];
 
-const PRONOUNS = ['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
+const PRONOUNS=['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
+let currentTense='presente';
+const TENSES={presente:'Presente',preteritoIndefinido:'Indefinido',preteritoImperfecto:'Imperfecto',futuro:'Futuro',condicional:'Condicional',subjuntivo:'Subjuntivo'};
 
-let currentTense = 'presente';
-
-const TENSES = {
-  presente: 'Presente',
-  preteritoIndefinido: 'Pretérito Indefinido',
-  preteritoImperfecto: 'Pretérito Imperfecto',
-  futuro: 'Futuro',
-  condicional: 'Condicional',
-  subjuntivo: 'Subjuntivo Presente'
-};
-
-function loadDailyVerb() {
-  const todayStr = todayISO();
-
-  // Use cached verb if already loaded today
-  if (state.lastVerbDate === todayStr && state.lastVerb) {
-    renderVerbCard(state.lastVerb, currentTense);
-    renderLearnedVerbs();
-    return;
-  }
-
-  // Pick verb seeded by date — cycles through all 30 verbs
-  const dateNum = parseInt(todayStr.replace(/-/g, ''));
-  const idx = dateNum % VERB_DB.length;
-  const verbData = VERB_DB[idx];
-
-  state.lastVerb = verbData;
-  state.lastVerbDate = todayStr;
-
-  if (!state.learnedVerbs.find(v => v.infinitivo === verbData.infinitivo)) {
-    state.learnedVerbs.unshift({ infinitivo: verbData.infinitivo, deutsch: verbData.deutsch, date: today() });
-  }
-  saveState();
-  renderVerbCard(verbData, currentTense);
-  renderLearnedVerbs();
-  updateHeaderStats();
+// ── DAILY VERB ──
+function loadDailyVerb(){
+  const ts=todayISO();
+  if(state.lastVerbDate===ts&&state.lastVerb){renderVerbCard(state.lastVerb,currentTense);renderLearnedVerbs();return}
+  const vd=VERB_DB[parseInt(ts.replace(/-/g,''))%VERB_DB.length];
+  state.lastVerb=vd;state.lastVerbDate=ts;
+  if(!state.learnedVerbs.find(v=>v.infinitivo===vd.infinitivo))state.learnedVerbs.unshift({infinitivo:vd.infinitivo,deutsch:vd.deutsch,date:today()});
+  saveState();renderVerbCard(vd,currentTense);renderLearnedVerbs();updateHeaderStats();
 }
 
-function renderVerbCard(verbData, tense) {
-  const forms = verbData[tense] || [];
-  const conjugations = PRONOUNS.map((pro, i) =>
-    `<div class="conj-row"><span class="conj-pro">${pro}</span><span class="conj-form">${forms[i] || '—'}</span></div>`
-  ).join('');
-
-  const tenseButtons = Object.entries(TENSES).map(([key, label]) =>
-    `<button class="tense-btn ${key === tense ? 'active' : ''}" onclick="switchTense('${key}')">${label}</button>`
-  ).join('');
-
-  document.getElementById('verb-card-content').innerHTML = `
+function renderVerbCard(vd,tense){
+  const forms=vd[tense]||[];
+  const conjs=PRONOUNS.map((p,i)=>`<div class="conj-row"><span class="conj-pro">${p}</span><span class="conj-form">${forms[i]||'—'}</span></div>`).join('');
+  const tabs=Object.entries(TENSES).map(([k,l])=>`<button class="tense-btn ${k===tense?'active':''}" onclick="switchTense('${k}')">${l}</button>`).join('');
+  document.getElementById('verb-card-content').innerHTML=`
     <div class="verb-hero">
       <div class="verb-day-label">Verb des Tages — ${today()}</div>
-      <div class="verb-infinitive">${verbData.infinitivo}</div>
-      <div class="verb-translation">${verbData.deutsch}</div>
-      <div class="verb-example">
-        <em>"${verbData.ejemplo}"</em><br>
-        <span style="font-style:normal;font-size:13px;color:var(--text-light)">${verbData.ejemplo_de}</span>
-      </div>
+      <div class="verb-infinitive">${vd.infinitivo}</div>
+      <div class="verb-translation">${vd.deutsch}</div>
+      <div class="verb-example"><em>"${vd.ejemplo}"</em><br><span style="font-style:normal;font-size:13px;color:var(--text-light)">${vd.ejemplo_de}</span></div>
     </div>
-    <div class="verb-tense-tabs" style="padding:1rem 1.5rem 0.5rem">${tenseButtons}</div>
-    <div class="conjugation-grid">${conjugations}</div>`;
+    <div class="verb-tense-tabs">${tabs}</div>
+    <div class="conjugation-grid">${conjs}</div>`;
 }
+function switchTense(t){currentTense=t;if(state.lastVerb)renderVerbCard(state.lastVerb,t)}
 
-function switchTense(tense) {
-  currentTense = tense;
-  if (state.lastVerb) renderVerbCard(state.lastVerb, tense);
-}
-
-function renderLearnedVerbs() {
-  const el = document.getElementById('learned-verbs-list');
-  if (!state.learnedVerbs.length) {
-    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📘</div>Noch keine Verben gelernt.</div>';
-    return;
-  }
-  el.innerHTML = state.learnedVerbs.map(v => `
-    <div class="learned-verb-item">
-      <div>
-        <span class="lv-name">${v.infinitivo}</span>
-        <span class="lv-trans"> — ${v.deutsch}</span>
-      </div>
+// ── LEARNED VERBS ──
+function renderLearnedVerbs(){
+  const el=document.getElementById('learned-verbs-list');
+  if(!state.learnedVerbs.length){el.innerHTML='<div class="empty-state"><div class="empty-icon">📘</div>Noch keine Verben gelernt.</div>';return}
+  el.innerHTML=state.learnedVerbs.map(v=>`
+    <div class="lv-item" onclick="openVerbModal('${v.infinitivo}')">
+      <div class="lv-main"><div class="lv-name">${v.infinitivo}</div><div class="lv-trans">${v.deutsch}</div></div>
       <span class="lv-date">${v.date}</span>
+      <span class="lv-arrow">›</span>
     </div>`).join('');
 }
 
-// ───────────────────────── VOCAB ─────────────────────────
-function addVocabWord() {
-  const es = document.getElementById('new-es').value.trim();
-  const de = document.getElementById('new-de').value.trim();
-  const cat = document.getElementById('new-cat').value.trim();
-  if (!es) { showToast('Bitte spanisches Wort eingeben!'); return; }
-  if (state.words.find(w => w.es.toLowerCase() === es.toLowerCase())) {
-    showToast('Dieses Wort existiert bereits!'); return;
+// ── VERB MODAL ──
+let modalCurrentTense='presente';
+let modalCurrentVerb=null;
+
+function openVerbModal(infinitivo){
+  const vd=VERB_DB.find(v=>v.infinitivo===infinitivo);
+  if(!vd)return;
+  modalCurrentVerb=vd;modalCurrentTense='presente';
+  document.getElementById('modal-inf').textContent=vd.infinitivo;
+  document.getElementById('modal-de').textContent=vd.deutsch;
+  document.getElementById('modal-ex').innerHTML=`<em>"${vd.ejemplo}"</em><br><span style="font-style:normal;color:var(--green-dark)">${vd.ejemplo_de}</span>`;
+  renderModalConj();
+  document.getElementById('verbModal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function renderModalConj(){
+  const vd=modalCurrentVerb;if(!vd)return;
+  const forms=vd[modalCurrentTense]||[];
+  document.getElementById('modal-tabs').innerHTML=Object.entries(TENSES).map(([k,l])=>`<button class="tense-btn ${k===modalCurrentTense?'active':''}" onclick="switchModalTense('${k}')">${l}</button>`).join('');
+  document.getElementById('modal-grid').innerHTML=PRONOUNS.map((p,i)=>`<div class="conj-row"><span class="conj-pro">${p}</span><span class="conj-form">${forms[i]||'—'}</span></div>`).join('');
+}
+function switchModalTense(t){modalCurrentTense=t;renderModalConj()}
+
+function closeModal(e){
+  if(!e||e.target===document.getElementById('verbModal')){
+    document.getElementById('verbModal').classList.remove('open');
+    document.body.style.overflow='';
   }
-  state.words.push({ es, de, cat, usedCount: 0, addedAt: Date.now() });
-  saveState();
-  renderVocabTable();
-  renderWordChips();
-  updateHeaderStats();
-  document.getElementById('new-es').value = '';
-  document.getElementById('new-de').value = '';
-  document.getElementById('new-cat').value = '';
+}
+
+// ── VOCAB ──
+function addVocabWord(){
+  const es=document.getElementById('new-es').value.trim(),de=document.getElementById('new-de').value.trim(),cat=document.getElementById('new-cat').value.trim();
+  if(!es){showToast('Bitte spanisches Wort eingeben!');return}
+  if(state.words.find(w=>w.es.toLowerCase()===es.toLowerCase())){showToast('Dieses Wort existiert bereits!');return}
+  state.words.push({es,de,cat,usedCount:0,addedAt:Date.now()});
+  saveState();renderVocabTable();renderWordChips();updateHeaderStats();
+  document.getElementById('new-es').value='';document.getElementById('new-de').value='';document.getElementById('new-cat').value='';
   showToast('Wort hinzugefügt!');
 }
+function deleteWord(idx){state.words.splice(idx,1);saveState();renderVocabTable();renderWordChips();updateHeaderStats()}
 
-function deleteWord(idx) {
-  state.words.splice(idx, 1);
-  saveState();
-  renderVocabTable();
-  renderWordChips();
-  updateHeaderStats();
+function renderVocabTable(){
+  const tbody=document.getElementById('vocab-table-body'),cl=document.getElementById('vocab-card-list'),empty=document.getElementById('vocab-empty');
+  if(!state.words.length){tbody.innerHTML='';cl.innerHTML='';empty.style.display='block';document.getElementById('vocab-stats').textContent='';return}
+  empty.style.display='none';
+  const used=state.words.filter(w=>w.usedCount>0).length;
+  document.getElementById('vocab-stats').textContent=`${state.words.length} Wörter · ${used} geübt · ${state.words.length-used} neu`;
+  tbody.innerHTML=state.words.map((w,i)=>`<tr><td><strong>${w.es}</strong></td><td>${w.de||'<span style="color:var(--text-light)">—</span>'}</td><td>${w.cat||'<span style="color:var(--text-light)">—</span>'}</td><td><span class="status-badge ${w.usedCount>0?'status-used':'status-new'}">${w.usedCount>0?w.usedCount+'× geübt':'Neu'}</span></td><td><button class="btn btn-sm btn-danger" onclick="deleteWord(${i})">✕</button></td></tr>`).join('');
+  cl.innerHTML=state.words.map((w,i)=>`<div class="vocab-card-item"><div class="vc-text"><div class="vc-es">${w.es}</div><div class="vc-de">${w.de||'—'}</div>${w.cat?`<div class="vc-cat">${w.cat}</div>`:''}</div><div class="vc-right"><span class="status-badge ${w.usedCount>0?'status-used':'status-new'}">${w.usedCount>0?w.usedCount+'×':'Neu'}</span><button class="btn btn-sm btn-danger" onclick="deleteWord(${i})">✕</button></div></div>`).join('');
 }
 
-function renderVocabTable() {
-  const tbody = document.getElementById('vocab-table-body');
-  const empty = document.getElementById('vocab-empty');
-
-  if (!state.words.length) {
-    tbody.innerHTML = '';
-    empty.style.display = 'block';
-    document.getElementById('vocab-stats').textContent = '';
-    return;
-  }
-
-  empty.style.display = 'none';
-  const used = state.words.filter(w => w.usedCount > 0).length;
-  document.getElementById('vocab-stats').textContent =
-    `${state.words.length} Wörter gesamt · ${used} bereits geübt · ${state.words.length - used} neu`;
-
-  tbody.innerHTML = state.words.map((w, i) => `
-    <tr>
-      <td><strong>${w.es}</strong></td>
-      <td>${w.de || '<span style="color:var(--text-light)">—</span>'}</td>
-      <td>${w.cat || '<span style="color:var(--text-light)">—</span>'}</td>
-      <td>
-        <span class="status-badge ${w.usedCount > 0 ? 'status-used' : 'status-new'}">
-          ${w.usedCount > 0 ? `${w.usedCount}× geübt` : 'Neu'}
-        </span>
-      </td>
-      <td style="color:var(--text-muted);font-size:13px">${w.usedCount}×</td>
-      <td><button class="btn btn-sm btn-danger" onclick="deleteWord(${i})">✕</button></td>
-    </tr>`).join('');
-}
-
-function downloadCSV() {
-  if (!state.words.length) { showToast('Keine Wörter zum Exportieren!'); return; }
-  const rows = ['Spanisch,Deutsch,Kategorie,Mal geübt', ...state.words.map(w =>
-    `"${w.es}","${w.de || ''}","${w.cat || ''}",${w.usedCount}`)];
-  const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `spanisch_vokabeln_${todayISO()}.csv`;
-  a.click();
+function downloadCSV(){
+  if(!state.words.length){showToast('Keine Wörter zum Exportieren!');return}
+  const rows=['Spanisch,Deutsch,Kategorie,Mal geübt',...state.words.map(w=>`"${w.es}","${w.de||''}","${w.cat||''}",${w.usedCount}`)];
+  const blob=new Blob([rows.join('\n')],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=`spanisch_vokabeln_${todayISO()}.csv`;a.click();
   showToast('CSV heruntergeladen!');
 }
 
-// ───────────────────────── INIT ─────────────────────────
+// ── INIT ──
 updateHeaderStats();
 renderWordChips();
 </script>
