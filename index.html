@@ -1,0 +1,1230 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EspaÃ±ol — Lern-App</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1a7a56;
+    --green-light: #e8f5ef;
+    --green-mid: #2da870;
+    --green-dark: #0f4f38;
+    --gold: #c9972a;
+    --gold-light: #fdf3e0;
+    --red: #c0392b;
+    --red-light: #fdecea;
+    --bg: #f7f5f0;
+    --surface: #ffffff;
+    --surface2: #f2f0ea;
+    --border: #e2ddd4;
+    --text: #1c1a16;
+    --text-muted: #7a7267;
+    --text-light: #b0a89a;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(28,26,22,0.08);
+    --shadow-lg: 0 8px 40px rgba(28,26,22,0.13);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  /* Header */
+  .header {
+    background: var(--green-dark);
+    padding: 1.25rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+  }
+
+  .header-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    color: #fff;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+  }
+
+  .header-logo span {
+    color: var(--gold);
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .hstat {
+    text-align: center;
+  }
+
+  .hstat-num {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1;
+  }
+
+  .hstat-lbl {
+    font-size: 10px;
+    color: rgba(255,255,255,0.55);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+  }
+
+  /* Navigation tabs */
+  .nav {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    padding: 0 2rem;
+    gap: 0;
+  }
+
+  .nav-tab {
+    padding: 1rem 1.5rem;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    margin-bottom: -1px;
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    transition: color 0.2s, border-color 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .nav-tab .icon { font-size: 16px; }
+  .nav-tab:hover { color: var(--green); }
+  .nav-tab.active { color: var(--green-dark); border-bottom-color: var(--green-mid); font-weight: 600; }
+
+  /* Main layout */
+  .main {
+    max-width: 860px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+  }
+
+  /* Panel */
+  .panel { display: none; animation: fadeIn 0.25s ease; }
+  .panel.active { display: block; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--green-mid);
+    flex-shrink: 0;
+  }
+
+  /* Buttons */
+  .btn {
+    padding: 9px 18px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .btn:hover { background: var(--bg); border-color: #ccc; }
+  .btn:active { transform: scale(0.98); }
+
+  .btn-primary {
+    background: var(--green);
+    color: #fff;
+    border-color: var(--green);
+  }
+
+  .btn-primary:hover { background: var(--green-dark); border-color: var(--green-dark); }
+  .btn-primary:disabled { background: #9fd4bc; border-color: #9fd4bc; cursor: not-allowed; transform: none; }
+
+  .btn-sm { padding: 5px 12px; font-size: 12px; }
+  .btn-danger { color: var(--red); border-color: #f5c5c2; }
+  .btn-danger:hover { background: var(--red-light); }
+
+  .btn-outline-green {
+    border-color: var(--green-mid);
+    color: var(--green);
+  }
+
+  .btn-outline-green:hover { background: var(--green-light); }
+
+  /* Forms */
+  input[type=text], input[type=number], textarea, select {
+    width: 100%;
+    padding: 9px 13px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: 'DM Sans', sans-serif;
+    background: var(--surface);
+    color: var(--text);
+    transition: border-color 0.15s, box-shadow 0.15s;
+  }
+
+  input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--green-mid);
+    box-shadow: 0 0 0 3px rgba(45, 168, 112, 0.12);
+  }
+
+  label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    display: block;
+    margin-bottom: 5px;
+  }
+
+  .field { margin-bottom: 1rem; }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 1.25rem 0;
+  }
+
+  /* Upload area */
+  .upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius);
+    padding: 1.75rem;
+    text-align: center;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: all 0.2s;
+    background: var(--bg);
+  }
+
+  .upload-area:hover {
+    border-color: var(--green-mid);
+    background: var(--green-light);
+    color: var(--green-dark);
+  }
+
+  .upload-area input { display: none; }
+  .upload-icon { font-size: 28px; margin-bottom: 8px; }
+
+  /* Tags/chips */
+  .chip-row { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 8px; min-height: 32px; }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    background: var(--green-light);
+    color: var(--green-dark);
+    border: 1px solid rgba(45,168,112,0.2);
+  }
+
+  .chip.used {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border-color: var(--border);
+  }
+
+  .chip-check { font-size: 10px; }
+
+  /* Loading */
+  .loading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 1.5rem 0;
+    justify-content: center;
+  }
+
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    border-top-color: var(--green-mid);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Story output */
+  .story-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow);
+    animation: fadeIn 0.3s ease;
+  }
+
+  .story-header {
+    background: var(--green-dark);
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .story-date {
+    font-size: 12px;
+    color: rgba(255,255,255,0.6);
+  }
+
+  .story-level-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+    background: var(--gold);
+    color: var(--green-dark);
+    letter-spacing: 0.5px;
+  }
+
+  .story-body { padding: 1.5rem; }
+
+  .story-es {
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--text);
+  }
+
+  .story-es .highlight-word {
+    background: var(--green-light);
+    color: var(--green-dark);
+    padding: 1px 4px;
+    border-radius: 4px;
+    font-weight: 500;
+  }
+
+  .story-toggle {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--green);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 1rem;
+    border: none;
+    background: none;
+    font-family: 'DM Sans', sans-serif;
+    padding: 0;
+  }
+
+  .story-toggle:hover { color: var(--green-dark); }
+
+  .story-de {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 1rem;
+    background: var(--surface2);
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-muted);
+    border-left: 3px solid var(--green-mid);
+  }
+
+  .used-words-row {
+    padding: 0.75rem 1.5rem;
+    border-top: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+  }
+
+  .used-words-label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-light);
+    margin-right: 4px;
+  }
+
+  /* Verb of the day */
+  .verb-hero {
+    text-align: center;
+    padding: 2.5rem 1.5rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .verb-day-label {
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--green-mid);
+    margin-bottom: 0.5rem;
+  }
+
+  .verb-infinitive {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1;
+    margin-bottom: 0.5rem;
+  }
+
+  .verb-translation {
+    font-size: 16px;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+  }
+
+  .verb-example {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-style: italic;
+    max-width: 480px;
+    margin: 0 auto;
+  }
+
+  .conjugation-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    padding: 1.5rem;
+  }
+
+  .conj-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 14px;
+    background: var(--bg);
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  .conj-pro { font-size: 13px; color: var(--text-muted); }
+  .conj-form { font-size: 14px; font-weight: 600; color: var(--text); }
+
+  .verb-tense-tabs {
+    display: flex;
+    gap: 6px;
+    padding: 0 1.5rem 0;
+    flex-wrap: wrap;
+  }
+
+  .tense-btn {
+    padding: 5px 14px;
+    font-size: 12px;
+    font-weight: 500;
+    border-radius: 20px;
+    cursor: pointer;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .tense-btn:hover { background: var(--bg); }
+  .tense-btn.active { background: var(--green); color: #fff; border-color: var(--green); }
+
+  /* Learned verbs */
+  .learned-verb-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+  }
+
+  .learned-verb-item:last-child { border-bottom: none; }
+  .lv-name { font-weight: 600; color: var(--green-dark); }
+  .lv-trans { color: var(--text-muted); font-size: 13px; }
+  .lv-date { font-size: 11px; color: var(--text-light); }
+
+  /* Vocab table */
+  .vocab-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .vocab-table th {
+    text-align: left;
+    padding: 8px 12px;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg);
+  }
+
+  .vocab-table td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+  }
+
+  .vocab-table tr:last-child td { border-bottom: none; }
+
+  .vocab-table tr:hover td { background: var(--bg); }
+
+  .status-badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  .status-new { background: var(--green-light); color: var(--green-dark); }
+  .status-used { background: var(--surface2); color: var(--text-muted); }
+
+  /* Grid helpers */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
+  .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .flex-row { display: flex; gap: 10px; align-items: flex-end; }
+  .flex-row > *:first-child { flex: 1; }
+
+  /* Stats in header */
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+
+  .stat-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+  }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--green-dark);
+    line-height: 1;
+  }
+
+  .stat-lbl {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+    font-weight: 600;
+    margin-top: 4px;
+  }
+
+  /* Range slider */
+  .range-wrap { position: relative; }
+  input[type=range] {
+    width: 100%;
+    accent-color: var(--green-mid);
+    height: 4px;
+  }
+
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-light);
+    margin-top: -2px;
+  }
+
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 2.5rem 1rem;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+
+  .empty-icon { font-size: 36px; margin-bottom: 0.75rem; }
+
+  /* Notification toast */
+  .toast {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    background: var(--green-dark);
+    color: #fff;
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    box-shadow: var(--shadow-lg);
+    z-index: 9999;
+    animation: slideIn 0.25s ease;
+    max-width: 320px;
+  }
+
+  @keyframes slideIn {
+    from { transform: translateY(12px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .header { padding: 1rem; }
+    .header-stats { gap: 1rem; }
+    .main { padding: 1rem; }
+    .grid-2, .grid-3, .grid-4, .stats-bar { grid-template-columns: 1fr 1fr; }
+    .verb-infinitive { font-size: 32px; }
+    .conjugation-grid { grid-template-columns: 1fr; }
+    .nav { padding: 0 0.5rem; overflow-x: auto; }
+    .nav-tab { padding: 0.75rem 1rem; white-space: nowrap; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-logo">es<span>pa</span>ñol</div>
+  <div class="header-stats">
+    <div class="hstat"><div class="hstat-num" id="h-words">0</div><div class="hstat-lbl">Wörter</div></div>
+    <div class="hstat"><div class="hstat-num" id="h-stories">0</div><div class="hstat-lbl">Geschichten</div></div>
+    <div class="hstat"><div class="hstat-num" id="h-verbs">0</div><div class="hstat-lbl">Verben</div></div>
+  </div>
+</div>
+
+<nav class="nav">
+  <button class="nav-tab active" onclick="showTab('stories')"><span class="icon">📖</span> Geschichten</button>
+  <button class="nav-tab" onclick="showTab('verb')"><span class="icon">🗓</span> Verb des Tages</button>
+  <button class="nav-tab" onclick="showTab('vocab')"><span class="icon">📚</span> Vokabeln</button>
+</nav>
+
+<div class="main">
+
+  <!-- ===================== PANEL: STORIES ===================== -->
+  <div class="panel active" id="panel-stories">
+    <div class="stats-bar">
+      <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Wörter gesamt</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-unused">0</div><div class="stat-lbl">Neue Wörter</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-usedw">0</div><div class="stat-lbl">Geübt</div></div>
+      <div class="stat-box"><div class="stat-num" id="stat-stories">0</div><div class="stat-lbl">Geschichten</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Wörter laden</div>
+      <label>CSV oder Excel hochladen</label>
+      <div class="upload-area" onclick="document.getElementById('csvInput').click()">
+        <input type="file" id="csvInput" accept=".csv,.xlsx,.xls,.txt" onchange="handleFileUpload(event)">
+        <div class="upload-icon">⬆️</div>
+        <strong>Datei hier ablegen</strong> oder klicken zum Hochladen<br>
+        <span style="font-size:12px;color:var(--text-light)">CSV: spanisch,deutsch — eine Zeile pro Wort</span>
+      </div>
+      <div class="divider"></div>
+      <label>Oder Wörter manuell eingeben</label>
+      <div class="flex-row">
+        <textarea id="manualWords" rows="3" placeholder="hablar,sprechen&#10;comer,essen&#10;vivir,leben&#10;ser,sein"></textarea>
+        <button class="btn btn-primary" onclick="addManualWords()" style="white-space:nowrap;height:fit-content">Hinzufügen</button>
+      </div>
+      <div style="margin-top:1rem">
+        <div style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);margin-bottom:6px">
+          Geladene Wörter
+        </div>
+        <div class="chip-row" id="word-chips">
+          <span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Geschichte generieren</div>
+      <div class="grid-2" style="margin-bottom:1rem">
+        <div class="field">
+          <label>Anzahl Wörter einbauen</label>
+          <input type="number" id="wordCount" value="5" min="1" max="30">
+        </div>
+        <div class="field">
+          <label>Sprachniveau</label>
+          <select id="difficulty">
+            <option value="A1">A1 – Anfänger</option>
+            <option value="A2">A2 – Grundlagen</option>
+            <option value="B1" selected>B1 – Mittelstufe</option>
+            <option value="B2">B2 – Obere Mittelstufe</option>
+            <option value="C1">C1 – Fortgeschritten</option>
+            <option value="C2">C2 – Muttersprachennah</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Thema (optional)</label>
+        <input type="text" id="storyTopic" placeholder="z.B. Reise nach Mexiko, ein Tag in Berlin, ein Abenteuer im Wald...">
+      </div>
+      <div class="field">
+        <label>Neue vs. bekannte Wörter — <span id="pref-label" style="color:var(--green);font-weight:600">70% neue Wörter</span></label>
+        <input type="range" min="0" max="100" value="70" id="newWordsPref" oninput="updatePrefLabel(this.value)" style="width:100%;margin-bottom:4px">
+        <div class="range-labels"><span>Viele bekannte</span><span>Viele neue</span></div>
+      </div>
+      <button class="btn btn-primary" id="genBtn" onclick="generateStory()" style="width:100%;padding:11px">
+        Geschichte generieren
+      </button>
+    </div>
+
+    <div id="story-output"></div>
+  </div>
+
+  <!-- ===================== PANEL: VERB DES TAGES ===================== -->
+  <div class="panel" id="panel-verb">
+    <div class="card" style="padding:0;overflow:hidden">
+      <div id="verb-card-content">
+        <div class="loading"><div class="spinner"></div>Lade heutiges Verb...</div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Gelernte Verben</div>
+      <div id="learned-verbs-list">
+        <div class="empty-state"><div class="empty-icon">📘</div>Noch keine Verben gelernt.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== PANEL: VOCAB ===================== -->
+  <div class="panel" id="panel-vocab">
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Neue Vokabel hinzufügen</div>
+      <div class="grid-3" style="margin-bottom:0.75rem">
+        <div class="field" style="margin-bottom:0"><label>Spanisch</label><input type="text" id="new-es" placeholder="hablar"></div>
+        <div class="field" style="margin-bottom:0"><label>Deutsch</label><input type="text" id="new-de" placeholder="sprechen"></div>
+        <div class="field" style="margin-bottom:0"><label>Kategorie</label><input type="text" id="new-cat" placeholder="Verben"></div>
+      </div>
+      <button class="btn btn-primary" onclick="addVocabWord()" style="width:100%;margin-top:0.25rem">Wort hinzufügen</button>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+        <div class="card-title" style="margin-bottom:0"><span class="dot"></span>Meine Vokabeln</div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sm btn-outline-green" onclick="downloadCSV()">⬇ CSV herunterladen</button>
+        </div>
+      </div>
+      <div id="vocab-stats" style="font-size:13px;color:var(--text-muted);margin-bottom:0.75rem"></div>
+      <div style="overflow-x:auto">
+        <table class="vocab-table">
+          <thead>
+            <tr>
+              <th>Spanisch</th>
+              <th>Deutsch</th>
+              <th>Kategorie</th>
+              <th>Status</th>
+              <th>Benutzt</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody id="vocab-table-body"></tbody>
+        </table>
+      </div>
+      <div id="vocab-empty" class="empty-state">
+        <div class="empty-icon">📚</div>
+        Noch keine Vokabeln gespeichert. Füge Wörter oben hinzu oder lade sie in der Geschichten-Ansicht hoch.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ───────────────────────── STATE ─────────────────────────
+const STORAGE_KEY = 'espanol_app_v2';
+
+function loadState() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return { words: [], stories: [], learnedVerbs: [], lastVerbDate: null, lastVerb: null };
+}
+
+function saveState() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
+}
+
+let state = loadState();
+
+// ───────────────────────── TABS ─────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.nav-tab').forEach((t, i) => {
+    t.classList.toggle('active', ['stories','verb','vocab'][i] === id);
+  });
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('panel-' + id).classList.add('active');
+  if (id === 'verb') loadDailyVerb();
+  if (id === 'vocab') renderVocabTable();
+  updateHeaderStats();
+}
+
+// ───────────────────────── UTILS ─────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function showToast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 3000);
+}
+
+function today() {
+  return new Date().toLocaleDateString('de-DE', { day:'2-digit', month:'2-digit', year:'numeric' });
+}
+
+function todayISO() {
+  const d = new Date();
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ───────────────────────── HEADER STATS ─────────────────────────
+function updateHeaderStats() {
+  document.getElementById('h-words').textContent = state.words.length;
+  document.getElementById('h-stories').textContent = state.stories.length;
+  document.getElementById('h-verbs').textContent = state.learnedVerbs.length;
+  document.getElementById('stat-total').textContent = state.words.length;
+  document.getElementById('stat-unused').textContent = state.words.filter(w => w.usedCount === 0).length;
+  document.getElementById('stat-usedw').textContent = state.words.filter(w => w.usedCount > 0).length;
+  document.getElementById('stat-stories').textContent = state.stories.length;
+}
+
+// ───────────────────────── WORDS / CHIPS ─────────────────────────
+function renderWordChips() {
+  const el = document.getElementById('word-chips');
+  if (!state.words.length) {
+    el.innerHTML = '<span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span>';
+    return;
+  }
+  el.innerHTML = state.words.map(w =>
+    `<span class="chip ${w.usedCount > 0 ? 'used' : ''}">${w.es}${w.usedCount > 0 ? ' <span class="chip-check">✓</span>' : ''}</span>`
+  ).join('');
+}
+
+function handleFileUpload(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => parseCSVText(ev.target.result);
+  reader.readAsText(file, 'UTF-8');
+  e.target.value = '';
+}
+
+function parseCSVText(text) {
+  const lines = text.split('\n').map(l => l.trim()).filter(l => l);
+  let added = 0;
+  lines.forEach(line => {
+    const parts = line.split(/[,;]/).map(p => p.trim().replace(/^["']|["']$/g, ''));
+    if (!parts[0]) return;
+    const es = parts[0].trim();
+    const de = (parts[1] || '').trim();
+    const cat = (parts[2] || '').trim();
+    if (es && !state.words.find(w => w.es.toLowerCase() === es.toLowerCase())) {
+      state.words.push({ es, de, cat, usedCount: 0, addedAt: Date.now() });
+      added++;
+    }
+  });
+  saveState();
+  renderWordChips();
+  updateHeaderStats();
+  if (added > 0) showToast(`${added} neue Wörter hinzugefügt!`);
+}
+
+function addManualWords() {
+  const val = document.getElementById('manualWords').value.trim();
+  if (!val) return;
+  parseCSVText(val);
+  document.getElementById('manualWords').value = '';
+}
+
+// ───────────────────────── STORY PREFERENCES ─────────────────────────
+function updatePrefLabel(val) {
+  const el = document.getElementById('pref-label');
+  const n = parseInt(val);
+  if (n >= 70) el.textContent = `${n}% neue Wörter`;
+  else if (n <= 30) el.textContent = `${100-n}% bekannte Wörter`;
+  else el.textContent = 'Gemischte Auswahl';
+}
+
+// ───────────────────────── GENERATE STORY ─────────────────────────
+async function generateStory() {
+  if (!state.words.length) { showToast('Bitte zuerst Wörter hinzufügen!'); return; }
+  const btn = document.getElementById('genBtn');
+  btn.disabled = true;
+  btn.textContent = 'Generiere...';
+  const output = document.getElementById('story-output');
+  output.innerHTML = '<div class="loading"><div class="spinner"></div>Geschichte wird generiert...</div>';
+
+  const n = Math.min(parseInt(document.getElementById('wordCount').value) || 5, state.words.length);
+  const pref = parseInt(document.getElementById('newWordsPref').value);
+  const level = document.getElementById('difficulty').value;
+  const topic = document.getElementById('storyTopic').value.trim();
+
+  const unused = state.words.filter(w => w.usedCount === 0);
+  const used = state.words.filter(w => w.usedCount > 0);
+  let selected = [];
+  const newCount = Math.min(Math.round(n * pref / 100), unused.length);
+  const usedCount = Math.min(n - newCount, used.length);
+  selected = [...shuffle(unused).slice(0, newCount), ...shuffle(used).slice(0, usedCount)];
+  if (selected.length < n) selected = shuffle(state.words).slice(0, n);
+
+  const wordList = selected.map(w => w.de ? `"${w.es}" (${w.de})` : `"${w.es}"`).join(', ');
+
+  const levelDesc = {
+    A1: 'sehr einfache Sätze, Präsens, häufigste Vokabeln, max. 80 Wörter',
+    A2: 'einfache Sätze, Präsens + etwas Perfekt, ca. 100 Wörter',
+    B1: 'mittelschwere Sätze, verschiedene Zeitformen, ca. 120 Wörter',
+    B2: 'komplexere Sätze, Konjunktiv, Passiv, ca. 140 Wörter',
+    C1: 'anspruchsvoller Stil, idiomatische Ausdrücke, komplexe Grammatik, ca. 160 Wörter',
+    C2: 'literarischer Stil, reiches Vokabular, anspruchsvolle Grammatik, native-level Fluss, ca. 180 Wörter'
+  }[level];
+
+  const prompt = `Du bist ein Spanisch-Sprachtrainer. Schreibe eine kurze Geschichte auf Spanisch für Niveau ${level} (${levelDesc}).
+${topic ? `Thema: ${topic}.` : ''}
+Baue ALLE folgenden Wörter natürlich in die Geschichte ein: ${wordList}.
+Markiere die eingebauten Vokabeln mit **Wort** (Markdown-fett).
+Danach schreibe "---" und dann die vollständige deutsche Übersetzung der Geschichte.
+Schreibe NUR die Geschichte und die Übersetzung, keine Einleitung, keine Kommentare.`;
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 1000,
+        messages: [{ role: 'user', content: prompt }]
+      })
+    });
+    const data = await resp.json();
+    const fullText = data.content?.find(b => b.type === 'text')?.text || '';
+    const parts = fullText.split('---');
+    const esText = (parts[0] || '').trim();
+    const deText = (parts[1] || '').trim();
+
+    // Highlight bold words
+    const esHTML = esText.replace(/\*\*(.+?)\*\*/g, '<span class="highlight-word">$1</span>');
+
+    // Track used words
+    selected.forEach(w => { w.usedCount = (w.usedCount || 0) + 1; });
+    const storyRecord = { id: Date.now(), es: esText, de: deText, level, words: selected.map(w => w.es), date: today() };
+    state.stories.unshift(storyRecord);
+    saveState();
+    renderWordChips();
+    updateHeaderStats();
+
+    output.innerHTML = `
+      <div class="story-card">
+        <div class="story-header">
+          <span class="story-date">${today()}</span>
+          <span class="story-level-badge">${level}</span>
+        </div>
+        <div class="story-body">
+          <div class="story-es">${esHTML}</div>
+          ${deText ? `<button class="story-toggle" onclick="toggleDE(this)">🇩🇪 Deutsche Übersetzung anzeigen ▾</button>
+          <div class="story-de">${deText}</div>` : ''}
+        </div>
+        <div class="used-words-row">
+          <span class="used-words-label">Vokabeln:</span>
+          ${selected.map(w => `<span class="chip">${w.es}</span>`).join('')}
+        </div>
+      </div>`;
+
+  } catch(err) {
+    output.innerHTML = `<div class="card" style="color:var(--red)">Fehler beim Generieren: ${err.message}</div>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = 'Geschichte generieren';
+  }
+}
+
+function toggleDE(btn) {
+  const de = btn.nextElementSibling;
+  const shown = de.style.display === 'block';
+  de.style.display = shown ? 'none' : 'block';
+  btn.textContent = shown ? '🇩🇪 Deutsche Übersetzung anzeigen ▾' : '🇩🇪 Übersetzung ausblenden ▴';
+}
+
+// ───────────────────────── DAILY VERB ─────────────────────────
+const IRREGULAR_VERBS = [
+  'ser','estar','tener','hacer','ir','poder','querer','saber','venir','ver',
+  'dar','decir','traer','poner','salir','conocer','llevar','pasar','quedar','seguir',
+  'llegar','creer','ocurrir','buscar','caer','oír','andar','caber','conducir','construir',
+  'destruir','dormir','elegir','escribir','jugar','leer','mentir','morir','mover','nacer',
+  'oler','pedir','perder','producir','reducir','reír','repetir','sentir','servir','traer',
+  'valer','vencer','volver','yacer','cocer','coger','conseguir','contener','convencer','corregir',
+  'crecer','defender','deducir','elegir','encender','entender','envolver','escoger','exigir','fingir',
+  'fluir','forzar','fregar','herir','huir','impedir','incluir','inducir','influir','invertir'
+];
+
+const PRONOUNS = ['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
+
+let currentTense = 'presente';
+
+const TENSES = {
+  presente: 'Presente',
+  preteritoIndefinido: 'Pretérito Indefinido',
+  preteritoImperfecto: 'Pretérito Imperfecto',
+  futuro: 'Futuro',
+  condicional: 'Condicional',
+  subjuntivo: 'Subjuntivo Presente'
+};
+
+async function loadDailyVerb() {
+  const todayStr = todayISO();
+  // Check if we already loaded today's verb
+  if (state.lastVerbDate === todayStr && state.lastVerb) {
+    renderVerbCard(state.lastVerb, currentTense);
+    renderLearnedVerbs();
+    return;
+  }
+
+  // Pick a new verb (seeded by date for consistency)
+  const dateNum = parseInt(todayStr.replace(/-/g,''));
+  const idx = dateNum % IRREGULAR_VERBS.length;
+  const verb = IRREGULAR_VERBS[idx];
+
+  document.getElementById('verb-card-content').innerHTML =
+    '<div class="loading" style="justify-content:center;padding:2rem"><div class="spinner"></div>Verb wird geladen...</div>';
+
+  try {
+    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-20250514',
+        max_tokens: 800,
+        messages: [{
+          role: 'user',
+          content: `Gib mir das spanische Verb "${verb}" mit folgenden Daten. Antworte NUR mit einem JSON-Objekt, kein Text davor oder danach:
+{
+  "infinitivo": "${verb}",
+  "deutsch": "deutsche Übersetzung",
+  "ejemplo": "ein natürlicher Beispielsatz auf Spanisch mit dem Verb",
+  "ejemplo_de": "deutsche Übersetzung des Beispielsatzes",
+  "presente": ["yo-Form","tú-Form","él-Form","nosotros-Form","vosotros-Form","ellos-Form"],
+  "preteritoIndefinido": ["yo","tú","él","nosotros","vosotros","ellos"],
+  "preteritoImperfecto": ["yo","tú","él","nosotros","vosotros","ellos"],
+  "futuro": ["yo","tú","él","nosotros","vosotros","ellos"],
+  "condicional": ["yo","tú","él","nosotros","vosotros","ellos"],
+  "subjuntivo": ["yo","tú","él","nosotros","vosotros","ellos"]
+}`
+        }]
+      })
+    });
+    const data = await resp.json();
+    const raw = data.content?.find(b => b.type === 'text')?.text || '';
+    const clean = raw.replace(/```json|```/g, '').trim();
+    const verbData = JSON.parse(clean);
+
+    state.lastVerb = verbData;
+    state.lastVerbDate = todayStr;
+
+    // Add to learned verbs if not already there
+    if (!state.learnedVerbs.find(v => v.infinitivo === verbData.infinitivo)) {
+      state.learnedVerbs.unshift({ infinitivo: verbData.infinitivo, deutsch: verbData.deutsch, date: today() });
+    }
+    saveState();
+    renderVerbCard(verbData, currentTense);
+    renderLearnedVerbs();
+    updateHeaderStats();
+  } catch(err) {
+    document.getElementById('verb-card-content').innerHTML =
+      `<div style="padding:1.5rem;color:var(--red)">Fehler: ${err.message}</div>`;
+  }
+}
+
+function renderVerbCard(verbData, tense) {
+  const forms = verbData[tense] || [];
+  const conjugations = PRONOUNS.map((pro, i) =>
+    `<div class="conj-row"><span class="conj-pro">${pro}</span><span class="conj-form">${forms[i] || '—'}</span></div>`
+  ).join('');
+
+  const tenseButtons = Object.entries(TENSES).map(([key, label]) =>
+    `<button class="tense-btn ${key === tense ? 'active' : ''}" onclick="switchTense('${key}')">${label}</button>`
+  ).join('');
+
+  document.getElementById('verb-card-content').innerHTML = `
+    <div class="verb-hero">
+      <div class="verb-day-label">Verb des Tages — ${today()}</div>
+      <div class="verb-infinitive">${verbData.infinitivo}</div>
+      <div class="verb-translation">${verbData.deutsch}</div>
+      <div class="verb-example">
+        <em>"${verbData.ejemplo}"</em><br>
+        <span style="font-style:normal;font-size:13px;color:var(--text-light)">${verbData.ejemplo_de}</span>
+      </div>
+    </div>
+    <div class="verb-tense-tabs" style="padding:1rem 1.5rem 0.5rem">${tenseButtons}</div>
+    <div class="conjugation-grid">${conjugations}</div>`;
+}
+
+function switchTense(tense) {
+  currentTense = tense;
+  if (state.lastVerb) renderVerbCard(state.lastVerb, tense);
+}
+
+function renderLearnedVerbs() {
+  const el = document.getElementById('learned-verbs-list');
+  if (!state.learnedVerbs.length) {
+    el.innerHTML = '<div class="empty-state"><div class="empty-icon">📘</div>Noch keine Verben gelernt.</div>';
+    return;
+  }
+  el.innerHTML = state.learnedVerbs.map(v => `
+    <div class="learned-verb-item">
+      <div>
+        <span class="lv-name">${v.infinitivo}</span>
+        <span class="lv-trans"> — ${v.deutsch}</span>
+      </div>
+      <span class="lv-date">${v.date}</span>
+    </div>`).join('');
+}
+
+// ───────────────────────── VOCAB ─────────────────────────
+function addVocabWord() {
+  const es = document.getElementById('new-es').value.trim();
+  const de = document.getElementById('new-de').value.trim();
+  const cat = document.getElementById('new-cat').value.trim();
+  if (!es) { showToast('Bitte spanisches Wort eingeben!'); return; }
+  if (state.words.find(w => w.es.toLowerCase() === es.toLowerCase())) {
+    showToast('Dieses Wort existiert bereits!'); return;
+  }
+  state.words.push({ es, de, cat, usedCount: 0, addedAt: Date.now() });
+  saveState();
+  renderVocabTable();
+  renderWordChips();
+  updateHeaderStats();
+  document.getElementById('new-es').value = '';
+  document.getElementById('new-de').value = '';
+  document.getElementById('new-cat').value = '';
+  showToast('Wort hinzugefügt!');
+}
+
+function deleteWord(idx) {
+  state.words.splice(idx, 1);
+  saveState();
+  renderVocabTable();
+  renderWordChips();
+  updateHeaderStats();
+}
+
+function renderVocabTable() {
+  const tbody = document.getElementById('vocab-table-body');
+  const empty = document.getElementById('vocab-empty');
+
+  if (!state.words.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+    document.getElementById('vocab-stats').textContent = '';
+    return;
+  }
+
+  empty.style.display = 'none';
+  const used = state.words.filter(w => w.usedCount > 0).length;
+  document.getElementById('vocab-stats').textContent =
+    `${state.words.length} Wörter gesamt · ${used} bereits geübt · ${state.words.length - used} neu`;
+
+  tbody.innerHTML = state.words.map((w, i) => `
+    <tr>
+      <td><strong>${w.es}</strong></td>
+      <td>${w.de || '<span style="color:var(--text-light)">—</span>'}</td>
+      <td>${w.cat || '<span style="color:var(--text-light)">—</span>'}</td>
+      <td>
+        <span class="status-badge ${w.usedCount > 0 ? 'status-used' : 'status-new'}">
+          ${w.usedCount > 0 ? `${w.usedCount}× geübt` : 'Neu'}
+        </span>
+      </td>
+      <td style="color:var(--text-muted);font-size:13px">${w.usedCount}×</td>
+      <td><button class="btn btn-sm btn-danger" onclick="deleteWord(${i})">✕</button></td>
+    </tr>`).join('');
+}
+
+function downloadCSV() {
+  if (!state.words.length) { showToast('Keine Wörter zum Exportieren!'); return; }
+  const rows = ['Spanisch,Deutsch,Kategorie,Mal geübt', ...state.words.map(w =>
+    `"${w.es}","${w.de || ''}","${w.cat || ''}",${w.usedCount}`)];
+  const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `spanisch_vokabeln_${todayISO()}.csv`;
+  a.click();
+  showToast('CSV heruntergeladen!');
+}
+
+// ───────────────────────── INIT ─────────────────────────
+updateHeaderStats();
+renderWordChips();
+</script>
+</body>
+</html>
