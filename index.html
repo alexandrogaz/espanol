@@ -1017,16 +1017,70 @@ function toggleDE(btn) {
   btn.textContent = shown ? '🇩🇪 Deutsche Übersetzung anzeigen ▾' : '🇩🇪 Übersetzung ausblenden ▴';
 }
 
-// ───────────────────────── DAILY VERB ─────────────────────────
-const IRREGULAR_VERBS = [
-  'ser','estar','tener','hacer','ir','poder','querer','saber','venir','ver',
-  'dar','decir','traer','poner','salir','conocer','llevar','pasar','quedar','seguir',
-  'llegar','creer','ocurrir','buscar','caer','oír','andar','caber','conducir','construir',
-  'destruir','dormir','elegir','escribir','jugar','leer','mentir','morir','mover','nacer',
-  'oler','pedir','perder','producir','reducir','reír','repetir','sentir','servir','traer',
-  'valer','vencer','volver','yacer','cocer','coger','conseguir','contener','convencer','corregir',
-  'crecer','defender','deducir','elegir','encender','entender','envolver','escoger','exigir','fingir',
-  'fluir','forzar','fregar','herir','huir','impedir','incluir','inducir','influir','invertir'
+// ───────────────────────── VERB DATENBANK ─────────────────────────
+const VERB_DB = [
+  { infinitivo:'ser', deutsch:'sein', ejemplo:'Ella es médica y trabaja en un hospital grande.', ejemplo_de:'Sie ist Ärztin und arbeitet in einem großen Krankenhaus.',
+    presente:['soy','eres','es','somos','sois','son'], preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'], preteritoImperfecto:['era','eras','era','éramos','erais','eran'], futuro:['seré','serás','será','seremos','seréis','serán'], condicional:['sería','serías','sería','seríamos','seríais','serían'], subjuntivo:['sea','seas','sea','seamos','seáis','sean'] },
+  { infinitivo:'estar', deutsch:'sein / sich befinden', ejemplo:'Estoy muy cansado después del trabajo.', ejemplo_de:'Ich bin sehr müde nach der Arbeit.',
+    presente:['estoy','estás','está','estamos','estáis','están'], preteritoIndefinido:['estuve','estuviste','estuvo','estuvimos','estuvisteis','estuvieron'], preteritoImperfecto:['estaba','estabas','estaba','estábamos','estabais','estaban'], futuro:['estaré','estarás','estará','estaremos','estaréis','estarán'], condicional:['estaría','estarías','estaría','estaríamos','estaríais','estarían'], subjuntivo:['esté','estés','esté','estemos','estéis','estén'] },
+  { infinitivo:'tener', deutsch:'haben', ejemplo:'Tenemos que salir antes de las ocho.', ejemplo_de:'Wir müssen vor acht Uhr gehen.',
+    presente:['tengo','tienes','tiene','tenemos','tenéis','tienen'], preteritoIndefinido:['tuve','tuviste','tuvo','tuvimos','tuvisteis','tuvieron'], preteritoImperfecto:['tenía','tenías','tenía','teníamos','teníais','tenían'], futuro:['tendré','tendrás','tendrá','tendremos','tendréis','tendrán'], condicional:['tendría','tendrías','tendría','tendríamos','tendríais','tendrían'], subjuntivo:['tenga','tengas','tenga','tengamos','tengáis','tengan'] },
+  { infinitivo:'hacer', deutsch:'machen / tun', ejemplo:'¿Qué haces cuando no tienes nada que hacer?', ejemplo_de:'Was machst du, wenn du nichts zu tun hast?',
+    presente:['hago','haces','hace','hacemos','hacéis','hacen'], preteritoIndefinido:['hice','hiciste','hizo','hicimos','hicisteis','hicieron'], preteritoImperfecto:['hacía','hacías','hacía','hacíamos','hacíais','hacían'], futuro:['haré','harás','hará','haremos','haréis','harán'], condicional:['haría','harías','haría','haríamos','haríais','harían'], subjuntivo:['haga','hagas','haga','hagamos','hagáis','hagan'] },
+  { infinitivo:'ir', deutsch:'gehen / fahren', ejemplo:'Voy al mercado todos los sábados por la mañana.', ejemplo_de:'Ich gehe jeden Samstag morgens auf den Markt.',
+    presente:['voy','vas','va','vamos','vais','van'], preteritoIndefinido:['fui','fuiste','fue','fuimos','fuisteis','fueron'], preteritoImperfecto:['iba','ibas','iba','íbamos','ibais','iban'], futuro:['iré','irás','irá','iremos','iréis','irán'], condicional:['iría','irías','iría','iríamos','iríais','irían'], subjuntivo:['vaya','vayas','vaya','vayamos','vayáis','vayan'] },
+  { infinitivo:'poder', deutsch:'können / dürfen', ejemplo:'No puedo dormir bien cuando hace mucho calor.', ejemplo_de:'Ich kann nicht gut schlafen, wenn es sehr heiß ist.',
+    presente:['puedo','puedes','puede','podemos','podéis','pueden'], preteritoIndefinido:['pude','pudiste','pudo','pudimos','pudisteis','pudieron'], preteritoImperfecto:['podía','podías','podía','podíamos','podíais','podían'], futuro:['podré','podrás','podrá','podremos','podréis','podrán'], condicional:['podría','podrías','podría','podríamos','podríais','podrían'], subjuntivo:['pueda','puedas','pueda','podamos','podáis','puedan'] },
+  { infinitivo:'querer', deutsch:'wollen / lieben', ejemplo:'Quiero aprender español para viajar por Latinoamérica.', ejemplo_de:'Ich möchte Spanisch lernen, um durch Lateinamerika zu reisen.',
+    presente:['quiero','quieres','quiere','queremos','queréis','quieren'], preteritoIndefinido:['quise','quisiste','quiso','quisimos','quisisteis','quisieron'], preteritoImperfecto:['quería','querías','quería','queríamos','queríais','querían'], futuro:['querré','querrás','querrá','querremos','querréis','querrán'], condicional:['querría','querrías','querría','querríamos','querríais','querrían'], subjuntivo:['quiera','quieras','quiera','queramos','queráis','quieran'] },
+  { infinitivo:'saber', deutsch:'wissen / können', ejemplo:'¿Sabes dónde está la estación de tren más cercana?', ejemplo_de:'Weißt du, wo der nächste Bahnhof ist?',
+    presente:['sé','sabes','sabe','sabemos','sabéis','saben'], preteritoIndefinido:['supe','supiste','supo','supimos','supisteis','supieron'], preteritoImperfecto:['sabía','sabías','sabía','sabíamos','sabíais','sabían'], futuro:['sabré','sabrás','sabrá','sabremos','sabréis','sabrán'], condicional:['sabría','sabrías','sabría','sabríamos','sabríais','sabrían'], subjuntivo:['sepa','sepas','sepa','sepamos','sepáis','sepan'] },
+  { infinitivo:'venir', deutsch:'kommen', ejemplo:'Mis amigos vienen a cenar esta noche a las nueve.', ejemplo_de:'Meine Freunde kommen heute Abend um neun zum Abendessen.',
+    presente:['vengo','vienes','viene','venimos','venís','vienen'], preteritoIndefinido:['vine','viniste','vino','vinimos','vinisteis','vinieron'], preteritoImperfecto:['venía','venías','venía','veníamos','veníais','venían'], futuro:['vendré','vendrás','vendrá','vendremos','vendréis','vendrán'], condicional:['vendría','vendrías','vendría','vendríamos','vendríais','vendrían'], subjuntivo:['venga','vengas','venga','vengamos','vengáis','vengan'] },
+  { infinitivo:'ver', deutsch:'sehen / schauen', ejemplo:'Vemos una película juntos cada viernes por la noche.', ejemplo_de:'Wir schauen jeden Freitagabend gemeinsam einen Film.',
+    presente:['veo','ves','ve','vemos','veis','ven'], preteritoIndefinido:['vi','viste','vio','vimos','visteis','vieron'], preteritoImperfecto:['veía','veías','veía','veíamos','veíais','veían'], futuro:['veré','verás','verá','veremos','veréis','verán'], condicional:['vería','verías','vería','veríamos','veríais','verían'], subjuntivo:['vea','veas','vea','veamos','veáis','vean'] },
+  { infinitivo:'dar', deutsch:'geben', ejemplo:'Le di las gracias por su ayuda y su amabilidad.', ejemplo_de:'Ich dankte ihm für seine Hilfe und seine Freundlichkeit.',
+    presente:['doy','das','da','damos','dais','dan'], preteritoIndefinido:['di','diste','dio','dimos','disteis','dieron'], preteritoImperfecto:['daba','dabas','daba','dábamos','dabais','daban'], futuro:['daré','darás','dará','daremos','daréis','darán'], condicional:['daría','darías','daría','daríamos','daríais','darían'], subjuntivo:['dé','des','dé','demos','deis','den'] },
+  { infinitivo:'decir', deutsch:'sagen', ejemplo:'Ella siempre dice la verdad, aunque sea difícil.', ejemplo_de:'Sie sagt immer die Wahrheit, auch wenn es schwierig ist.',
+    presente:['digo','dices','dice','decimos','decís','dicen'], preteritoIndefinido:['dije','dijiste','dijo','dijimos','dijisteis','dijeron'], preteritoImperfecto:['decía','decías','decía','decíamos','decíais','decían'], futuro:['diré','dirás','dirá','diremos','diréis','dirán'], condicional:['diría','dirías','diría','diríamos','diríais','dirían'], subjuntivo:['diga','digas','diga','digamos','digáis','digan'] },
+  { infinitivo:'poner', deutsch:'setzen / stellen / legen', ejemplo:'Pon la mesa antes de que lleguen los invitados.', ejemplo_de:'Deck den Tisch, bevor die Gäste ankommen.',
+    presente:['pongo','pones','pone','ponemos','ponéis','ponen'], preteritoIndefinido:['puse','pusiste','puso','pusimos','pusisteis','pusieron'], preteritoImperfecto:['ponía','ponías','ponía','poníamos','poníais','ponían'], futuro:['pondré','pondrás','pondrá','pondremos','pondréis','pondrán'], condicional:['pondría','pondrías','pondría','pondríamos','pondríais','pondrían'], subjuntivo:['ponga','pongas','ponga','pongamos','pongáis','pongan'] },
+  { infinitivo:'salir', deutsch:'ausgehen / herausgehen', ejemplo:'Salimos a pasear por el parque cuando hace buen tiempo.', ejemplo_de:'Wir gehen spazieren im Park, wenn das Wetter schön ist.',
+    presente:['salgo','sales','sale','salimos','salís','salen'], preteritoIndefinido:['salí','saliste','salió','salimos','salisteis','salieron'], preteritoImperfecto:['salía','salías','salía','salíamos','salíais','salían'], futuro:['saldré','saldrás','saldrá','saldremos','saldréis','saldrán'], condicional:['saldría','saldrías','saldría','saldríamos','saldríais','saldrían'], subjuntivo:['salga','salgas','salga','salgamos','salgáis','salgan'] },
+  { infinitivo:'traer', deutsch:'bringen / mitbringen', ejemplo:'¿Puedes traer algo de comer a la reunión de mañana?', ejemplo_de:'Kannst du etwas zu essen zum morgigen Treffen mitbringen?',
+    presente:['traigo','traes','trae','traemos','traéis','traen'], preteritoIndefinido:['traje','trajiste','trajo','trajimos','trajisteis','trajeron'], preteritoImperfecto:['traía','traías','traía','traíamos','traíais','traían'], futuro:['traeré','traerás','traerá','traeremos','traeréis','traerán'], condicional:['traería','traerías','traería','traeríamos','traeríais','traerían'], subjuntivo:['traiga','traigas','traiga','traigamos','traigáis','traigan'] },
+  { infinitivo:'volver', deutsch:'zurückkehren / wiederkommen', ejemplo:'Volví a casa muy tarde después de la fiesta del viernes.', ejemplo_de:'Ich kam sehr spät nach Hause nach der Freitagsparty.',
+    presente:['vuelvo','vuelves','vuelve','volvemos','volvéis','vuelven'], preteritoIndefinido:['volví','volviste','volvió','volvimos','volvisteis','volvieron'], preteritoImperfecto:['volvía','volvías','volvía','volvíamos','volvíais','volvían'], futuro:['volveré','volverás','volverá','volveremos','volveréis','volverán'], condicional:['volvería','volverías','volvería','volveríamos','volveríais','volverían'], subjuntivo:['vuelva','vuelvas','vuelva','volvamos','volváis','vuelvan'] },
+  { infinitivo:'dormir', deutsch:'schlafen', ejemplo:'Los niños duermen profundamente después de jugar todo el día.', ejemplo_de:'Die Kinder schlafen tief, nachdem sie den ganzen Tag gespielt haben.',
+    presente:['duermo','duermes','duerme','dormimos','dormís','duermen'], preteritoIndefinido:['dormí','dormiste','durmió','dormimos','dormisteis','durmieron'], preteritoImperfecto:['dormía','dormías','dormía','dormíamos','dormíais','dormían'], futuro:['dormiré','dormirás','dormirá','dormiremos','dormiréis','dormirán'], condicional:['dormiría','dormirías','dormiría','dormiríamos','dormiríais','dormirían'], subjuntivo:['duerma','duermas','duerma','durmamos','durmáis','duerman'] },
+  { infinitivo:'pedir', deutsch:'bitten / bestellen', ejemplo:'Pedimos dos cafés y un trozo de tarta de chocolate.', ejemplo_de:'Wir bestellten zwei Kaffees und ein Stück Schokoladenkuchen.',
+    presente:['pido','pides','pide','pedimos','pedís','piden'], preteritoIndefinido:['pedí','pediste','pidió','pedimos','pedisteis','pidieron'], preteritoImperfecto:['pedía','pedías','pedía','pedíamos','pedíais','pedían'], futuro:['pediré','pedirás','pedirá','pediremos','pediréis','pedirán'], condicional:['pediría','pedirías','pediría','pediríamos','pediríais','pedirían'], subjuntivo:['pida','pidas','pida','pidamos','pidáis','pidan'] },
+  { infinitivo:'seguir', deutsch:'folgen / weitermachen', ejemplo:'Sigue recto y luego gira a la derecha en el semáforo.', ejemplo_de:'Geh geradeaus und biege dann an der Ampel rechts ab.',
+    presente:['sigo','sigues','sigue','seguimos','seguís','siguen'], preteritoIndefinido:['seguí','seguiste','siguió','seguimos','seguisteis','siguieron'], preteritoImperfecto:['seguía','seguías','seguía','seguíamos','seguíais','seguían'], futuro:['seguiré','seguirás','seguirá','seguiremos','seguiréis','seguirán'], condicional:['seguiría','seguirías','seguiría','seguiríamos','seguiríais','seguirían'], subjuntivo:['siga','sigas','siga','sigamos','sigáis','sigan'] },
+  { infinitivo:'sentir', deutsch:'fühlen / spüren', ejemplo:'Siento mucho no haber podido asistir a tu cumpleaños.', ejemplo_de:'Es tut mir sehr leid, dass ich nicht zu deinem Geburtstag kommen konnte.',
+    presente:['siento','sientes','siente','sentimos','sentís','sienten'], preteritoIndefinido:['sentí','sentiste','sintió','sentimos','sentisteis','sintieron'], preteritoImperfecto:['sentía','sentías','sentía','sentíamos','sentíais','sentían'], futuro:['sentiré','sentirás','sentirá','sentiremos','sentiréis','sentirán'], condicional:['sentiría','sentirías','sentiría','sentiríamos','sentiríais','sentirían'], subjuntivo:['sienta','sientas','sienta','sintamos','sintáis','sientan'] },
+  { infinitivo:'conocer', deutsch:'kennen / kennenlernen', ejemplo:'Conocí a mi mejor amigo en el primer día de universidad.', ejemplo_de:'Ich lernte meinen besten Freund am ersten Tag der Universität kennen.',
+    presente:['conozco','conoces','conoce','conocemos','conocéis','conocen'], preteritoIndefinido:['conocí','conociste','conoció','conocimos','conocisteis','conocieron'], preteritoImperfecto:['conocía','conocías','conocía','conocíamos','conocíais','conocían'], futuro:['conoceré','conocerás','conocerá','conoceremos','conoceréis','conocerán'], condicional:['conocería','conocerías','conocería','conoceríamos','conoceríais','conocerían'], subjuntivo:['conozca','conozcas','conozca','conozcamos','conozcáis','conozcan'] },
+  { infinitivo:'perder', deutsch:'verlieren / verpassen', ejemplo:'Perdí el tren por quedarme dormido esta mañana.', ejemplo_de:'Ich habe den Zug verpasst, weil ich heute Morgen verschlafen habe.',
+    presente:['pierdo','pierdes','pierde','perdemos','perdéis','pierden'], preteritoIndefinido:['perdí','perdiste','perdió','perdimos','perdisteis','perdieron'], preteritoImperfecto:['perdía','perdías','perdía','perdíamos','perdíais','perdían'], futuro:['perderé','perderás','perderá','perderemos','perderéis','perderán'], condicional:['perdería','perderías','perdería','perderíamos','perderíais','perderían'], subjuntivo:['pierda','pierdas','pierda','perdamos','perdáis','pierdan'] },
+  { infinitivo:'entender', deutsch:'verstehen', ejemplo:'No entiendo bien el subjuntivo, pero sigo practicando.', ejemplo_de:'Ich verstehe den Konjunktiv nicht gut, aber ich übe weiter.',
+    presente:['entiendo','entiendes','entiende','entendemos','entendéis','entienden'], preteritoIndefinido:['entendí','entendiste','entendió','entendimos','entendisteis','entendieron'], preteritoImperfecto:['entendía','entendías','entendía','entendíamos','entendíais','entendían'], futuro:['entenderé','entenderás','entenderá','entenderemos','entenderéis','entenderán'], condicional:['entendería','entenderías','entendería','entenderíamos','entenderíais','entenderían'], subjuntivo:['entienda','entiendas','entienda','entendamos','entendáis','entiendan'] },
+  { infinitivo:'jugar', deutsch:'spielen', ejemplo:'Los niños juegan al fútbol en el parque cada tarde.', ejemplo_de:'Die Kinder spielen jeden Nachmittag im Park Fußball.',
+    presente:['juego','juegas','juega','jugamos','jugáis','juegan'], preteritoIndefinido:['jugué','jugaste','jugó','jugamos','jugasteis','jugaron'], preteritoImperfecto:['jugaba','jugabas','jugaba','jugábamos','jugabais','jugaban'], futuro:['jugaré','jugarás','jugará','jugaremos','jugaréis','jugarán'], condicional:['jugaría','jugarías','jugaría','jugaríamos','jugaríais','jugarían'], subjuntivo:['juegue','juegues','juegue','juguemos','juguéis','jueguen'] },
+  { infinitivo:'caer', deutsch:'fallen', ejemplo:'Se cayó en la calle porque no vio el escalón.', ejemplo_de:'Er fiel auf der Straße, weil er die Stufe nicht sah.',
+    presente:['caigo','caes','cae','caemos','caéis','caen'], preteritoIndefinido:['caí','caíste','cayó','caímos','caísteis','cayeron'], preteritoImperfecto:['caía','caías','caía','caíamos','caíais','caían'], futuro:['caeré','caerás','caerá','caeremos','caeréis','caerán'], condicional:['caería','caerías','caería','caeríamos','caeríais','caerían'], subjuntivo:['caiga','caigas','caiga','caigamos','caigáis','caigan'] },
+  { infinitivo:'reír', deutsch:'lachen', ejemplo:'Nos reímos mucho con las historias de nuestro abuelo.', ejemplo_de:'Wir lachten viel über die Geschichten unseres Großvaters.',
+    presente:['río','ríes','ríe','reímos','reís','ríen'], preteritoIndefinido:['reí','reíste','rió','reímos','reísteis','rieron'], preteritoImperfecto:['reía','reías','reía','reíamos','reíais','reían'], futuro:['reiré','reirás','reirá','reiremos','reiréis','reirán'], condicional:['reiría','reirías','reiría','reiríamos','reiríais','reirían'], subjuntivo:['ría','rías','ría','riamos','riáis','rían'] },
+  { infinitivo:'morir', deutsch:'sterben', ejemplo:'Desgraciadamente, la planta murió porque olvidé regarla.', ejemplo_de:'Leider ist die Pflanze gestorben, weil ich vergessen habe, sie zu gießen.',
+    presente:['muero','mueres','muere','morimos','morís','mueren'], preteritoIndefinido:['morí','moriste','murió','morimos','moristeis','murieron'], preteritoImperfecto:['moría','morías','moría','moríamos','moríais','morían'], futuro:['moriré','morirás','morirá','moriremos','moriréis','morirán'], condicional:['moriría','morirías','moriría','moriríamos','moriríais','morirían'], subjuntivo:['muera','mueras','muera','muramos','muráis','mueran'] },
+  { infinitivo:'oír', deutsch:'hören', ejemplo:'Oí una canción preciosa que nunca había escuchado antes.', ejemplo_de:'Ich hörte ein wunderschönes Lied, das ich noch nie gehört hatte.',
+    presente:['oigo','oyes','oye','oímos','oís','oyen'], preteritoIndefinido:['oí','oíste','oyó','oímos','oísteis','oyeron'], preteritoImperfecto:['oía','oías','oía','oíamos','oíais','oían'], futuro:['oiré','oirás','oirá','oiremos','oiréis','oirán'], condicional:['oiría','oirías','oiría','oiríamos','oiríais','oirían'], subjuntivo:['oiga','oigas','oiga','oigamos','oigáis','oigan'] },
+  { infinitivo:'conducir', deutsch:'fahren / führen', ejemplo:'Conduzco con cuidado porque las carreteras están mojadas.', ejemplo_de:'Ich fahre vorsichtig, weil die Straßen nass sind.',
+    presente:['conduzco','conduces','conduce','conducimos','conducís','conducen'], preteritoIndefinido:['conduje','condujiste','condujo','condujimos','condujisteis','condujeron'], preteritoImperfecto:['conducía','conducías','conducía','conducíamos','conducíais','conducían'], futuro:['conduciré','conducirás','conducirá','conduciremos','conduciréis','conducirán'], condicional:['conduciría','conducirías','conduciría','conduciríamos','conduciríais','conducirían'], subjuntivo:['conduzca','conduzcas','conduzca','conduzcamos','conduzcáis','conduzcan'] },
+  { infinitivo:'construir', deutsch:'bauen / konstruieren', ejemplo:'Están construyendo un nuevo puente sobre el río.', ejemplo_de:'Sie bauen eine neue Brücke über den Fluss.',
+    presente:['construyo','construyes','construye','construimos','construís','construyen'], preteritoIndefinido:['construí','construiste','construyó','construimos','construisteis','construyeron'], preteritoImperfecto:['construía','construías','construía','construíamos','construíais','construían'], futuro:['construiré','construirás','construirá','construiremos','construiréis','construirán'], condicional:['construiría','construirías','construiría','construiríamos','construiríais','construirían'], subjuntivo:['construya','construyas','construya','construyamos','construyáis','construyan'] },
+  { infinitivo:'elegir', deutsch:'wählen / auswählen', ejemplo:'Elegí estudiar idiomas porque me apasionan las culturas.', ejemplo_de:'Ich entschied mich, Sprachen zu studieren, weil mich Kulturen begeistern.',
+    presente:['elijo','eliges','elige','elegimos','elegís','eligen'], preteritoIndefinido:['elegí','elegiste','eligió','elegimos','elegisteis','eligieron'], preteritoImperfecto:['elegía','elegías','elegía','elegíamos','elegíais','elegían'], futuro:['elegiré','elegirás','elegirá','elegiremos','elegiréis','elegirán'], condicional:['elegiría','elegirías','elegiría','elegiríamos','elegiríais','elegirían'], subjuntivo:['elija','elijas','elija','elijamos','elijáis','elijan'] }
 ];
 
 const PRONOUNS = ['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
@@ -1042,68 +1096,31 @@ const TENSES = {
   subjuntivo: 'Subjuntivo Presente'
 };
 
-async function loadDailyVerb() {
+function loadDailyVerb() {
   const todayStr = todayISO();
-  // Check if we already loaded today's verb
+
+  // Use cached verb if already loaded today
   if (state.lastVerbDate === todayStr && state.lastVerb) {
     renderVerbCard(state.lastVerb, currentTense);
     renderLearnedVerbs();
     return;
   }
 
-  // Pick a new verb (seeded by date for consistency)
-  const dateNum = parseInt(todayStr.replace(/-/g,''));
-  const idx = dateNum % IRREGULAR_VERBS.length;
-  const verb = IRREGULAR_VERBS[idx];
+  // Pick verb seeded by date — cycles through all 30 verbs
+  const dateNum = parseInt(todayStr.replace(/-/g, ''));
+  const idx = dateNum % VERB_DB.length;
+  const verbData = VERB_DB[idx];
 
-  document.getElementById('verb-card-content').innerHTML =
-    '<div class="loading" style="justify-content:center;padding:2rem"><div class="spinner"></div>Verb wird geladen...</div>';
+  state.lastVerb = verbData;
+  state.lastVerbDate = todayStr;
 
-  try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 800,
-        messages: [{
-          role: 'user',
-          content: `Gib mir das spanische Verb "${verb}" mit folgenden Daten. Antworte NUR mit einem JSON-Objekt, kein Text davor oder danach:
-{
-  "infinitivo": "${verb}",
-  "deutsch": "deutsche Übersetzung",
-  "ejemplo": "ein natürlicher Beispielsatz auf Spanisch mit dem Verb",
-  "ejemplo_de": "deutsche Übersetzung des Beispielsatzes",
-  "presente": ["yo-Form","tú-Form","él-Form","nosotros-Form","vosotros-Form","ellos-Form"],
-  "preteritoIndefinido": ["yo","tú","él","nosotros","vosotros","ellos"],
-  "preteritoImperfecto": ["yo","tú","él","nosotros","vosotros","ellos"],
-  "futuro": ["yo","tú","él","nosotros","vosotros","ellos"],
-  "condicional": ["yo","tú","él","nosotros","vosotros","ellos"],
-  "subjuntivo": ["yo","tú","él","nosotros","vosotros","ellos"]
-}`
-        }]
-      })
-    });
-    const data = await resp.json();
-    const raw = data.content?.find(b => b.type === 'text')?.text || '';
-    const clean = raw.replace(/```json|```/g, '').trim();
-    const verbData = JSON.parse(clean);
-
-    state.lastVerb = verbData;
-    state.lastVerbDate = todayStr;
-
-    // Add to learned verbs if not already there
-    if (!state.learnedVerbs.find(v => v.infinitivo === verbData.infinitivo)) {
-      state.learnedVerbs.unshift({ infinitivo: verbData.infinitivo, deutsch: verbData.deutsch, date: today() });
-    }
-    saveState();
-    renderVerbCard(verbData, currentTense);
-    renderLearnedVerbs();
-    updateHeaderStats();
-  } catch(err) {
-    document.getElementById('verb-card-content').innerHTML =
-      `<div style="padding:1.5rem;color:var(--red)">Fehler: ${err.message}</div>`;
+  if (!state.learnedVerbs.find(v => v.infinitivo === verbData.infinitivo)) {
+    state.learnedVerbs.unshift({ infinitivo: verbData.infinitivo, deutsch: verbData.deutsch, date: today() });
   }
+  saveState();
+  renderVerbCard(verbData, currentTense);
+  renderLearnedVerbs();
+  updateHeaderStats();
 }
 
 function renderVerbCard(verbData, tense) {
