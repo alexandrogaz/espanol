@@ -564,11 +564,14 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
       <div class="card-title"><span class="dot"></span>Wichtige unregelmäßige Verben</div>
       <div style="font-size:13px;color:var(--text-muted);margin-bottom:1rem">Die häufigsten unregelmäßigen Verben Spanisch mit ihren wichtigsten Formen.</div>
       <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:.75rem">
-        <button class="tense-btn active" onclick="filterIrregVocab('alle')" id="ivf-alle">Alle</button>
-        <button class="tense-btn" onclick="filterIrregVocab('vokalwechsel')" id="ivf-vokalwechsel">Vokalwechsel</button>
-        <button class="tense-btn" onclick="filterIrregVocab('go-verben')" id="ivf-go-verben">Go-Verben</button>
-        <button class="tense-btn" onclick="filterIrregVocab('reflexiv')" id="ivf-reflexiv">Reflexiv</button>
-        <button class="tense-btn" onclick="filterIrregVocab('modal')" id="ivf-modal">Modal</button>
+        <button class="tense-btn active" onclick="filterIrregVocab('alle')" id="ivf-alle">Alle Zeitformen</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Presente')" id="ivf-Presente">Presente</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Indefinido')" id="ivf-Indefinido">Indefinido</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Imperfecto')" id="ivf-Imperfecto">Imperfecto</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Futuro')" id="ivf-Futuro">Futuro</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Condicional')" id="ivf-Condicional">Condicional</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Subjuntivo')" id="ivf-Subjuntivo">Subjuntivo</button>
+        <button class="tense-btn" onclick="filterIrregVocab('Reflexiv')" id="ivf-Reflexiv">Reflexiv</button>
       </div>
       <button class="btn btn-primary" id="iv-quiz-btn" onclick="startIrregQuiz()" style="width:100%">Übung starten ▶</button>
     </div>
@@ -1291,6 +1294,148 @@ function restartHard(){
   updateFcStats();showFcCard();
 }
 
+// ── GRAMMATIK ──
+const GRAMMAR_DATA={
+  presente:{
+    name:'Presente (Präsens)',
+    use:'Das Presente beschreibt Handlungen, die gerade stattfinden, regelmäßig passieren oder allgemeine Wahrheiten ausdrücken. Auch für nahe Zukunftspläne.',
+    uses:[
+      {label:'Aktuelle Handlung',es:'Ahora mismo estoy estudiando español.',de:'Gerade jetzt lerne ich Spanisch.'},
+      {label:'Gewohnheit',es:'Todos los lunes voy al gimnasio.',de:'Jeden Montag gehe ich ins Fitnessstudio.'},
+      {label:'Allgemeine Wahrheit',es:'El sol sale por el este.',de:'Die Sonne geht im Osten auf.'},
+      {label:'Nahe Zukunft',es:'Esta tarde salgo con mis amigos.',de:'Heute Nachmittag gehe ich mit meinen Freunden aus.'}
+    ],
+    regular:[
+      {type:'-AR (hablar)',forms:['hablo','hablas','habla','hablamos','habláis','hablan']},
+      {type:'-ER (comer)',forms:['como','comes','come','comemos','coméis','comen']},
+      {type:'-IR (vivir)',forms:['vivo','vives','vive','vivimos','vivís','viven']}
+    ],
+    tip:'Tipp: Im Presente haben -ER und -IR Verben fast identische Endungen. Unterschied: nosotros -emos/-imos, vosotros -éis/-ís.'
+  },
+  indefinido:{
+    name:'Pretérito Indefinido',
+    use:'Beschreibt abgeschlossene Handlungen in der Vergangenheit mit klarem Zeitpunkt. Für einmalige Ereignisse oder Handlungsfolgen.',
+    uses:[
+      {label:'Einmalige Vergangenheit',es:'Ayer comí una pizza deliciosa.',de:'Gestern aß ich eine köstliche Pizza.'},
+      {label:'Zeitlich begrenzt',es:'El verano pasado fui a México.',de:'Letzten Sommer fuhr ich nach Mexiko.'},
+      {label:'Handlungsfolge',es:'Llegué, vi y vencí.',de:'Ich kam, sah und siegte.'},
+      {label:'Zeitangaben',es:'Hace dos años empecé a estudiar español.',de:'Vor zwei Jahren begann ich Spanisch zu lernen.'}
+    ],
+    regular:[
+      {type:'-AR (hablar)',forms:['hablé','hablaste','habló','hablamos','hablasteis','hablaron']},
+      {type:'-ER/-IR (comer/vivir)',forms:['comí','comiste','comió','comimos','comisteis','comieron']}
+    ],
+    tip:'Signalwörter: ayer, la semana pasada, el año pasado, hace X años, en 2020, de repente, entonces.'
+  },
+  imperfecto:{
+    name:'Pretérito Imperfecto',
+    use:'Beschreibt wiederholte Gewohnheiten in der Vergangenheit, andauernde Zustände und Hintergrundbeschreibungen in Erzählungen.',
+    uses:[
+      {label:'Gewohnheit früher',es:'Cuando era niño, jugaba al fútbol todos los días.',de:'Als ich Kind war, spielte ich jeden Tag Fußball.'},
+      {label:'Andauernder Zustand',es:'Antes vivía en una ciudad pequeña.',de:'Früher lebte ich in einer kleinen Stadt.'},
+      {label:'Hintergrundbeschreibung',es:'Llovía cuando llegué a casa.',de:'Es regnete, als ich nach Hause kam.'},
+      {label:'Parallelhandlungen',es:'Mientras él cocinaba, yo ponía la mesa.',de:'Während er kochte, deckte ich den Tisch.'}
+    ],
+    regular:[
+      {type:'-AR (hablar)',forms:['hablaba','hablabas','hablaba','hablábamos','hablabais','hablaban']},
+      {type:'-ER/-IR (comer/vivir)',forms:['comía','comías','comía','comíamos','comíais','comían']}
+    ],
+    tip:'Nur 3 Verben sind im Imperfecto unregelmäßig: ser (era/eras...), ir (iba/ibas...), ver (veía/veías...). Alle anderen sind regelmäßig!'
+  },
+  futuro:{
+    name:'Futuro Simple',
+    use:'Drückt Handlungen aus, die in der Zukunft stattfinden. Auch für Vermutungen über die Gegenwart und Versprechen.',
+    uses:[
+      {label:'Zukünftige Handlung',es:'El próximo año estudiaré en España.',de:'Nächstes Jahr werde ich in Spanien studieren.'},
+      {label:'Versprechen',es:'Te llamaré en cuanto llegue.',de:'Ich werde dich anrufen, sobald ich ankomme.'},
+      {label:'Vermutung',es:'Serán las tres de la tarde.',de:'Es dürfte etwa drei Uhr nachmittags sein.'},
+      {label:'Bedingung',es:'Si estudias, aprobarás el examen.',de:'Wenn du lernst, wirst du die Prüfung bestehen.'}
+    ],
+    regular:[
+      {type:'Alle Verben (Infinitiv + Endung)',forms:['hablaré','hablarás','hablará','hablaremos','hablaréis','hablarán']}
+    ],
+    tip:'Unregelmäßige Stämme: tener→tendré, poder→podré, hacer→haré, salir→saldré, venir→vendré, decir→diré, querer→querré.'
+  },
+  condicional:{
+    name:'Condicional Simple',
+    use:'Drückt Wünsche, Möglichkeiten unter Bedingungen oder höfliche Bitten aus. Entspricht dem deutschen "würde + Infinitiv".',
+    uses:[
+      {label:'Hypothetische Situation',es:'Si tuviera dinero, viajaría por el mundo.',de:'Wenn ich Geld hätte, würde ich um die Welt reisen.'},
+      {label:'Höfliche Bitte',es:'¿Podrías ayudarme con esto?',de:'Könntest du mir damit helfen?'},
+      {label:'Ratschlag',es:'Yo en tu lugar estudiaría más.',de:'An deiner Stelle würde ich mehr lernen.'},
+      {label:'Zukunft in der Vergangenheit',es:'Dijo que vendría mañana.',de:'Er sagte, er würde morgen kommen.'}
+    ],
+    regular:[
+      {type:'Alle Verben (Infinitiv + Endung)',forms:['hablaría','hablarías','hablaría','hablaríamos','hablaríais','hablarían']}
+    ],
+    tip:'Gleiche unregelmäßige Stämme wie Futuro: tendría, podría, haría, saldría, vendría, diría, querría.'
+  },
+  subjuntivo:{
+    name:'Subjuntivo Presente',
+    use:'Der Subjuntivo drückt Wünsche, Zweifel, Emotionen und Unsicherheit aus. Steht in Nebensätzen nach bestimmten Ausdrücken.',
+    uses:[
+      {label:'Wunsch/Bitte',es:'Quiero que vengas a la fiesta.',de:'Ich möchte, dass du zur Party kommst.'},
+      {label:'Zweifel',es:'No creo que haya problema.',de:'Ich glaube nicht, dass es ein Problem gibt.'},
+      {label:'Emotion',es:'Me alegra que estés bien.',de:'Es freut mich, dass es dir gut geht.'},
+      {label:'Notwendigkeit',es:'Es necesario que practiques cada día.',de:'Es ist notwendig, dass du jeden Tag übst.'}
+    ],
+    regular:[
+      {type:'-AR (hablar)',forms:['hable','hables','hable','hablemos','habléis','hablen']},
+      {type:'-ER/-IR (comer/vivir)',forms:['coma','comas','coma','comamos','comáis','coman']}
+    ],
+    tip:'Trigger-Wörter: querer que, esperar que, necesitar que, es importante que, ojalá, aunque (Zweifel), cuando (Zukunft).'
+  }
+};
+
+let currentGrammarTense='presente';
+
+function showGrammar(tense){
+  currentGrammarTense=tense;
+  document.querySelectorAll('#grammar-tense-btns .tense-btn').forEach((b,i)=>{
+    b.classList.toggle('active',['presente','indefinido','imperfecto','futuro','condicional','subjuntivo'][i]===tense);
+  });
+  const d=GRAMMAR_DATA[tense];
+  if(!d){document.getElementById('grammar-content').innerHTML='';return}
+  const pronouns=['yo','tú','él/ella','nosotros','vosotros','ellos/ellas'];
+  const tablesHtml=d.regular.map(r=>`
+    <div style="margin-bottom:.875rem">
+      <div style="font-size:12px;font-weight:600;color:var(--green-dark);margin-bottom:6px">${r.type}</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px">
+        ${r.forms.map((f,i)=>`<div class="conj-row"><span class="conj-pro">${pronouns[i]}</span><span class="conj-form">${f}</span></div>`).join('')}
+      </div>
+    </div>`).join('');
+  const usesHtml=d.uses.map(u=>`
+    <div style="padding:8px 0;border-bottom:1px solid var(--border)">
+      <div style="font-size:11px;font-weight:700;color:var(--green-mid);text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px">${u.label}</div>
+      <div style="font-size:14px;color:var(--text)"><em>"${u.es}"</em></div>
+      <div style="font-size:13px;color:var(--text-muted);margin-top:1px">${u.de}</div>
+    </div>`).join('');
+  document.getElementById('grammar-content').innerHTML=`
+    <div class="card">
+      <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--green-dark);margin-bottom:.5rem">${d.name}</div>
+      <div style="font-size:14px;color:var(--text-muted);line-height:1.65;margin-bottom:1rem">${d.use}</div>
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:.5rem">Verwendung</div>
+      ${usesHtml}
+    </div>
+    <div class="card">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:.75rem">Konjugationsendungen</div>
+      ${tablesHtml}
+      <div style="background:var(--green-light);border-radius:8px;padding:.875rem;border-left:3px solid var(--green-mid);font-size:13px;color:var(--green-dark);line-height:1.6;margin-top:.5rem">
+        💡 ${d.tip}
+      </div>
+    </div>
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.875rem">
+        <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted)">KI-Übung</div>
+        <button class="btn btn-sm btn-primary" onclick="startExercise('${tense}')">Neue Aufgaben generieren 🔄</button>
+      </div>
+      <div id="exercise-area">
+        <div style="text-align:center;padding:1rem;color:var(--text-muted);font-size:14px">Klicke auf "Neue Aufgaben generieren" — die KI erstellt 6 frische Lückentextaufgaben für das ${d.name}.</div>
+      </div>
+    </div>`;
+  document.getElementById('grammar-exercise').style.display='none';
+}
+
 // ── GRAMMAR EXERCISE (AI-generated questions) ──
 let exerciseState={tense:'',questions:[],idx:0,score:0,answered:false,loading:false};
 
@@ -1672,47 +1817,81 @@ const IRREG_VOCAB=[
 
 let currentIrregFilter='alle';
 
-function filterIrregVocab(cat){
-  currentIrregFilter=cat;
+function filterIrregVocab(group){
+  currentIrregFilter=group;
   document.querySelectorAll('[id^="ivf-"]').forEach(b=>b.classList.remove('active'));
-  document.getElementById('ivf-'+cat)?.classList.add('active');
+  document.getElementById('ivf-'+group)?.classList.add('active');
   renderIrregVocab();
 }
 
 function renderIrregVocab(){
-  const filtered=currentIrregFilter==='alle'?IRREG_VOCAB:IRREG_VOCAB.filter(v=>v.cat===currentIrregFilter);
-  const catLabel={vokalwechsel:'Vokalwechsel','go-verben':'Go-Verben (yo-Form)',reflexiv:'Reflexive Verben',modal:'Modalverben'};
-  document.getElementById('irreg-vocab-list').innerHTML=filtered.map(v=>`
-    <div class="card" style="margin-bottom:.75rem">
+  const filtered=currentIrregFilter==='alle'?IRREG_VOCAB:IRREG_VOCAB.filter(v=>v.tenseGroup===currentIrregFilter);
+
+  // Group by tenseGroup for display headers
+  const groups={};
+  filtered.forEach(v=>{
+    if(!groups[v.tenseGroup])groups[v.tenseGroup]=[];
+    groups[v.tenseGroup].push(v);
+  });
+
+  const tenseGroupLabel={
+    Presente:'🔵 Presente — Unregelmäßige Formen im Präsens',
+    Indefinido:'🟠 Pretérito Indefinido — Starke Verben',
+    Imperfecto:'🟡 Pretérito Imperfecto — Die 3 Ausnahmen',
+    Futuro:'🟣 Futuro — Verkürzte Stämme',
+    Condicional:'🔴 Condicional — Wie Futuro, andere Endungen',
+    Subjuntivo:'🟢 Subjuntivo — Unregelmäßige Subjuntivformen',
+    Reflexiv:'⚪ Reflexive Verben — Besonderheiten'
+  };
+
+  const catBadgeLabel={vokalwechsel:'Vokalwechsel','go-verben':'Go-Verb',reflexiv:'Reflexiv',modal:'Modal'};
+
+  let html='';
+  for(const [group,verbs] of Object.entries(groups)){
+    html+=`<div style="font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:var(--green-dark);
+      margin:.5rem 0 .75rem;padding:.625rem .875rem;background:var(--green-light);
+      border-radius:10px;border-left:4px solid var(--green-mid)">
+      ${tenseGroupLabel[group]||group}
+    </div>`;
+    html+=verbs.map(v=>`
+    <div class="card" style="margin-bottom:.875rem">
       <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;flex-wrap:wrap;margin-bottom:.75rem">
         <div>
           <span style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--green-dark)">${v.verb}</span>
-          <span style="font-size:14px;color:var(--text-muted);margin-left:8px">${v.de}</span>
+          <span style="font-size:13px;color:var(--text-muted);margin-left:8px">${v.de}</span>
         </div>
-        <span style="font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--green-light);color:var(--green-dark)">${catLabel[v.cat]||v.cat}</span>
+        <span style="font-size:11px;font-weight:600;padding:3px 9px;border-radius:20px;background:var(--green-light);color:var(--green-dark);flex-shrink:0">${catBadgeLabel[v.cat]||v.cat}</span>
       </div>
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:.75rem">
-        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">yo (Pres.)</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.yo1}</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:.875rem">
+        <div style="background:var(--bg);border-radius:8px;padding:7px 6px;text-align:center">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">yo (Pres.)</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${v.yo1}</div>
         </div>
-        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">él/ella</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.el3}</div>
+        <div style="background:var(--bg);border-radius:8px;padding:7px 6px;text-align:center">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">él/ella</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${v.el3}</div>
         </div>
-        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">Indefinido</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.pret}</div>
+        <div style="background:var(--bg);border-radius:8px;padding:7px 6px;text-align:center">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">Indefinido</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${v.pret}</div>
         </div>
-        <div style="background:var(--bg);border-radius:8px;padding:7px 10px;text-align:center">
-          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">Imperfecto</div>
-          <div style="font-size:14px;font-weight:600;color:var(--text)">${v.imp}</div>
+        <div style="background:var(--bg);border-radius:8px;padding:7px 6px;text-align:center">
+          <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-light);margin-bottom:2px">Imperfecto</div>
+          <div style="font-size:13px;font-weight:600;color:var(--text)">${v.imp}</div>
         </div>
       </div>
-      <div style="background:var(--gold-light,#fdf3e0);border-radius:8px;padding:8px 12px;font-size:13px;color:#7a5c1e;line-height:1.55;border-left:3px solid var(--gold)">
+      ${v.es_example?`
+      <div style="margin-bottom:.625rem">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:var(--text-muted);margin-bottom:4px">Beispiel</div>
+        <div style="font-size:14px;color:var(--text);line-height:1.6"><em>"${v.es_example}"</em></div>
+        <div style="font-size:13px;color:var(--text-muted);margin-top:2px">${v.de_example||''}</div>
+      </div>`:''}
+      <div style="background:var(--gold-light);border-radius:8px;padding:8px 12px;font-size:13px;color:#7a5c1e;line-height:1.55;border-left:3px solid var(--gold)">
         💡 ${v.tip}
       </div>
     </div>`).join('');
+  }
+  document.getElementById('irreg-vocab-list').innerHTML=html||'<div class="empty-state"><div class="empty-icon">📚</div>Keine Einträge.</div>';
 }
 
 // ── INIT (call grammar and irreg on first render) ──
