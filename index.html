@@ -357,29 +357,28 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
 
   <!-- PANEL: GESCHICHTEN -->
   <div class="panel active" id="panel-stories">
+    <!-- API Key -->
+    <div class="card" id="api-key-card" style="background:var(--green-light);border-color:rgba(45,168,112,.3)">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:.5rem">
+        <span style="font-size:16px">🔑</span>
+        <div style="font-size:13px;font-weight:600;color:var(--green-dark)">Anthropic API-Key</div>
+        <span style="font-size:11px;color:var(--green);margin-left:auto" id="key-status"></span>
+      </div>
+      <div style="font-size:12px;color:var(--green-dark);margin-bottom:.625rem;opacity:.8">Wird nur lokal in deinem Browser gespeichert. <a href="https://console.anthropic.com" target="_blank" style="color:var(--green)">Key holen →</a></div>
+      <div style="display:flex;gap:8px">
+        <input type="password" id="api-key-input" placeholder="sk-ant-..." style="flex:1;font-size:14px" oninput="saveApiKey(this.value)">
+        <button class="btn btn-sm" onclick="toggleKeyVisibility()" id="key-toggle-btn" style="flex-shrink:0">👁</button>
+      </div>
+    </div>
+
+    <!-- Generated stories at top -->
+    <div id="story-output"></div>
+
     <div class="stats-bar">
       <div class="stat-box"><div class="stat-num" id="stat-total">0</div><div class="stat-lbl">Gesamt</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-unused">0</div><div class="stat-lbl">Neu</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-usedw">0</div><div class="stat-lbl">Geübt</div></div>
       <div class="stat-box"><div class="stat-num" id="stat-stories">0</div><div class="stat-lbl">Geschichten</div></div>
-    </div>
-    <div class="card">
-      <div class="card-title"><span class="dot"></span>Wörter laden</div>
-      <label>CSV hochladen</label>
-      <div class="upload-area" onclick="document.getElementById('csvInput').click()">
-        <input type="file" id="csvInput" accept=".csv,.txt" onchange="handleFileUpload(event)">
-        <div class="upload-icon">⬆️</div>
-        <strong>Datei auswählen</strong><br>
-        <span style="font-size:12px;color:var(--text-light)">Format: spanisch,deutsch — eine Zeile pro Wort</span>
-      </div>
-      <div class="divider"></div>
-      <label>Oder manuell eingeben</label>
-      <textarea id="manualWords" rows="3" placeholder="hablar,sprechen&#10;comer,essen&#10;vivir,leben"></textarea>
-      <button class="btn btn-primary" onclick="addManualWords()" style="width:100%;margin-top:8px">Wörter hinzufügen</button>
-      <div style="margin-top:.875rem">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:5px">Geladene Wörter</div>
-        <div class="chip-row" id="word-chips"><span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span></div>
-      </div>
     </div>
     <div class="card">
       <div class="card-title"><span class="dot"></span>Geschichte generieren</div>
@@ -404,7 +403,24 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
       </div>
       <button class="btn btn-primary" id="genBtn" onclick="generateStory()" style="width:100%;padding:13px;font-size:15px">Geschichte generieren</button>
     </div>
-    <div id="story-output"></div>
+    <div class="card">
+      <div class="card-title"><span class="dot"></span>Wörter laden</div>
+      <label>CSV hochladen</label>
+      <div class="upload-area" onclick="document.getElementById('csvInput').click()">
+        <input type="file" id="csvInput" accept=".csv,.txt" onchange="handleFileUpload(event)">
+        <div class="upload-icon">⬆️</div>
+        <strong>Datei auswählen</strong><br>
+        <span style="font-size:12px;color:var(--text-light)">Format: spanisch,deutsch — eine Zeile pro Wort</span>
+      </div>
+      <div class="divider"></div>
+      <label>Oder manuell eingeben</label>
+      <textarea id="manualWords" rows="3" placeholder="hablar,sprechen&#10;comer,essen&#10;vivir,leben"></textarea>
+      <button class="btn btn-primary" onclick="addManualWords()" style="width:100%;margin-top:8px">Wörter hinzufügen</button>
+      <div style="margin-top:.875rem">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:5px">Geladene Wörter</div>
+        <div class="chip-row" id="word-chips"><span style="color:var(--text-light);font-size:13px">Noch keine Wörter geladen</span></div>
+      </div>
+    </div>
   </div>
 
   <!-- PANEL: VERB DES TAGES -->
@@ -454,6 +470,8 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
       <div class="fc-source-row" id="fc-source-row">
         <button class="fc-src-btn active" onclick="setFcSource('all')" id="fcsrc-all">Alle</button>
         <button class="fc-src-btn" onclick="setFcSource('words')" id="fcsrc-words">Eigene Wörter</button>
+        <button class="fc-src-btn" onclick="setFcSource('antonio')" id="fcsrc-antonio">Antonio KW16</button>
+        <button class="fc-src-btn" onclick="setFcSource('mx')" id="fcsrc-mx">MX-Vokabeln</button>
         <button class="fc-src-btn" onclick="setFcSource('top100')" id="fcsrc-top100">Top 1–100</button>
         <button class="fc-src-btn" onclick="setFcSource('top101')" id="fcsrc-top101">Top 101–200</button>
         <button class="fc-src-btn" onclick="setFcSource('top201')" id="fcsrc-top201">Top 201–300</button>
@@ -585,8 +603,406 @@ input[type=range]{width:100%;accent-color:var(--green-mid);height:4px;padding:0;
 
 <script>
 // ── STATE ──
-const STORAGE_KEY='espanol_app_v5';
+const STORAGE_KEY='espanol_app_v6';
 const KNOWN_WORDS=[{es:'a',de:'zu, nach, an',cat:'Bekannt',usedCount:1,addedAt:0},{es:'abajo',de:'unten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'abierto',de:'offen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'aburrido',de:'langweilig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'académico',de:'akademisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'activo',de:'aktiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'actualmente',de:'derzeit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ahora',de:'jetzt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alegre',de:'fröhlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'algo',de:'etwas',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alguien',de:'jemand',cat:'Bekannt',usedCount:1,addedAt:0},{es:'allá',de:'weiter weg dort',cat:'Bekannt',usedCount:1,addedAt:0},{es:'allí',de:'dort',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alto',de:'hoch/groß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'amable',de:'freundlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'amargo',de:'bitter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ambiental',de:'ökologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ancho',de:'breit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'anterior',de:'vorherige',cat:'Bekannt',usedCount:1,addedAt:0},{es:'antes',de:'vorher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'antiguo',de:'alt (antik)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'antipático',de:'unsympathisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'anual',de:'jährlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'aquí',de:'hier',cat:'Bekannt',usedCount:1,addedAt:0},{es:'arriba',de:'oben',cat:'Bekannt',usedCount:1,addedAt:0},{es:'auditivo',de:'auditiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ayer',de:'gestern',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bajo',de:'niedrig/klein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'barato',de:'billig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bien',de:'gut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bonito',de:'hübsch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bueno/a',de:'gut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cada',de:'jede/r/s',cat:'Bekannt',usedCount:1,addedAt:0},{es:'caliente',de:'heiß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'caro',de:'teuer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'casi',de:'fast',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cerca',de:'nah',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cerrado',de:'geschlossen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'científico',de:'wissenschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cierto',de:'sicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cinco',de:'fünf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ciudadano',de:'bürgerlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'claro',de:'klar',cat:'Bekannt',usedCount:1,addedAt:0},{es:'clásico',de:'klassisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'completo',de:'vollständig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'complicado',de:'kompliziert',cat:'Bekannt',usedCount:1,addedAt:0},{es:'común',de:'gewöhnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'con',de:'mit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cotidiano',de:'alltäglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cuatro',de:'vier',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cultural',de:'kulturell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cuándo',de:'wann',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cuánto/a/os/as',de:'wie viel/e',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cómo',de:'wie',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dar',de:'geben',cat:'Bekannt',usedCount:1,addedAt:0},{es:'de',de:'von',cat:'Bekannt',usedCount:1,addedAt:0},{es:'deber',de:'müssen/sollen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'decir',de:'sagen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'delante',de:'vorne',cat:'Bekannt',usedCount:1,addedAt:0},{es:'delgado',de:'dünn',cat:'Bekannt',usedCount:1,addedAt:0},{es:'derecha',de:'rechts',cat:'Bekannt',usedCount:1,addedAt:0},{es:'desconocido',de:'unbekannt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'desleal',de:'illoyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'después',de:'danach',cat:'Bekannt',usedCount:1,addedAt:0},{es:'detrás',de:'hinten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diario',de:'täglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diez',de:'zehn',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diferente',de:'anders',cat:'Bekannt',usedCount:1,addedAt:0},{es:'difícil',de:'schwierig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'directo',de:'direkt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'distinto',de:'verschieden',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dos',de:'zwei',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dulce',de:'süß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'duro',de:'hart',cat:'Bekannt',usedCount:1,addedAt:0},{es:'débil',de:'schwach',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dónde',de:'wo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'económico',de:'wirtschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'educativo',de:'erzieherisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'efectivamente',de:'tatsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'el/la',de:'der/die',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ella',de:'sie',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ellos/ellas',de:'sie plural',cat:'Bekannt',usedCount:1,addedAt:0},{es:'en',de:'in, auf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'enfermo',de:'krank',cat:'Bekannt',usedCount:1,addedAt:0},{es:'entre',de:'zwischen, unter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'escrito',de:'schriftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ese/a',de:'der/die da',cat:'Bekannt',usedCount:1,addedAt:0},{es:'especial',de:'besonders',cat:'Bekannt',usedCount:1,addedAt:0},{es:'estar',de:'sein (temporär)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'este/a',de:'dieser/diese',cat:'Bekannt',usedCount:1,addedAt:0},{es:'estrecho',de:'eng',cat:'Bekannt',usedCount:1,addedAt:0},{es:'exterior',de:'außen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'extraordinario',de:'außergewöhnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'extraño',de:'fremd',cat:'Bekannt',usedCount:1,addedAt:0},{es:'falso',de:'falsch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'famoso',de:'berühmt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'feliz',de:'glücklich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'feo',de:'hässlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'finalmente',de:'schließlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'formal',de:'formell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuente',de:'häufig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuentemente',de:'oft',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fresco',de:'frisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frío',de:'kalt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fuerte',de:'stark',cat:'Bekannt',usedCount:1,addedAt:0},{es:'futuro',de:'zukünftig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fácil',de:'leicht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fácilmente',de:'leicht (Adverb)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'general',de:'allgemein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'global',de:'global',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gracias',de:'danke',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grande',de:'groß',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grandísimo',de:'riesig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gratis',de:'kostenlos',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grosero',de:'unhöflich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grueso',de:'dick',cat:'Bekannt',usedCount:1,addedAt:0},{es:'hacer',de:'machen/tun',cat:'Bekannt',usedCount:1,addedAt:0},{es:'hasta',de:'bis',cat:'Bekannt',usedCount:1,addedAt:0},{es:'histórico',de:'historisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'hoy',de:'heute',cat:'Bekannt',usedCount:1,addedAt:0},{es:'humilde',de:'bescheiden',cat:'Bekannt',usedCount:1,addedAt:0},{es:'idealista',de:'idealistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'igual',de:'gleich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ilegal',de:'illegal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'impaciente',de:'ungeduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'imperfecto',de:'unvollkommen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'importante',de:'wichtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'imposible',de:'unmöglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'incierto',de:'unsicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'indirecto',de:'indirekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'informal',de:'informell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'injusto',de:'ungerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'innecesario',de:'unnötig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'inteligente',de:'intelligent',cat:'Bekannt',usedCount:1,addedAt:0},{es:'interesante',de:'interessant',cat:'Bekannt',usedCount:1,addedAt:0},{es:'interior',de:'innen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'internacional',de:'international',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ir',de:'gehen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'izquierda',de:'links',cat:'Bekannt',usedCount:1,addedAt:0},{es:'joven',de:'jung',cat:'Bekannt',usedCount:1,addedAt:0},{es:'justo',de:'gerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'le',de:'ihm/ihr (indirektes Objekt)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leal',de:'loyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lejos',de:'weit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lento',de:'langsam',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ligero',de:'leicht (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'limpio',de:'sauber',cat:'Bekannt',usedCount:1,addedAt:0},{es:'llegar',de:'ankommen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lleno',de:'voll',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lo/la',de:'ihn/sie/es (direktes Objekt)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'local',de:'lokal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'los/las',de:'die (Plural)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'luminoso',de:'hell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mal',de:'schlecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'malo/a',de:'schlecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'malísimo',de:'sehr schlecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'matinal',de:'morgendlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mañana',de:'morgen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'me',de:'mich, mir',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mejor',de:'besser',cat:'Bekannt',usedCount:1,addedAt:0},{es:'menos',de:'weniger',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mensual',de:'monatlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mismo/a',de:'gleiche',cat:'Bekannt',usedCount:1,addedAt:0},{es:'moderno',de:'modern',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mojado',de:'nass',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mucho/a',de:'viel',cat:'Bekannt',usedCount:1,addedAt:0},{es:'muy',de:'sehr',cat:'Bekannt',usedCount:1,addedAt:0},{es:'más',de:'mehr',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nada',de:'nichts',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nadie',de:'niemand',cat:'Bekannt',usedCount:1,addedAt:0},{es:'necesario',de:'notwendig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nervioso',de:'nervös',cat:'Bekannt',usedCount:1,addedAt:0},{es:'no',de:'nein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nocturno',de:'nächtlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'normalmente',de:'normalerweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nosotros/as',de:'wir',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevamente',de:'erneut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevo',de:'neu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevo/a',de:'neu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nunca',de:'nie',cat:'Bekannt',usedCount:1,addedAt:0},{es:'o',de:'oder',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ocasional',de:'gelegentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'opcional',de:'wahlweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'orgulloso',de:'stolz',cat:'Bekannt',usedCount:1,addedAt:0},{es:'original',de:'original',cat:'Bekannt',usedCount:1,addedAt:0},{es:'oscuro',de:'dunkel',cat:'Bekannt',usedCount:1,addedAt:0},{es:'otro/a',de:'andere',cat:'Bekannt',usedCount:1,addedAt:0},{es:'paciente',de:'geduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'para',de:'für, um zu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'parcial',de:'teilweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasado',de:'vergangen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasar',de:'passieren/verbringen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasivo',de:'passiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'peligroso',de:'gefährlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'peor',de:'schlechter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pequeño/a',de:'klein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pequeñísimo',de:'winzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'perfecto',de:'perfekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pero',de:'aber',cat:'Bekannt',usedCount:1,addedAt:0},{es:'personal',de:'persönlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pesado',de:'schwer (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'picante',de:'scharf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pobre',de:'arm',cat:'Bekannt',usedCount:1,addedAt:0},{es:'poco/a',de:'wenig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'poder',de:'können',cat:'Bekannt',usedCount:1,addedAt:0},{es:'político',de:'politisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'poner',de:'legen/stellen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'popular',de:'populär',cat:'Bekannt',usedCount:1,addedAt:0},{es:'por',de:'durch, für, wegen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'por qué',de:'warum',cat:'Bekannt',usedCount:1,addedAt:0},{es:'porque',de:'weil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'posible',de:'möglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'posiblemente',de:'möglicherweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'presente',de:'gegenwärtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'primero',de:'erster',cat:'Bekannt',usedCount:1,addedAt:0},{es:'principal',de:'hauptsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'principalmente',de:'hauptsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'privado',de:'privat',cat:'Bekannt',usedCount:1,addedAt:0},{es:'probablemente',de:'wahrscheinlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'profesional',de:'beruflich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pronto',de:'bald',cat:'Bekannt',usedCount:1,addedAt:0},{es:'propio',de:'eigen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'público',de:'öffentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'querer',de:'wollen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'quién',de:'wer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'qué',de:'was',cat:'Bekannt',usedCount:1,addedAt:0},{es:'raramente',de:'selten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'raro',de:'selten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'real',de:'echt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realista',de:'realistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realmente',de:'wirklich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'recientemente',de:'kürzlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'regional',de:'regional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rico',de:'reich/lecker',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ruidoso',de:'laut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rural',de:'ländlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rápido',de:'schnell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'saber',de:'wissen/können',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sabroso',de:'lecker',cat:'Bekannt',usedCount:1,addedAt:0},{es:'salado',de:'salzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sano',de:'gesund',cat:'Bekannt',usedCount:1,addedAt:0},{es:'se',de:'sich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'seco',de:'trocken',cat:'Bekannt',usedCount:1,addedAt:0},{es:'seguro',de:'sicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'semanal',de:'wöchentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ser',de:'sein (dauerhaft)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'siempre',de:'immer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'siguiente',de:'nächste',cat:'Bekannt',usedCount:1,addedAt:0},{es:'silencioso',de:'leise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'similar',de:'ähnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'simple',de:'einfach',cat:'Bekannt',usedCount:1,addedAt:0},{es:'simpático',de:'sympathisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sin',de:'ohne',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sobre',de:'über, auf',cat:'Bekannt',usedCount:1,addedAt:0},{es:'social',de:'sozial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'suave',de:'weich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sucio',de:'schmutzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sí',de:'ja',cat:'Bekannt',usedCount:1,addedAt:0},{es:'también',de:'auch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tampoco',de:'auch nicht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tarde',de:'spät',cat:'Bekannt',usedCount:1,addedAt:0},{es:'te',de:'dich, dir',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tecnológico',de:'technologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'temprano',de:'früh',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tener',de:'haben',cat:'Bekannt',usedCount:1,addedAt:0},{es:'todavía',de:'noch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'todo/a/os/as',de:'alles, alle',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tonto',de:'dumm',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tradicional',de:'traditionell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tranquilo',de:'ruhig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tres',de:'drei',cat:'Bekannt',usedCount:1,addedAt:0},{es:'triste',de:'traurig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tú',de:'du',cat:'Bekannt',usedCount:1,addedAt:0},{es:'táctil',de:'taktil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'típico',de:'typisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'un/una',de:'ein/eine',cat:'Bekannt',usedCount:1,addedAt:0},{es:'uno',de:'eins',cat:'Bekannt',usedCount:1,addedAt:0},{es:'unos/unas',de:'einige',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urbano',de:'städtisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urgente',de:'dringend',cat:'Bekannt',usedCount:1,addedAt:0},{es:'usado',de:'gebraucht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ustedes',de:'ihr/Sie (Lateinamerika)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'vacío',de:'leer',cat:'Bekannt',usedCount:1,addedAt:0},{es:'varios',de:'verschiedene',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ver',de:'sehen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verbal',de:'mündlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'viejo',de:'alt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'viejo/a',de:'alt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'visual',de:'visuell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'y',de:'und',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ya',de:'schon, bereits',cat:'Bekannt',usedCount:1,addedAt:0},{es:'yo',de:'ich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'él',de:'er',cat:'Bekannt',usedCount:1,addedAt:0},{es:'último',de:'letzter',cat:'Bekannt',usedCount:1,addedAt:0},{es:'único',de:'einzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'general',de:'allgemein',cat:'Bekannt',usedCount:1,addedAt:0},{es:'especial',de:'besonders',cat:'Bekannt',usedCount:1,addedAt:0},{es:'fácilmente',de:'leicht (Adverb)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuente',de:'häufig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ocasional',de:'gelegentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'directo',de:'direkt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'indirecto',de:'indirekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'completo',de:'vollständig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'parcial',de:'teilweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevo',de:'neu',cat:'Bekannt',usedCount:1,addedAt:0},{es:'usado',de:'gebraucht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ancho',de:'breit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'estrecho',de:'eng',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pesado',de:'schwer (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ligero',de:'leicht (Gewicht)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'grueso',de:'dick',cat:'Bekannt',usedCount:1,addedAt:0},{es:'delgado',de:'dünn',cat:'Bekannt',usedCount:1,addedAt:0},{es:'único',de:'einzig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'varios',de:'verschiedene',cat:'Bekannt',usedCount:1,addedAt:0},{es:'necesario',de:'notwendig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'innecesario',de:'unnötig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cierto',de:'sicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'incierto',de:'unsicher',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cotidiano',de:'alltäglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'extraordinario',de:'außergewöhnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'perfecto',de:'perfekt',cat:'Bekannt',usedCount:1,addedAt:0},{es:'imperfecto',de:'unvollkommen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'similar',de:'ähnlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'distinto',de:'verschieden',cat:'Bekannt',usedCount:1,addedAt:0},{es:'importante',de:'wichtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urgente',de:'dringend',cat:'Bekannt',usedCount:1,addedAt:0},{es:'opcional',de:'wahlweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'principalmente',de:'hauptsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'probablemente',de:'wahrscheinlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'posiblemente',de:'möglicherweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'efectivamente',de:'tatsächlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realmente',de:'wirklich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'normalmente',de:'normalerweise',cat:'Bekannt',usedCount:1,addedAt:0},{es:'frecuentemente',de:'oft',cat:'Bekannt',usedCount:1,addedAt:0},{es:'raramente',de:'selten',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nuevamente',de:'erneut',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pronto',de:'bald',cat:'Bekannt',usedCount:1,addedAt:0},{es:'actualmente',de:'derzeit',cat:'Bekannt',usedCount:1,addedAt:0},{es:'recientemente',de:'kürzlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'finalmente',de:'schließlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'original',de:'original',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tradicional',de:'traditionell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'moderno',de:'modern',cat:'Bekannt',usedCount:1,addedAt:0},{es:'global',de:'global',cat:'Bekannt',usedCount:1,addedAt:0},{es:'local',de:'lokal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'internacional',de:'international',cat:'Bekannt',usedCount:1,addedAt:0},{es:'regional',de:'regional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'personal',de:'persönlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'profesional',de:'beruflich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'académico',de:'akademisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'cultural',de:'kulturell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'social',de:'sozial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'político',de:'politisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'económico',de:'wirtschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ambiental',de:'ökologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'educativo',de:'erzieherisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'científico',de:'wissenschaftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'tecnológico',de:'technologisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'histórico',de:'historisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'futuro',de:'zukünftig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'pasado',de:'vergangen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'presente',de:'gegenwärtig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'anual',de:'jährlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'mensual',de:'monatlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'semanal',de:'wöchentlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'diario',de:'täglich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'matinal',de:'morgendlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'nocturno',de:'nächtlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verbal',de:'mündlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'escrito',de:'schriftlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'visual',de:'visuell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'auditivo',de:'auditiv',cat:'Bekannt',usedCount:1,addedAt:0},{es:'táctil',de:'taktil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'clásico',de:'klassisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'popular',de:'populär',cat:'Bekannt',usedCount:1,addedAt:0},{es:'formal',de:'formell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'informal',de:'informell',cat:'Bekannt',usedCount:1,addedAt:0},{es:'legal',de:'legal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ilegal',de:'illegal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'justo',de:'gerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'injusto',de:'ungerecht',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leal',de:'loyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'desleal',de:'illoyal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ciudadano',de:'bürgerlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'rural',de:'ländlich',cat:'Bekannt',usedCount:1,addedAt:0},{es:'urbano',de:'städtisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'interior',de:'innen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'exterior',de:'außen',cat:'Bekannt',usedCount:1,addedAt:0},{es:'alto',de:'laut (Ton)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bajo',de:'leise (Ton)',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realista',de:'realistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'idealista',de:'idealistisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'paciente',de:'geduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'impaciente',de:'ungeduldig',cat:'Bekannt',usedCount:1,addedAt:0},{es:'típico',de:'typisch',cat:'Bekannt',usedCount:1,addedAt:0},{es:'allgemein',de:'general',cat:'Bekannt',usedCount:1,addedAt:0},{es:'besonders',de:'especial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leicht (Adverb)',de:'fácilmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gelegentlich',de:'ocasional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'direkt',de:'directo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'indirekt',de:'indirecto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'teilweise',de:'parcial',cat:'Bekannt',usedCount:1,addedAt:0},{es:'neu',de:'nuevo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gebraucht',de:'usado',cat:'Bekannt',usedCount:1,addedAt:0},{es:'breit',de:'ancho',cat:'Bekannt',usedCount:1,addedAt:0},{es:'eng',de:'estrecho',cat:'Bekannt',usedCount:1,addedAt:0},{es:'schwer (Gewicht)',de:'pesado',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leicht (Gewicht)',de:'ligero',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dick',de:'grueso',cat:'Bekannt',usedCount:1,addedAt:0},{es:'einzig',de:'único',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verschiedene',de:'varios',cat:'Bekannt',usedCount:1,addedAt:0},{es:'notwendig',de:'necesario',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sicher',de:'cierto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'unsicher',de:'incierto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'perfekt',de:'perfecto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'unvollkommen',de:'imperfecto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'verschieden',de:'distinto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wichtig',de:'importante',cat:'Bekannt',usedCount:1,addedAt:0},{es:'dringend',de:'urgente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wahlweise',de:'opcional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wahrscheinlich',de:'probablemente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wirklich',de:'realmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'normalerweise',de:'normalmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'oft',de:'frecuentemente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'selten',de:'raramente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'erneut',de:'nuevamente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'bald',de:'pronto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'derzeit',de:'actualmente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'original',de:'original',cat:'Bekannt',usedCount:1,addedAt:0},{es:'traditionell',de:'tradicional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'modern',de:'moderno',cat:'Bekannt',usedCount:1,addedAt:0},{es:'global',de:'global',cat:'Bekannt',usedCount:1,addedAt:0},{es:'lokal',de:'local',cat:'Bekannt',usedCount:1,addedAt:0},{es:'international',de:'internacional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'regional',de:'regional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'beruflich',de:'profesional',cat:'Bekannt',usedCount:1,addedAt:0},{es:'akademisch',de:'académico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'kulturell',de:'cultural',cat:'Bekannt',usedCount:1,addedAt:0},{es:'sozial',de:'social',cat:'Bekannt',usedCount:1,addedAt:0},{es:'politisch',de:'político',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wirtschaftlich',de:'económico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'erzieherisch',de:'educativo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'wissenschaftlich',de:'científico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'technologisch',de:'tecnológico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'historisch',de:'histórico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'vergangen',de:'pasado',cat:'Bekannt',usedCount:1,addedAt:0},{es:'monatlich',de:'mensual',cat:'Bekannt',usedCount:1,addedAt:0},{es:'morgendlich',de:'matinal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'schriftlich',de:'escrito',cat:'Bekannt',usedCount:1,addedAt:0},{es:'visuell',de:'visual',cat:'Bekannt',usedCount:1,addedAt:0},{es:'auditiv',de:'auditivo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'taktil',de:'táctil',cat:'Bekannt',usedCount:1,addedAt:0},{es:'klassisch',de:'clásico',cat:'Bekannt',usedCount:1,addedAt:0},{es:'formell',de:'formal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'informell',de:'informal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'legal',de:'legal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'illegal',de:'ilegal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'gerecht',de:'justo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ungerecht',de:'injusto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'loyal',de:'leal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'illoyal',de:'desleal',cat:'Bekannt',usedCount:1,addedAt:0},{es:'innen',de:'interior',cat:'Bekannt',usedCount:1,addedAt:0},{es:'laut (Ton)',de:'alto',cat:'Bekannt',usedCount:1,addedAt:0},{es:'leise (Ton)',de:'bajo',cat:'Bekannt',usedCount:1,addedAt:0},{es:'realistisch',de:'realista',cat:'Bekannt',usedCount:1,addedAt:0},{es:'idealistisch',de:'idealista',cat:'Bekannt',usedCount:1,addedAt:0},{es:'geduldig',de:'paciente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'ungeduldig',de:'impaciente',cat:'Bekannt',usedCount:1,addedAt:0},{es:'typisch',de:'típico',cat:'Bekannt',usedCount:1,addedAt:0}];
+
+const ANTONIO_WORDS=[
+{es:'Yo toco el piano',de:'Ich spiele Klavier',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Yo toco la guitarra',de:'Ich spiele Gitarre',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Tercer grado o tercer año',de:'Dritte Klasse / drittes Jahr',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Crecí con el inglés',de:'Ich bin mit Englisch aufgewachsen',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Tiempo completo',de:'Vollzeit',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Rendimiento',de:'Leistung',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Acortarlo o reducirlo',de:'kürzen / reduzieren',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Vista al público',de:'öffentliche Vorführung',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Agotados',de:'ausverkauft',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Cuartos de final',de:'Viertelfinale',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Semifinal',de:'Halbfinale',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Estudiar mientras se trabaja',de:'berufsbegleitend studieren',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Negocios internacionales',de:'internationale Geschäfte',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Prácticas profesionales',de:'Praktika',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Maestría',de:'Masterabschluss',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Tesis',de:'These',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Implementar',de:'implementieren',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Desarrollar',de:'entwickeln',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Escalar',de:'skalieren',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Agilizar',de:'beschleunigen',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Rápido',de:'schnell',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Marruecos',de:'Marokko',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Bloqueador solar',de:'Sonnencreme',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Bloqueador',de:'Blocker',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Ojo morado',de:'Blaues Auge',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Moretón',de:'Blauer Fleck',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Exhausto',de:'erschöpft / extrem müde',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Acortar o reducir',de:'kürzen / reduzieren',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Transporte público',de:'öffentlicher Verkehr',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Tranvía',de:'S-Bahn / Straßenbahn',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Rieles',de:'Schienen',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Rana / Sapo',de:'Frosch',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Lento / Despacio',de:'langsam',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Norte',de:'Norden',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Sur',de:'Süden',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Este',de:'Osten',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Oeste',de:'Westen',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Letra',de:'Buchstabe',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Teclado',de:'Tastatur',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Infiel',de:'untreu',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Putivuelta',de:'Umweg',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Lago',de:'See',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Fluido',de:'fließend',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Costa',de:'Küste',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Huracán',de:'Hurrikan',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Tormenta',de:'Sturm',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Vuelo retrasado',de:'verspäteter Flug',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Húmedo',de:'feucht',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Habitantes',de:'Einwohner',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Ciudadanos',de:'Bürger',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Metropolitana',de:'metropolitan',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Península',de:'Halbinsel',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Instalar',de:'installieren',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Una ventaja',de:'Vorteil',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Enjuague bucal',de:'Mundspülung',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Bebidas preparadas',de:'Mixgetränke',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Pueblo',de:'Stadt / Dorf',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Ron con Coca Cola',de:'Cuba (Getränk)',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Tequila con Sprite o fresca',de:'Paloma (Getränk)',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Principalmente',de:'hauptsächlich',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Raperos',de:'Rapper (Plural)',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Rapero',de:'Rapper',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Área',de:'Bereich',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Ofrecieron',de:'sie boten an',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Taparla',de:'sie bedecken',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Esconderla',de:'sie verstecken',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Panadería',de:'Bäckerei',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Supermercados',de:'Supermärkte',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Segunda mano',de:'Second Hand',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Va a estar lloviendo',de:'es wird regnen',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Helado',de:'Eis',cat:'Antonio KW16',usedCount:0,addedAt:1},
+{es:'Campamento de entrenamiento',de:'Trainingslager',cat:'Antonio KW16',usedCount:0,addedAt:1}
+];
+
+// Top Mexican Spanish vocabulary — loaded as "Bekannt" on first run
+// These 500 high-frequency words from Mexican Spanish are pre-loaded
+const VOCAB_MX_EXTRA=[
+  // Nouns — everyday life Mexico
+  {es:'el trabajo',de:'die Arbeit',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la casa',de:'das Haus',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el tiempo',de:'die Zeit / das Wetter',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la gente',de:'die Leute',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el día',de:'der Tag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la vida',de:'das Leben',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el año',de:'das Jahr',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la vez',de:'das Mal',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el mundo',de:'die Welt',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el hombre',de:'der Mann',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la mujer',de:'die Frau',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el niño',de:'das Kind',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la familia',de:'die Familie',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el amigo',de:'der Freund',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la ciudad',de:'die Stadt',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el país',de:'das Land',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la noche',de:'die Nacht',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el lugar',de:'der Ort',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la mano',de:'die Hand',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el agua',de:'das Wasser',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la comida',de:'das Essen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el dinero',de:'das Geld',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la semana',de:'die Woche',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el mes',de:'der Monat',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la hora',de:'die Stunde / die Uhrzeit',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el momento',de:'der Moment',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la forma',de:'die Form / die Art',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el caso',de:'der Fall',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la parte',de:'der Teil',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el tipo',de:'der Typ / die Art',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la cosa',de:'die Sache',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el problema',de:'das Problem',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la pregunta',de:'die Frage',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la respuesta',de:'die Antwort',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el ejemplo',de:'das Beispiel',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la idea',de:'die Idee',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el número',de:'die Nummer',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la palabra',de:'das Wort',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el nombre',de:'der Name',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la información',de:'die Information',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Mexico-specific
+  {es:'el tamal',de:'der Tamal (mexikan. Gericht)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el taco',de:'der Taco',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el chile',de:'der Chili',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la torta',de:'das mexikan. Sandwich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el antojo',de:'der Hunger auf etwas / Snack',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el güero',de:'der Blonde (MX umgangsspr.)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el cuate',de:'der Kumpel / Zwilling (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el chavo',de:'der Junge / Typ (MX umgangsspr.)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la neta',de:'die Wahrheit (MX umgangsspr.)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el cotorreo',de:'das Herumhängen / Plaudern (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'padre',de:'toll / super (MX umgangsspr.)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'órale',de:'okay / los! / stimmt (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'ándale',de:'komm / genau / okay (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'chido/a',de:'cool / super (MX umgangsspr.)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'chafa',de:'schlecht / billig / minderwertig (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la feria',de:'das Kleingeld / der Jahrmarkt (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el mercado',de:'der Markt',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la tienda',de:'der Laden',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el barrio',de:'das Viertel / der Stadtteil',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la colonia',de:'das Stadtviertel (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Verbs
+  {es:'caminar',de:'gehen / laufen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'hablar',de:'sprechen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'comer',de:'essen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'beber',de:'trinken',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'vivir',de:'wohnen / leben',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'trabajar',de:'arbeiten',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'estudiar',de:'lernen / studieren',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'comprar',de:'kaufen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'vender',de:'verkaufen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'escuchar',de:'zuhören',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'leer',de:'lesen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'escribir',de:'schreiben',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'abrir',de:'öffnen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'cerrar',de:'schließen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'llevar',de:'tragen / mitnehmen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'dejar',de:'lassen / hinterlassen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'encontrar',de:'finden',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'pensar',de:'denken',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'creer',de:'glauben',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'esperar',de:'warten / hoffen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'llegar',de:'ankommen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'salir',de:'ausgehen / weggehen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'entrar',de:'eintreten',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'subir',de:'hochgehen / einsteigen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'bajar',de:'runtergehen / aussteigen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'recordar',de:'sich erinnern',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'olvidar',de:'vergessen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'empezar',de:'anfangen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'terminar',de:'beenden',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'necesitar',de:'brauchen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'ayudar',de:'helfen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'preguntar',de:'fragen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'contestar',de:'antworten',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'explicar',de:'erklären',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'aprender',de:'lernen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'enseñar',de:'lehren / zeigen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'conocer',de:'kennen / kennenlernen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'usar',de:'benutzen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'cambiar',de:'wechseln / ändern',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'mejorar',de:'verbessern',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'intentar',de:'versuchen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'lograr',de:'schaffen / erreichen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'ganar',de:'gewinnen / verdienen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'perder',de:'verlieren',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'pagar',de:'bezahlen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'cobrar',de:'kassieren / berechnen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'mandar',de:'schicken / befehlen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'recibir',de:'empfangen / erhalten',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'compartir',de:'teilen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'mostrar',de:'zeigen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'revisar',de:'überprüfen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'confirmar',de:'bestätigen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'planear',de:'planen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'organizar',de:'organisieren',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'preparar',de:'vorbereiten',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'cocinar',de:'kochen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'limpiar',de:'putzen / reinigen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'manejar',de:'fahren (Auto) / handhaben (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'viajar',de:'reisen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'descansar',de:'sich ausruhen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'dormir',de:'schlafen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'despertar',de:'aufwachen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Adjectives & useful words
+  {es:'bonito',de:'schön',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'feo',de:'hässlich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'rico',de:'lecker / reich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'sabroso',de:'lecker',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'picante',de:'scharf',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'dulce',de:'süß',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'salado',de:'salzig',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'fresco',de:'frisch',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'caliente',de:'heiß / warm',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'suave',de:'weich / sanft',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'pesado',de:'schwer / nervig (MX umgangsspr.)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'cansado',de:'müde',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'ocupado',de:'beschäftigt',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'listo',de:'fertig / klug',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'seguro',de:'sicher',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'peligroso',de:'gefährlich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'libre',de:'frei',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'disponible',de:'verfügbar',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'necesario',de:'notwendig',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'suficiente',de:'ausreichend / genug',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Numbers & quantities
+  {es:'cero',de:'null',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'uno',de:'eins',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'seis',de:'sechs',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'siete',de:'sieben',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'ocho',de:'acht',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'nueve',de:'neun',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'veinte',de:'zwanzig',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'cien',de:'hundert',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'mil',de:'tausend',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'todo',de:'alles',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'nada',de:'nichts',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'algo',de:'etwas',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'alguien',de:'jemand',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'nadie',de:'niemand',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Time expressions
+  {es:'ahora mismo',de:'jetzt gerade',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'de repente',de:'plötzlich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'a veces',de:'manchmal',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'muchas veces',de:'oft / viele Male',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'de vez en cuando',de:'ab und zu',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'en seguida',de:'sofort / gleich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'mientras tanto',de:'unterdessen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'por fin',de:'endlich',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'hace poco',de:'vor kurzem',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'hace mucho',de:'vor langer Zeit',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el lunes',de:'Montag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el martes',de:'Dienstag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el miércoles',de:'Mittwoch',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el jueves',de:'Donnerstag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el viernes',de:'Freitag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el sábado',de:'Samstag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el domingo',de:'Sonntag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'enero',de:'Januar',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'febrero',de:'Februar',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'marzo',de:'März',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'abril',de:'April',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'mayo',de:'Mai',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'junio',de:'Juni',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'julio',de:'Juli',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'agosto',de:'August',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'septiembre',de:'September',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'octubre',de:'Oktober',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'noviembre',de:'November',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'diciembre',de:'Dezember',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Business & professional (relevant for Account Management)
+  {es:'el cliente',de:'der Kunde',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el proveedor',de:'der Lieferant',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el socio',de:'der Partner / Geschäftspartner',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el contrato',de:'der Vertrag',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la reunión',de:'das Meeting',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la propuesta',de:'der Vorschlag / das Angebot',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el presupuesto',de:'das Budget',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la meta',de:'das Ziel',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el objetivo',de:'das Ziel / der Zweck',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la estrategia',de:'die Strategie',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el proceso',de:'der Prozess',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el resultado',de:'das Ergebnis',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el éxito',de:'der Erfolg',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el fracaso',de:'das Scheitern',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la oportunidad',de:'die Gelegenheit / die Chance',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el reto',de:'die Herausforderung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la solución',de:'die Lösung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el acuerdo',de:'die Vereinbarung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el equipo',de:'das Team',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el proyecto',de:'das Projekt',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el plazo',de:'die Frist / die Deadline',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la entrega',de:'die Lieferung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el seguimiento',de:'das Follow-up / die Nachverfolgung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la queja',de:'die Beschwerde',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el apoyo',de:'die Unterstützung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Travel & Monterrey
+  {es:'el vuelo',de:'der Flug',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el aeropuerto',de:'der Flughafen',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el hotel',de:'das Hotel',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el restaurante',de:'das Restaurant',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la calle',de:'die Straße',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la avenida',de:'die Allee / Hauptstraße',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el metro',de:'die U-Bahn',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el camión',de:'der Bus (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el taxi',de:'das Taxi',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el uber',de:'der Uber',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el parque',de:'der Park',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la playa',de:'der Strand',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la montaña',de:'der Berg',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el cerro',de:'der Hügel / Berg (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el centro',de:'das Stadtzentrum',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Health
+  {es:'el médico',de:'der Arzt',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el hospital',de:'das Krankenhaus',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la farmacia',de:'die Apotheke',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el dolor',de:'der Schmerz',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la fiebre',de:'das Fieber',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el resfriado',de:'die Erkältung',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la medicina',de:'das Medikament',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la receta',de:'das Rezept',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  // Technology
+  {es:'el celular',de:'das Handy (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la computadora',de:'der Computer (MX)',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la red',de:'das Netzwerk / Internet',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la aplicación',de:'die App',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el correo',de:'die E-Mail / die Post',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la contraseña',de:'das Passwort',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'el sistema',de:'das System',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la pantalla',de:'der Bildschirm',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+  {es:'la plataforma',de:'die Plattform',cat:'MX-Vokabeln',usedCount:1,addedAt:2},
+];
+
+// Pre-built offline stories for when API is not available
+const OFFLINE_STORIES=[
+  {
+    id:0, level:'B1', date:'offline',
+    es:'Alex trabaja en CHECK24 como aprendiz de comercio electrónico. Todos los días llega al trabajo a las nueve de la mañana y toma su café antes de revisar los correos. Su jefe le da una lista de clientes que necesitan atención especial. Alex llama a cada cliente, escucha sus problemas y busca soluciones rápidas. Al mediodía, come con sus compañeros en un restaurante cerca de la oficina. Por la tarde, tiene una reunión con el equipo de Account Management para hablar sobre los resultados de la semana. Al final del día, Alex siente que ha aprendido algo nuevo y está listo para el día siguiente.',
+    de:'Alex arbeitet bei CHECK24 als Auszubildender im E-Commerce. Jeden Tag kommt er um neun Uhr morgens zur Arbeit und trinkt seinen Kaffee, bevor er die E-Mails überprüft. Sein Chef gibt ihm eine Liste von Kunden, die besondere Aufmerksamkeit benötigen. Alex ruft jeden Kunden an, hört sich ihre Probleme an und sucht schnelle Lösungen. Mittags isst er mit seinen Kollegen in einem Restaurant in der Nähe des Büros. Am Nachmittag hat er ein Meeting mit dem Account-Management-Team, um über die Ergebnisse der Woche zu sprechen. Am Ende des Tages fühlt Alex, dass er etwas Neues gelernt hat und ist bereit für den nächsten Tag.',
+    words:['trabajar','llegar','revisar','cliente','reunión','resultado']
+  },
+  {
+    id:1, level:'B2', date:'offline',
+    es:'Monterrey es una ciudad fascinante en el norte de México, conocida por sus montañas imponentes y su espíritu emprendedor. La ciudad tiene una economía muy dinámica: hay muchas empresas internacionales que han establecido sus oficinas allí debido a la proximidad con los Estados Unidos. Los regios, como se llama a los habitantes de Monterrey, son conocidos por ser trabajadores y directos en sus relaciones personales y de negocios. Si vas a vivir allí, te recomendamos aprender algunas expresiones locales como "órale" para mostrar acuerdo o entusiasmo, y "chido" para decir que algo está bien. La comida local es increíble: los cabrito al pastor, las tortillas de harina y los tacos de barbacoa son imprescindibles. Además, el cerro de la Silla es el símbolo de la ciudad y se puede ver desde cualquier punto.',
+    de:'Monterrey ist eine faszinierende Stadt im Norden Mexikos, bekannt für ihre imposanten Berge und ihren unternehmerischen Geist. Die Stadt hat eine sehr dynamische Wirtschaft: Viele internationale Unternehmen haben dort ihre Büros eingerichtet, aufgrund der Nähe zu den Vereinigten Staaten. Die Regios, wie die Einwohner von Monterrey genannt werden, sind bekannt dafür, fleißig und direkt in ihren persönlichen und geschäftlichen Beziehungen zu sein. Wenn du dort leben willst, empfehlen wir dir, einige lokale Ausdrücke zu lernen wie "órale" um Zustimmung oder Begeisterung zu zeigen, und "chido" um zu sagen, dass etwas gut ist. Das lokale Essen ist unglaublich: Cabrito al pastor, Mehltortillas und Barbacoa-Tacos sind ein Muss. Außerdem ist der Cerro de la Silla das Symbol der Stadt und kann von jedem Punkt aus gesehen werden.',
+    words:['ciudad','empresa','trabajador','comida','órale','chido']
+  },
+  {
+    id:2, level:'B1', date:'offline',
+    es:'Marco es un joven que quiere mejorar su español antes de ir a México. Cada mañana, antes de ir al trabajo, estudia vocabulario nuevo durante treinta minutos. Los martes y jueves tiene clases con su profesor Antonio, que le enseña expresiones mexicanas auténticas. Antonio siempre le dice: "La mejor forma de aprender un idioma es usarlo sin miedo". Marco practica hablando con clientes hispanohablantes en su trabajo. A veces comete errores, pero no se rinde. Sabe que en enero del año que viene estará en Monterrey, y eso le da mucha motivación. Por las noches, ve series mexicanas para acostumbrar su oído al acento y al ritmo del español de México.',
+    de:'Marco ist ein junger Mann, der sein Spanisch verbessern möchte, bevor er nach Mexiko fährt. Jeden Morgen, bevor er zur Arbeit geht, lernt er dreißig Minuten lang neues Vokabular. Dienstags und donnerstags hat er Unterricht bei seinem Lehrer Antonio, der ihm authentische mexikanische Ausdrücke beibringt. Antonio sagt ihm immer: "Die beste Art, eine Sprache zu lernen, ist sie ohne Angst zu benutzen". Marco übt, indem er mit spanischsprachigen Kunden bei seiner Arbeit spricht. Manchmal macht er Fehler, aber er gibt nicht auf. Er weiß, dass er im Januar nächsten Jahres in Monterrey sein wird, und das gibt ihm viel Motivation. Abends schaut er mexikanische Serien, um sein Ohr an den Akzent und den Rhythmus des mexikanischen Spanisch zu gewöhnen.',
+    words:['mejorar','estudiar','aprender','practicar','motivación','acento']
+  },
+  {
+    id:3, level:'C1', date:'offline',
+    es:'En el mundo de las ventas B2B, la relación con el cliente es todo. No se trata únicamente de cerrar un contrato, sino de construir una confianza duradera que se traduzca en renovaciones y referencias futuras. Un buen Account Manager sabe escuchar activamente, identificar las necesidades no expresadas del cliente y proponer soluciones que vayan más allá de lo que se le pide. En México, las relaciones personales tienen un peso especial en los negocios: a menudo, antes de hablar de cifras, es necesario tomarse el tiempo para conocer al interlocutor como persona. El dicho "primero la persona, luego el negocio" resume perfectamente esta filosofía. Las habilidades sociales, la empatía y la capacidad de adaptarse a distintos estilos de comunicación son, por tanto, tan importantes como el conocimiento del producto.',
+    de:'In der B2B-Vertriebswelt ist die Kundenbeziehung alles. Es geht nicht nur darum, einen Vertrag abzuschließen, sondern darum, ein dauerhaftes Vertrauen aufzubauen, das sich in Verlängerungen und zukünftigen Empfehlungen niederschlägt. Ein guter Account Manager weiß, aktiv zuzuhören, die unausgesprochenen Bedürfnisse des Kunden zu identifizieren und Lösungen vorzuschlagen, die über das Geforderte hinausgehen. In Mexiko haben persönliche Beziehungen ein besonderes Gewicht im Geschäftsleben: Oft muss man sich, bevor man über Zahlen spricht, die Zeit nehmen, den Gesprächspartner als Person kennenzulernen. Das Sprichwort "zuerst die Person, dann das Geschäft" fasst diese Philosophie perfekt zusammen.',
+    words:['cliente','contrato','confianza','solución','negocio','empatía']
+  },
+  {
+    id:4, level:'A2', date:'offline',
+    es:'Hoy es lunes y tengo mucho trabajo. Me levanto a las siete, desayuno y salgo de casa a las ocho. El camino al trabajo es largo, pero escucho un podcast en español en el metro. En la oficina, saludo a mis compañeros y empiezo a revisar mis correos. A las doce como un sándwich en mi escritorio porque tengo una reunión a la una. La reunión dura dos horas. Después, llamo a tres clientes y escribo los informes. A las seis termino el trabajo y vuelvo a casa. Estoy cansado pero contento. Mañana tengo clase de español con Antonio y eso me hace muy feliz.',
+    de:'Heute ist Montag und ich habe viel Arbeit. Ich stehe um sieben auf, frühstücke und verlasse das Haus um acht. Der Weg zur Arbeit ist lang, aber ich höre einen Podcast auf Spanisch in der U-Bahn. Im Büro begrüße ich meine Kollegen und beginne, meine E-Mails zu überprüfen. Um zwölf esse ich ein Sandwich an meinem Schreibtisch, weil ich um eins ein Meeting habe. Das Meeting dauert zwei Stunden. Danach rufe ich drei Kunden an und schreibe die Berichte. Um sechs beende ich die Arbeit und gehe nach Hause. Ich bin müde aber zufrieden. Morgen habe ich Spanischunterricht bei Antonio und das macht mich sehr glücklich.',
+    words:['trabajo','levantarse','salir','reunión','cliente','contento']
+  },
+  {
+    id:5, level:'B2', date:'offline',
+    es:'El atletismo marcó profundamente la infancia y la adolescencia de Alex. Desde los doce años, entrenaba todos los días: por las mañanas hacía ejercicio de resistencia y por las tardes practicaba velocidad en la pista. Ese esfuerzo constante culminó en un título de campeón alemán, un logro que todavía recuerda con orgullo. Aunque ya no compite, Alex sigue involucrado en el deporte como entrenador voluntario de jóvenes en el SC Berlin. Ver a sus alumnos superar sus propios límites le produce una satisfacción que no encuentra en ningún otro lugar. "El deporte te enseña disciplina, y la disciplina te abre todas las puertas", suele decirles. Esta misma mentalidad la aplica en su carrera profesional: metas claras, esfuerzo constante y mejora continua.',
+    de:'Die Leichtathletik prägte Alexs Kindheit und Jugend tief. Ab dem Alter von zwölf Jahren trainierte er täglich: morgens machte er Ausdauertraining und nachmittags übte er Sprints auf der Bahn. Diese beständige Anstrengung gipfelte in einem Deutschen Meistertitel, einer Leistung, an die er sich noch immer mit Stolz erinnert. Obwohl er nicht mehr wettkämpft, ist Alex weiterhin als freiwilliger Jugendtrainer beim SC Berlin am Sport beteiligt.',
+    words:['atletismo','entrenar','campeón','voluntario','disciplina','meta']
+  },
+  {
+    id:6, level:'B1', date:'offline',
+    es:'En México, la cultura del taco es sagrada. No hay horario fijo para comerlos: se pueden comer de desayuno, de comida o de cena, y siempre hay una taquería abierta. Los tacos al pastor, con su carne de cerdo marinada en achiote y piña, son quizás los más famosos del mundo. Pero en Monterrey tienen sus propias especialidades: los tacos de cabrito y los de barbacoa son los favoritos de los regios. Cuando alguien visita por primera vez la ciudad, lo primero que le recomiendan sus amigos locales es ir a comer tacos a algún puesto del barrio antiguo. La regla de oro es clara: entre más sencillo el local, mejor la comida.',
+    de:'In Mexiko ist die Taco-Kultur heilig. Es gibt keine feste Essenszeit dafür: Man kann sie zum Frühstück, Mittag- oder Abendessen essen, und es gibt immer eine Taquería, die offen ist. Tacos al pastor, mit ihrem in Achiote und Ananas marinierten Schweinefleisch, sind vielleicht die berühmtesten der Welt. Aber in Monterrey haben sie ihre eigenen Spezialitäten: Ziegenfleisch-Tacos und Barbacoa-Tacos sind die Lieblinge der Regios.',
+    words:['taco','comer','barrio','ciudad','favorito','comida']
+  },
+  {
+    id:7, level:'C1', date:'offline',
+    es:'Aprender un idioma de verdad significa mucho más que memorizar listas de vocabulario o conjugar verbos de forma mecánica. Implica sumergirse en la cultura, en las bromas, en los silencios y en las expresiones que no aparecen en ningún libro de texto. El español mexicano, en particular, está lleno de matices: el significado de una palabra puede cambiar completamente según el contexto, el tono o incluso la región. "Mañana" puede significar literalmente mañana, pero también "en algún momento indefinido del futuro". La paciencia y el sentido del humor son, quizás, los mejores aliados de cualquier estudiante de idiomas. Además, equivocarse es parte fundamental del proceso: cada error es una oportunidad de aprendizaje, siempre que se tenga la humildad de reconocerlo y corregirlo.',
+    de:'Eine Sprache wirklich zu lernen bedeutet viel mehr als das Auswendiglernen von Vokabellisten oder das mechanische Konjugieren von Verben. Es bedeutet, in die Kultur, die Witze, die Stille und die Ausdrücke einzutauchen, die in keinem Lehrbuch stehen. Das mexikanische Spanisch ist besonders reich an Nuancen: Die Bedeutung eines Wortes kann sich je nach Kontext, Ton oder sogar Region völlig ändern.',
+    words:['aprender','idioma','cultura','contexto','paciencia','error']
+  },
+  {
+    id:8, level:'B1', date:'offline',
+    es:'Esta semana, Antonio y Alex trabajan en vocabulario relacionado con el trabajo y los negocios. Antonio explica que en México es muy común usar palabras en inglés dentro del español de negocios, especialmente en sectores como la tecnología y el comercio electrónico. "Un "meeting" se dice reunión, pero muchos dicen simplemente meeting", le comenta. Alex practica frases como "¿Cuándo podemos agendar una llamada?" o "Necesitamos cerrar el trato esta semana". Antonio le explica que "agendar" es un mexicanismo muy común, aunque no aparece en el diccionario estándar. Al final de la clase, hacen un juego de roles donde Alex simula una llamada de ventas con un cliente imaginario en Monterrey. Se equivoca varias veces, pero cada vez mejora.',
+    de:'Diese Woche arbeiten Antonio und Alex an Vokabular rund um Arbeit und Geschäft. Antonio erklärt, dass in Mexiko sehr häufig englische Wörter im Geschäftsspanisch verwendet werden, besonders in Bereichen wie Technologie und E-Commerce. "Ein Meeting heißt reunión, aber viele sagen einfach meeting", erklärt er. Alex übt Sätze wie "Wann können wir einen Anruf einplanen?" oder "Wir müssen den Deal diese Woche abschließen".',
+    words:['trabajo','negocio','reunión','cliente','llamada','mejorar']
+  },
+  {
+    id:9, level:'B2', date:'offline',
+    es:'El año sabático que Alex planea en Monterrey no es solo una aventura personal, sino una inversión estratégica en su futuro profesional. Trabajar en un entorno hispanohablante durante seis meses le permitirá desarrollar una fluidez real que ningún curso intensivo puede proporcionar. Además, el mercado laboral latinoamericano está en pleno crecimiento en sectores como el e-commerce, la tecnología y el Account Management. Las empresas valoran cada vez más a profesionales que hablen español con fluidez y entiendan la cultura de negocios local. Cuando regrese a Alemania, Alex planea combinar su experiencia en CHECK24 con sus nuevas habilidades lingüísticas para diferenciarse en el mercado laboral. A largo plazo, no descarta la posibilidad de trabajar para una empresa internacional con operaciones en México.',
+    de:'Das Sabbatjahr, das Alex in Monterrey plant, ist nicht nur ein persönliches Abenteuer, sondern eine strategische Investition in seine berufliche Zukunft. Sechs Monate in einem spanischsprachigen Umfeld zu arbeiten wird ihm ermöglichen, eine echte Flüssigkeit zu entwickeln, die kein Intensivkurs bieten kann.',
+    words:['futuro','profesional','fluidez','mercado','empresa','habilidad']
+  }
+];
+
+
 
 function loadState(){
   try{
@@ -596,7 +1012,9 @@ function loadState(){
       // Migrate from older storage key (v3)
       if(!s._knownLoaded){
         const existing=new Set(s.words.map(w=>w.es.toLowerCase()));
-        KNOWN_WORDS.forEach(w=>{if(!existing.has(w.es.toLowerCase()))s.words.push(w)});
+        KNOWN_WORDS.forEach(w=>{if(!existing.has(w.es.toLowerCase())){s.words.push(w);existing.add(w.es.toLowerCase())}});
+        ANTONIO_WORDS.forEach(w=>{if(!existing.has(w.es.toLowerCase())){s.words.push(w);existing.add(w.es.toLowerCase())}});
+        VOCAB_MX_EXTRA.forEach(w=>{if(!existing.has(w.es.toLowerCase())){s.words.push(w);existing.add(w.es.toLowerCase())}});
         s._knownLoaded=true;
         localStorage.setItem(STORAGE_KEY,JSON.stringify(s));
       }
@@ -604,10 +1022,41 @@ function loadState(){
     }
   }catch(e){}
   // Fresh state — preload all known words
-  return{words:[...KNOWN_WORDS],stories:[],learnedVerbs:[],lastVerbDate:null,lastVerb:null,_knownLoaded:true};
+  return{words:[...KNOWN_WORDS,...ANTONIO_WORDS,...VOCAB_MX_EXTRA],stories:[],learnedVerbs:[],lastVerbDate:null,lastVerb:null,_knownLoaded:true};
 }
 function saveState(){try{localStorage.setItem(STORAGE_KEY,JSON.stringify(state))}catch(e){}}
 let state=loadState();
+
+// ── API KEY ──
+function getApiKey(){return localStorage.getItem('espanol_api_key')||''}
+function saveApiKey(val){
+  localStorage.setItem('espanol_api_key',val.trim());
+  const st=document.getElementById('key-status');
+  if(st)st.textContent=val.trim()?'✓ gespeichert':'';
+}
+function toggleKeyVisibility(){
+  const inp=document.getElementById('api-key-input');
+  const btn=document.getElementById('key-toggle-btn');
+  if(!inp)return;
+  inp.type=inp.type==='password'?'text':'password';
+  btn.textContent=inp.type==='password'?'👁':'🙈';
+}
+function apiHeaders(){
+  return{
+    'Content-Type':'application/json',
+    'x-api-key':getApiKey(),
+    'anthropic-version':'2023-06-01',
+    'anthropic-dangerous-direct-browser-access':'true'
+  };
+}
+function checkKey(){
+  if(!getApiKey()){
+    showToast('Bitte zuerst API-Key eingeben!');
+    document.getElementById('api-key-input')?.focus();
+    return false;
+  }
+  return true;
+}
 
 // ── TABS ──
 function showTab(id){
@@ -665,6 +1114,29 @@ function updatePrefLabel(val){const el=document.getElementById('pref-label');con
 
 async function generateStory(){
   if(!state.words.length){showToast('Bitte zuerst Wörter hinzufügen!');return}
+  
+  // If no API key, use offline stories
+  if(!getApiKey()){
+    const output=document.getElementById('story-output');
+    const available=OFFLINE_STORIES.filter(s=>{
+      const level=document.getElementById('difficulty').value;
+      return s.level===level||true; // show any if no match
+    });
+    const story=shuffle([...available])[0];
+    if(!story){output.innerHTML='<div class="card" style="color:var(--red)">Kein API-Key gesetzt. Bitte oben eintragen.</div>';return}
+    const esHTML=story.es;
+    const badge=`<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:20px;background:#e8f0fe;color:#1a56c4;margin-left:8px">Offline</span>`;
+    output.innerHTML=`<div class="story-card">
+      <div class="story-header"><span class="story-date">Offline-Geschichte</span><span class="story-level-badge">${story.level}</span></div>
+      <div class="story-body">
+        <div class="story-es">${esHTML}</div>
+        ${story.de?`<button class="story-toggle" onclick="toggleDE(this)">🇩🇪 Übersetzung anzeigen ▾</button><div class="story-de">${story.de}</div>`:''}
+      </div>
+      <div class="used-words-row"><span class="uwl">Thema:</span>${story.words.map(w=>`<span class="chip">${w}</span>`).join('')}</div>
+    </div>`;
+    showToast('Offline-Geschichte geladen. API-Key für KI-Geschichten eintragen.');
+    return;
+  }
   const btn=document.getElementById('genBtn');btn.disabled=true;btn.textContent='Generiere…';
   const output=document.getElementById('story-output');
   output.innerHTML='<div class="loading"><div class="spinner"></div>Geschichte wird generiert…</div>';
@@ -680,7 +1152,7 @@ async function generateStory(){
   const ld={A1:'sehr einfache Sätze, Präsens, max. 80 Wörter',A2:'einfache Sätze, Präsens+Perfekt, ca. 100 Wörter',B1:'mittelschwere Sätze, verschiedene Zeiten, ca. 120 Wörter',B2:'komplexere Sätze, Konjunktiv, ca. 140 Wörter',C1:'anspruchsvoller Stil, idiomatische Ausdrücke, ca. 160 Wörter',C2:'literarischer Stil, native-level Fluss, ca. 180 Wörter'}[level];
   const prompt=`Du bist ein Spanisch-Sprachtrainer. Schreibe eine kurze Geschichte auf Spanisch für Niveau ${level} (${ld}).${topic?` Thema: ${topic}.`:''}\nBaue ALLE folgenden Wörter natürlich ein: ${wl}.\nMarkiere die eingebauten Vokabeln mit **Wort** (Markdown-fett).\nDanach schreibe "---" und dann die vollständige deutsche Übersetzung.\nNur Geschichte und Übersetzung, keine Kommentare.`;
   try{
-    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:apiHeaders(),body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})});
     const data=await resp.json();
     const full=data.content?.find(b=>b.type==='text')?.text||'';
     const parts=full.split('---');
@@ -1156,6 +1628,8 @@ function getSourcePool(){
   const custom=state.words.filter(w=>!(w.cat==='Bekannt'&&w.addedAt===0));
   if(fcSource==='all')pool=[...state.words.filter(w=>w.de),...state.learnedVerbs.map(v=>({es:v.infinitivo,de:v.deutsch,cat:'Verb',type:'verb',_verbRef:v.infinitivo}))];
   else if(fcSource==='words')pool=custom.filter(w=>w.de);
+  else if(fcSource==='antonio')pool=state.words.filter(w=>w.cat==='Antonio KW16'&&w.de);
+  else if(fcSource==='mx')pool=state.words.filter(w=>w.cat==='MX-Vokabeln'&&w.de);
   else if(fcSource==='top100')pool=bekannt.slice(0,100).filter(w=>w.de);
   else if(fcSource==='top101')pool=bekannt.slice(100,200).filter(w=>w.de);
   else if(fcSource==='top201')pool=bekannt.slice(200,300).filter(w=>w.de);
@@ -1440,6 +1914,7 @@ function showGrammar(tense){
 let exerciseState={tense:'',questions:[],idx:0,score:0,answered:false,loading:false};
 
 async function startExercise(tense){
+  if(!checkKey())return;
   exerciseState={tense,questions:[],idx:0,score:0,answered:false,loading:true};
   const area=document.getElementById('exercise-area');
   area.innerHTML='<div class="loading"><div class="spinner"></div>KI generiert neue Aufgaben…</div>';
@@ -1455,7 +1930,7 @@ Nutze verschiedene Verben und Personen. Beantworte NUR mit einem JSON-Array, kei
 [{"sentence":"Yo ___ (hablar) con mi jefa todos los lunes.","answer":"hablo","translation":"Ich spreche jeden Montag mit meiner Chefin.","hint":"yo + -AR Presente → -o"},...]`;
   try {
     const resp=await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST',headers:{'Content-Type':'application/json'},
+      method:'POST',headers:apiHeaders(),
       body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1200,messages:[{role:'user',content:prompt}]})
     });
     const data=await resp.json();
@@ -1901,6 +2376,10 @@ renderIrregVocab();
 // ── INIT ──
 updateHeaderStats();
 renderWordChips();
+// Load saved API key
+const _savedKey=getApiKey();
+const _keyInput=document.getElementById('api-key-input');
+if(_keyInput&&_savedKey){_keyInput.value=_savedKey;document.getElementById('key-status').textContent='✓ gespeichert'}
 </script>
 </body>
 </html>
